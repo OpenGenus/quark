@@ -9,7 +9,7 @@
   },
   "browser_action": {
       "default_title": "OpenGenus: Offline Search Engine",
-      "default_icon": "icon.png"
+      "default_icon": "icon/icon.png"
     },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
