@@ -1,10 +1,56 @@
 <html>
 <head>
+  <script src="jquery.js"></script>
   <script src="popup.js"></script>
   <link rel="stylesheet" type="text/css" href="popup.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="font.css">
+  <link rel="shortcut icon" type="image/png" href="/icon.png"/>
   <title>OpenGenus: World's first Offline Search Engine</title>
 </head>
 
 <body>
+  <div class="container">
+        <br>
+        <div class="row">
+
+            <div class="col-sm-4">
+                <a class="navbar-brand" href="/popup.html"><img src="/logo.png"></a>
+            </div>
+
+            <div class="col-sm-4">
+                    <div class="input-group">
+                        <input id="search" class="form-control text-center" type="search" size="128" placeholder="Search any code; Try: sorting">
+                    </div>
+            </div>
+
+            <div class="col-sm-4">
+                  <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/cosmos-search">GitHub</a>
+                  <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/cosmos">cosmos</a>
+            </div>
+
+        </div><br>
+
+    </div>
+
+    <div id="front">
+	    <h1 style="text-align: center;">World's first Offline Search Engine</h1>
+	    <hr>
+	    
+	    <img id="fact" src="image/1.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>
+
+	    <hr>
+	</div>
+
+    <div id="bookmarks"></div>
+
+    <footer class="footer">
+        <div class="container">
+              <span class="text-muted">Built with <3 @<a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a> 
+              Email: <a target="_blank" title="Works offline if email app enabled" href="mailto:team@opengenus.org">team@opengenus.org</a></span>
+              <span class="text-muted float-right">Maintained by and part of the <a target="_blank" title="Works only when you are online" href="http://www.opengenus.org/">OpenGenus Foundation</a></span>
+        </div>
+    </footer>
+
 </body>
 </html>
