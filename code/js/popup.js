@@ -16,18 +16,30 @@ function dumpBookmarks(query)
 	$("#front").hide();
 
 	var found = 0;
+	var single_query = query.split(" ");
+	console.log(single_query);
 
 	for (var key in obj) 
 	{
-	    if ((String(key).toLowerCase()).indexOf(query.toLowerCase()) != -1) {
+		var current_found = 0;
 
-	    found = 1;
-	    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
-	    for (var dd in obj[key])
-	    {
-	    	$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
-	    }
-	    $('#bookmarks').append("</ul>");
+		for(var pos in single_query)
+		{
+			current_query = single_query[pos];
+			if(current_query == "")
+				continue;
+
+		    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) {
+
+		    found = 1;
+		    current_found = 1;
+		    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+		    for (var dd in obj[key])
+		    {
+		    	$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
+		    }
+		    $('#bookmarks').append("</ul>");
+		}
 	}
 	}
 
