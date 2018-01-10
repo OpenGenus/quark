@@ -19,32 +19,53 @@ function dumpBookmarks(query)
 	var single_query = query.split(" ");
 	console.log(single_query);
 
-	for (var key in obj) 
+	var found_word = 0;
+
+	for(var pos in single_query)
 	{
-		var current_found = 0;
 
-		for(var pos in single_query)
+		current_query = single_query[pos];
+		if(current_query != "")
 		{
-			current_query = single_query[pos];
-			if(current_query == "")
-				continue;
-
-		    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) {
-
-		    found = 1;
-		    current_found = 1;
-		    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
-		    for (var dd in obj[key])
-		    {
-		    	$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
-		    }
-		    $('#bookmarks').append("</ul>");
+			found_word = 1;
+			break;
 		}
 	}
-	}
 
-	if (found == 0){
+	if(found_word == 1)
+		for (var key in obj) 
+		{
+			var current_found = 0;
+
+			for(var pos in single_query)
+			{
+				current_query = single_query[pos];
+				if(current_query == "")
+					continue;
+
+			    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
+			    {
+				    found = 1;
+				    current_found = 1;
+				    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+				    for (var dd in obj[key])
+				    {
+				    	$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
+				    }
+				    $('#bookmarks').append("</ul>");
+				}
+			}
+		}
+
+	if (found == 0 && found_word!=0)
+	{
 		var happy = "<p style='text-align: center'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
+		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
+		$('#bookmarks').append(happy);
+	}
+	else if (found_word == 0)
+	{
+		var happy = "<p style='text-align: center'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
 		$('#bookmarks').append(happy);
 	}
