@@ -11,6 +11,13 @@ $(function() {
   });
 });
 
+$(function(){
+	$('.button-pop').click(function(){
+		$('#bookmarks').empty();
+		dumpBookmarks($(this).val());
+	});
+});
+
 function dumpBookmarks(query) 
 {
 	$("#front").hide();
