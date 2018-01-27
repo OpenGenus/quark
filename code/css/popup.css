@@ -38,3 +38,8 @@ html {
 	  padding: 15px;
 	  width: auto;
 	}
+    .btn-xs{
+        margin-top: 7px;
+        height: 24px;
+        font-size: 12px;
+    }
