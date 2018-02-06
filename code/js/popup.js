@@ -20,6 +20,7 @@ $(function(){
 
 function dumpBookmarks(query) 
 {
+	$('#search').val(query);
 	$("#front").hide();
 
 	var found = 0;
