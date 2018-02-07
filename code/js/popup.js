@@ -95,7 +95,7 @@ function addtags()
 {
 	var tags_display_number = 10 ;
 	var display_ele = '';
-	var style = 'margin: 2px;';
+	var style = 'margin: 2px;border-radius: 5px;';
 	for (var i =0 ;i<tags_display_number;i++)
 	{
 		display_ele += '<input type="button" style ="'+style+'"class="btn-xs button-pop btn-warning" value="'+tags[i]+'"/>'
@@ -109,10 +109,6 @@ document.addEventListener('DOMContentLoaded', function ()
 {
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
-
-   
     addtags();
-
-
     //dumpBookmarks();
 });
