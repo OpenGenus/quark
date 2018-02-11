@@ -66,12 +66,18 @@ function dumpBookmarks(query)
 			    {
 				    found = 1;
 				    current_found = 1;
-				    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
-				    for (var dd in obj[key])
+				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+				    	continue;
+				    else
 				    {
-				    	$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
-				    }
-				    $('#bookmarks').append("</ul>");
+					    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+					    for (var dd in obj[key])
+					    {
+					    	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+					    		$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
+					    }
+					    $('#bookmarks').append("</ul>");
+					}
 				}
 			}
 		}
