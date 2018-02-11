@@ -34,8 +34,6 @@ function updateFavs(x, filename) {
 	localStorage.setItem('favCookie', JSON.stringify(storedFavs));
 }
 
-
-
 $(function() {
   $('#search').change(function() {
      $('#bookmarks').empty();
@@ -156,4 +154,5 @@ document.addEventListener('DOMContentLoaded', function ()
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     addtags();
 	addFavorites();
+    //dumpBookmarks();
 });
