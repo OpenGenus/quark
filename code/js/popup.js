@@ -66,20 +66,26 @@ function dumpBookmarks(query)
 			    {
 				    found = 1;
 				    current_found = 1;
-				    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+				    let str =key;
+				    let inside_text='';
+				    str = str.split("/").pop();
+				    str = str.split('_').join(' ');
+					str =  str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 				    for (var dd in obj[key])
 				    {
-				    	$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
+				    	let s_no = parseInt(dd)+1;
+				    	inside_text = inside_text + "<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<div  >"+s_no+". "+obj[key][dd]+"</div></a>";
 				    }
-				    $('#bookmarks').append("</ul>");
+				    
+				    $('#bookmarks').append('<div class=" card col-xs-3 col-sm-3 col-md-3 col-lg-3"><br><div class="card-title">'+str+'</div><div class="card-body">'+inside_text+'</div></div>');
 				}
 			}
 		}
 
 	if (found == 0 && found_word!=0)
 	{
-		var happy = "<p style='text-align: center'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
-		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
+		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
+		happy += '<img id="fact"  src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
 		$('#bookmarks').append(happy);
 	}
 	else if (found_word == 0)
@@ -88,6 +94,7 @@ function dumpBookmarks(query)
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
 		$('#bookmarks').append(happy);
 	}
+
 }
 
 
@@ -110,5 +117,4 @@ document.addEventListener('DOMContentLoaded', function ()
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     addtags();
-    //dumpBookmarks();
 });
