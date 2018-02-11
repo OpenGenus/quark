@@ -6,7 +6,22 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/font.css">
   <link rel="shortcut icon" type="image/png" href="/icon/icon.png"/>
-  <title>OpenGenus: World's first Offline Search Engine</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .fa {
+        font-size: 15px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .fa:hover {
+      color: darkblue;
+    }
+    .checked {
+            color: orange;
+        }
+  </style>
+<title>OpenGenus: World's first Offline Search Engine</title>
   <meta charset='utf-8'>
 </head>
 
@@ -23,18 +38,7 @@
                     <div class="input-group">
                         <input id="search" class="form-control text-center" type="search" size="128" placeholder="Search any code; Try: sorting">
                     </div>
-			<div id="pop-tags">
-				<input type="button" class="btn-xs button-pop" value="sort"/>
-				<input type="button" class="btn-xs button-pop" value="search"/>
-				<input type="button" class="btn-xs button-pop" value="math"/>
-				<input type="button" class="btn-xs button-pop" value="string"/>
-				<input type="button" class="btn-xs button-pop" value="crypto"/>
-				<input type="button" class="btn-xs button-pop" value="data structures"/>
-				<input type="button" class="btn-xs button-pop" value="graph"/>
-				<input type="button" class="btn-xs button-pop" value="greedy"/>
-				<input type="button" class="btn-xs button-pop" value="operating systems"/>
-				<input type="button" class="btn-xs button-pop" value="artificial intelligence"/>
-			</div>
+			<div id="pop-tags"></div>
             </div>
 
             <div class="col-sm-4">
@@ -54,7 +58,9 @@
 	    <hr>
 	</div>
 
-    <div id="bookmarks"></div>
+    <div id="bookmarks"></div> 
+
+    <div id="favorites"></div> 
 
     <footer class="footer">
         <div class="container">
