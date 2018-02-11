@@ -85,18 +85,25 @@ function dumpBookmarks(query)
 			    {
 				    found = 1;
 				    current_found = 1;
-				    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
-				    for (var dd in obj[key])
+				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+				    	continue;
+				    else
 				    {
-				    	var fname= key+"/"+obj[key][dd];
 				    	favs = JSON.parse(localStorage.getItem('favCookie')) || [];
-          				if(!favs.includes(fname)) {
-				    		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"&nbsp;&nbsp;</a>" + "<i onclick=updateFavs(this,\'"+fname +"\') class='fa fa-star'></i><br></li>");
-				    	} else {
-				    		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"</a>" + "<i onclick=updateFavs(this,\'"+fname +"\') class='fa fa-star checked'></i><br></li>");
-				    	}
-				    }
-				    $('#bookmarks').append("</ul>");
+					    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+					    for (var dd in obj[key])
+					    {
+					    	var fname= key+"/"+obj[key][dd];
+					    	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)) {
+					    		if(!favs.includes(fname)) {
+						    		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"&nbsp;&nbsp;</a>" + "<i onclick=updateFavs(this,\'"+fname +"\') class='fa fa-star'></i><br></li>");
+						    	} else {
+						    		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"</a>" + "<i onclick=updateFavs(this,\'"+fname +"\') class='fa fa-star checked'></i><br></li>");
+						    	}
+						    }
+					    }
+					    $('#bookmarks').append("</ul>");
+					}
 				}
 			}
 		}

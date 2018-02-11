@@ -12,6 +12,11 @@
       "default_icon": "icon/icon.png"
     },
   "manifest_version": 2,
+  "icons": { 
+          "16": "icon/icon.png",
+          "48": "icon/icon.png",
+          "128": "icon/icon.png" 
+    },
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
   "short_name": "World's first offline search engine: Quark"
 }
