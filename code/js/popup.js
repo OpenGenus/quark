@@ -18,6 +18,7 @@ function AddNewTags (tagName)
 $(function() {
   $('#search').change(function() {
      $('#bookmarks').empty();
+     $('#error-message').empty();
      dumpBookmarks($('#search').val());
   });
 });
@@ -25,6 +26,7 @@ $(function() {
 $(function(){
 	$(document).on("click", ".button-pop", function(){
  		$('#bookmarks').empty();
+ 		$('#error-message').empty();
 		dumpBookmarks($(this).val());
 	});
 });
@@ -42,7 +44,7 @@ function dumpBookmarks(query)
 
 	for(var pos in single_query)
 	{
-
+		// console.log(s)
 		current_query = single_query[pos];
 		if(current_query != "")
 		{
@@ -56,28 +58,52 @@ function dumpBookmarks(query)
 		{
 			var current_found = 0;
 
+
 			for(var pos in single_query)
 			{
+
 				current_query = single_query[pos];
 				if(current_query == "")
 					continue;
 
 			    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
 			    {
+
 				    found = 1;
 				    current_found = 1;
-				    let str =key;
-				    let inside_text='';
+
+				    let str = key;
+				    let inside_text = '';
 				    str = str.split("/").pop();
 				    str = str.split('_').join(' ');
-					str =  str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-				    for (var dd in obj[key])
+					str = str.replace(/\w\S*/g, function(txt) {
+						return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+					});
+				   
+				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+				    	continue;
+				    else
 				    {
-				    	let s_no = parseInt(dd)+1;
-				    	inside_text = inside_text + "<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<div  >"+s_no+". "+obj[key][dd]+"</div></a>";
-				    }
-				    
-				    $('#bookmarks').append('<div class=" card col-xs-3 col-sm-3 col-md-3 col-lg-3"><br><div class="card-title">'+str+'</div><div class="card-body">'+inside_text+'</div></div>');
+					   
+					    let s_no = 1;
+					    for (var dd in obj[key])
+					    {
+					    	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
+
+					    	else{
+					    	
+					    		// if(s_no-1===Math.floor(obj[key].length/2)&&(s_no!=1))
+					    		// {
+					    		// 	inside_text += "</div><div class='col-xs-6 col-sm-6 col-md-6 col-lg-6'>";
+					    		// }
+					    		
+					    		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<div  >"+s_no+". "+obj[key][dd]+"</div></a>";
+					    		s_no++;
+					    	}
+					    }
+					    $('#bookmarks').append('<div class="card" ><br><div class="card-title ">'+str+'</div><div class="card-body">'+inside_text+'</div></div></div>');
+
+					}
 				}
 			}
 		}
@@ -86,13 +112,13 @@ function dumpBookmarks(query)
 	{
 		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
 		happy += '<img id="fact"  src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
-		$('#bookmarks').append(happy);
+		 $('#error-message').append(happy);
 	}
 	else if (found_word == 0)
 	{
 		var happy = "<p style='text-align: center'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
-		$('#bookmarks').append(happy);
+		$('#error-message').append(happy);
 	}
 
 }
