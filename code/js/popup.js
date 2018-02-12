@@ -91,7 +91,7 @@ function dumpBookmarks(query)
 	else
 		res="result";
 	if(total!=0)
-		$('#no_of_results').append("<ul>"+"<h5>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h5>"+"</ul>");
+		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
 		
 	if (found == 0 && found_word!=0)
 	{
