@@ -18,6 +18,7 @@ function AddNewTags (tagName)
 $(function() {
   $('#search').change(function() {
      $('#bookmarks').empty();
+     $('#no_of_results').empty();
      dumpBookmarks($('#search').val());
   });
 });
@@ -25,6 +26,7 @@ $(function() {
 $(function(){
 	$(document).on("click", ".button-pop", function(){
  		$('#bookmarks').empty();
+ 		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
 	});
 });
@@ -39,6 +41,7 @@ function dumpBookmarks(query)
 	console.log(single_query);
 
 	var found_word = 0;
+	var total=0;
 
 	for(var pos in single_query)
 	{
@@ -70,6 +73,7 @@ function dumpBookmarks(query)
 				    	continue;
 				    else
 				    {
+				    	total++;
 					    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
 					    for (var dd in obj[key])
 					    {
@@ -80,8 +84,15 @@ function dumpBookmarks(query)
 					}
 				}
 			}
-		}
+		} 
 
+	if(total>1)
+		res="results";
+	else
+		res="result";
+	if(total!=0)
+		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
+		
 	if (found == 0 && found_word!=0)
 	{
 		var happy = "<p style='text-align: center'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
