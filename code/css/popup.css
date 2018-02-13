@@ -9,11 +9,7 @@ html {
         margin-bottom: 60px;
 
     }
-    .card
-    {
-        /*padding: 2px;*/
-    }
-
+    
     article {
         display: block;
         text-align: left;
@@ -50,6 +46,7 @@ html {
         height: 24px;
         font-size: 12px;
     }
+    
 
     .card-title{
         font-size: 20px;
@@ -59,4 +56,20 @@ html {
          /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
 
         }
-        
+    
+
+    @media screen and (min-width: 768px) {
+      .bricklayer-column-sizer {
+        /* Each column will be 100px width and there will be 5 columns. */
+        width: 33%;
+      }
+    }
+
+    /* You should add more media queries to make it fully responsive. */
+
+    @media screen and (min-width: 768px) {
+      .bricklayer-column-sizer {
+        /* Each column will be 125px width and there will be 4 columns. */
+        width: 33%;
+      }
+    }

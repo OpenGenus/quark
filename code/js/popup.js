@@ -6,7 +6,7 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 
 //Tags for easy search  
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
-
+	var bricklayer ;
 function AddNewTags (tagName)
 {
 	/*Function can be used and improved for adding new Tags in the tags array 
@@ -17,17 +17,23 @@ function AddNewTags (tagName)
 
 $(function() {
   $('#search').change(function() {
-     $('#bookmarks').empty();
+     $('.bricklayer').empty();
      $('#error-message').empty();
+     $('#no_of_results').empty();
      dumpBookmarks($('#search').val());
+     
+
   });
 });
 
 $(function(){
 	$(document).on("click", ".button-pop", function(){
- 		$('#bookmarks').empty();
+ 		$('.bricklayer').empty();
  		$('#error-message').empty();
+ 		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
+		
+
 	});
 });
 
@@ -35,16 +41,17 @@ function dumpBookmarks(query)
 {
 	$('#search').val(query);
 	$("#front").hide();
+	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+
 
 	var found = 0;
 	var single_query = query.split(" ");
-	console.log(single_query);
-
 	var found_word = 0;
+	var total=0;
 
 	for(var pos in single_query)
 	{
-		// console.log(s)
+		
 		current_query = single_query[pos];
 		if(current_query != "")
 		{
@@ -83,31 +90,49 @@ function dumpBookmarks(query)
 				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
 				    	continue;
 				    else
-				    {
-					   
-					    let s_no = 1;
+				    {					   
+					    let sub_result_number = 1;
+				    	total++;
 					    for (var dd in obj[key])
 					    {
 					    	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
 
-					    	else{
-					    	
-					    		// if(s_no-1===Math.floor(obj[key].length/2)&&(s_no!=1))
-					    		// {
-					    		// 	inside_text += "</div><div class='col-xs-6 col-sm-6 col-md-6 col-lg-6'>";
-					    		// }
-					    		
-					    		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<div  >"+s_no+". "+obj[key][dd]+"</div></a>";
-					    		s_no++;
+					    	else{					    			    		
+					    		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a><br>";
+					    		sub_result_number++;
 					    	}
 					    }
-					    $('#bookmarks').append('<div class="card" ><br><div class="card-title ">'+str+'</div><div class="card-body">'+inside_text+'</div></div></div>');
+					    //Individual Cards 
+					    var card = document.createElement('div');
+					    card.setAttribute("class", "card");
+					    card.setAttribute("style","margin-bottom: 8px");
+					    
+					    var card_title = document.createElement('div');
+					    card_title.setAttribute("class","card-title");
+					    card_title.innerHTML = str;
 
+					    var card_body = document.createElement('div');
+					    card_body.setAttribute("class","card-body");
+					    card_body.innerHTML = inside_text;
+
+					    card.appendChild(card_title);
+					    card.appendChild(card_body);
+
+					    //Adding Card to Brick Layer
+					    bricklayer.append(card);
+					    
 					}
 				}
 			}
-		}
+		} 
 
+	if(total>1)
+		res="results";
+	else
+		res="result";
+	if(total!=0)
+		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
+		
 	if (found == 0 && found_word!=0)
 	{
 		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
@@ -140,7 +165,11 @@ function addtags()
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+
+	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     addtags();
+
 });
