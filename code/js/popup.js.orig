@@ -55,10 +55,15 @@ $(function() {
 });
 
 $(function(){
-	$(document).on("click", ".button-pop", function() {
+	$(document).on("click", ".button-pop", function(){
+<<<<<<< HEAD
+ 	$('#bookmarks').empty();
+	dumpBookmarks($(this).val());
+=======
  		$('#bookmarks').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
+>>>>>>> master
 	});
 });
 
@@ -109,11 +114,11 @@ function dumpBookmarks(query)
 				    	}
 			  		});
 
-				    total++;
+
 				    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
 				    for (var dd in obj[key])
 				    {
-
+<<<<<<< HEAD
 					   	var fname= key+"/"+obj[key][dd];
 
 					   	temp = fname;
@@ -140,15 +145,27 @@ function dumpBookmarks(query)
 					   	  	updateFavs(this, filenames[filename_pos]);
 					    });	
 
-
+=======
+				    	total++;
+					    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+					    for (var dd in obj[key])
+					    {
+					    	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+					    		$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
+					    }
+					    $('#bookmarks').append("</ul>");
+>>>>>>> master
 					}
 
 				    $('#bookmarks').append("</ul>");
 				}
 			}
+<<<<<<< HEAD
 		}
 	}
 
+=======
+		} 
 
 	if(total>1)
 		res="results";
@@ -157,7 +174,7 @@ function dumpBookmarks(query)
 	if(total!=0)
 		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
 		
-
+>>>>>>> master
 	if (found == 0 && found_word!=0)
 	{
 		var happy = "<p style='text-align: center'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
