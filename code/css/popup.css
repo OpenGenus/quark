@@ -43,3 +43,16 @@ html {
         height: 24px;
         font-size: 12px;
     }
+
+.fa {
+        font-size: 15px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .fa:hover {
+      color: darkblue;
+    }
+    .checked {
+            color: orange;
+        }
