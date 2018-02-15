@@ -7,6 +7,7 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 //Tags for easy search  
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
 var favs = [];
+var filenames = [];
 
 function AddNewTags (tagName)
 {
@@ -17,21 +18,32 @@ function AddNewTags (tagName)
 
 function updateFavs(x, filename) {
     x.classList.toggle("checked");
-  	console.log("clicked==>"+filename);
+	  
+	if (chrome && chrome.storage) {
+	    chrome.storage.sync.get({favs: []}, function(items) {
+		    if (!chrome.runtime.error) {
+		      	favs = items.favs;
+		
+		      	if(!favs.includes(filename)) {
+			      	favs.push(filename);
+			    } else {
+			       	var index = favs.indexOf(filename);
+			       	if (index > -1) {
+				   		favs.splice(index, 1);
+					}	
+			    }
 
-    var storedFavs = JSON.parse(localStorage.getItem('favCookie')) || [];
 
-    if(!storedFavs.includes(filename)) {
-    	console.log("adding");
-      		storedFavs.push(filename);
-       	} else {
-       		console.log("removing");
-       		var index = storedFavs.indexOf(filename);
-       		if (index > -1) {
-			   	storedFavs.splice(index, 1);
-			}	
-       	}
-	localStorage.setItem('favCookie', JSON.stringify(storedFavs));
+
+			    chrome.storage.sync.set({ favs : favs }, function() {
+				    if (chrome.runtime.error) {
+				      	console.log("Runtime error.");
+				    }
+				});
+		
+		    }
+	  	});
+	}
 }
 
 $(function() {
@@ -43,11 +55,12 @@ $(function() {
 
 $(function(){
 	$(document).on("click", ".button-pop", function(){
- 		$('#bookmarks').empty();
-		dumpBookmarks($(this).val());
+ 	$('#bookmarks').empty();
+	dumpBookmarks($(this).val());
 	});
 });
 
+var current_fname;
 function dumpBookmarks(query) 
 {
 	$('#search').val(query);
@@ -55,13 +68,11 @@ function dumpBookmarks(query)
 
 	var found = 0;
 	var single_query = query.split(" ");
-	console.log(single_query);
 
 	var found_word = 0;
 
 	for(var pos in single_query)
 	{
-
 		current_query = single_query[pos];
 		if(current_query != "")
 		{
@@ -71,42 +82,67 @@ function dumpBookmarks(query)
 	}
 
 	if(found_word == 1)
-		for (var key in obj) 
+	for (var key in obj) 
+	{
+		var current_found = 0;
+
+		for(var pos in single_query)
 		{
-			var current_found = 0;
+			current_query = single_query[pos];
+			if(current_query == "")
+				continue;
 
-			for(var pos in single_query)
-			{
-				current_query = single_query[pos];
-				if(current_query == "")
-					continue;
-
-			    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
+		    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
+		    {
+			    found = 1;
+			    current_found = 1;
+			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+			    	continue;
+			    else
 			    {
-				    found = 1;
-				    current_found = 1;
-				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
-				    	continue;
-				    else
+				    chrome.storage.sync.get({favs: []}, function(items) {
+					    if (!chrome.runtime.error) {
+					      	favs = items.favs;			      
+				    	}
+			  		});
+
+
+				    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+				    for (var dd in obj[key])
 				    {
-				    	favs = JSON.parse(localStorage.getItem('favCookie')) || [];
-					    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
-					    for (var dd in obj[key])
-					    {
-					    	var fname= key+"/"+obj[key][dd];
-					    	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)) {
-					    		if(!favs.includes(fname)) {
-						    		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"&nbsp;&nbsp;</a>" + "<i onclick=updateFavs(this,\'"+fname +"\') class='fa fa-star'></i><br></li>");
-						    	} else {
-						    		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"</a>" + "<i onclick=updateFavs(this,\'"+fname +"\') class='fa fa-star checked'></i><br></li>");
-						    	}
-						    }
-					    }
-					    $('#bookmarks').append("</ul>");
+					   	var fname= key+"/"+obj[key][dd];
+
+					   	temp = fname;
+					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					   	temp = temp.replace(/_/g, '');
+					   
+
+						var str = '#myStar'+temp;
+					
+
+					   	filenames[str]=fname;
+
+					   	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)) {
+						   	if(!favs.includes(fname)) {
+						   		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star'></i><br></li>");
+						   	} else {
+							   	$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
+						   	}
+						}
+				   	
+					   	$('#myStar'+temp).on("click",function () {
+					   	
+					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	  	updateFavs(this, filenames[filename_pos]);
+					    });	
+
 					}
+
+				    $('#bookmarks').append("</ul>");
 				}
 			}
 		}
+	}
 
 	if (found == 0 && found_word!=0)
 	{
@@ -121,6 +157,7 @@ function dumpBookmarks(query)
 		$('#bookmarks').append(happy);
 	}
 }
+
 
 
 function addtags()
@@ -140,26 +177,57 @@ function addtags()
 function addFavorites()
 {
 	$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul>");
-	favs = JSON.parse(localStorage.getItem('favCookie')) || [];
-    for (var fname in favs)
-    {
-    	var filename = favs[fname].replace(/^.*[\\\/]/, '')
-    	console.log(filename);
+	
+	if (chrome && chrome.storage) {
+	    chrome.storage.sync.get({favs: []}, function(items) {
+		    if (!chrome.runtime.error) {
+		      	favs = items.favs;
+	
+			    for (var fname in favs)
+			    {
+			    	temp = favs[fname];
+				   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+				   	temp = temp.replace(/_/g, '');
+				   
+					var str = '#myStar'+temp;
+					var filename = favs[fname].replace(/^.*[\\\/]/, '')
 
-    	if(!favs.includes(favs[fname])) {
-    		$('#favorites').append("<li><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;</a>" + "<i onclick=updateFavs(this,\'"+favs[fname] +"\') class='fa fa-star'></i><br></li>");
-    	} else {
-    		$('#favorites').append("<li><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;</a>" + "<i onclick=updateFavs(this,\'"+favs[fname] +"\') class='fa fa-star checked'></i><br></li>");
-    	}
-    }
-	$('#favorites').append("<br><br><br><br><br></ul>");
+					$('#favorites').append("<li><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
+
+			    	$('#myStar'+temp).on("click",function () {						   	
+				   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+				   	  	updateFavs(this, filenames[filename_pos]);
+			    	});	
+
+			    }
+				$('#favorites').append("<br><br><br><br><br></ul>");
+	    	}
+	 	});
+	}
+}
+
+function initialize() 
+{
+	for (var key in obj) 
+	{
+	    for (var dd in obj[key])
+		{
+		   	var fname= key+"/"+obj[key][dd];
+		   	temp = fname;
+		   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+		   	temp = temp.replace(/_/g, '');
+		
+			var str = '#myStar'+temp;
+		   	filenames[str]=fname;
+		}
+	}	
 }
 
 document.addEventListener('DOMContentLoaded', function () 
 {
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
+    initialize();
     addtags();
 	addFavorites();
-    //dumpBookmarks();
 });
