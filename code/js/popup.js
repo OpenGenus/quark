@@ -8,6 +8,7 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
 var favs = [];
 var filenames = [];
+var bricklayer ;
 
 function AddNewTags (tagName)
 {
@@ -33,8 +34,6 @@ function updateFavs(x, filename) {
 					}	
 			    }
 
-
-
 			    chrome.storage.sync.set({ favs : favs }, function() {
 				    if (chrome.runtime.error) {
 				      	console.log("Runtime error.");
@@ -48,15 +47,18 @@ function updateFavs(x, filename) {
 
 $(function() {
   $('#search').change(function() {
-     $('#bookmarks').empty();
+     $('.bricklayer').empty();
+     $('#error-message').empty();
      $('#no_of_results').empty();
      dumpBookmarks($('#search').val());
   });
 });
 
-$(function(){
-	$(document).on("click", ".button-pop", function() {
- 		$('#bookmarks').empty();
+$(function() {
+	$(document).on("click", ".button-pop", function(){
+		$('#bookmarks').empty();
+ 		$('.bricklayer').empty();
+ 		$('#error-message').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
 	});
@@ -67,10 +69,11 @@ function dumpBookmarks(query)
 {
 	$('#search').val(query);
 	$("#front").hide();
+	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+
 
 	var found = 0;
 	var single_query = query.split(" ");
-
 	var found_word = 0;
 	var total=0;
 
@@ -85,6 +88,7 @@ function dumpBookmarks(query)
 	}
 
 	if(found_word == 1)
+
 	for (var key in obj) 
 	{
 		var current_found = 0;
@@ -99,6 +103,15 @@ function dumpBookmarks(query)
 		    {
 			    found = 1;
 			    current_found = 1;
+
+			    let str = key;
+			    let inside_text = '';
+			    str = str.split("/").pop();
+			    str = str.split('_').join(' ');
+				str = str.replace(/\w\S*/g, function(txt) {
+					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+				});
+			   
 			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
 			    	continue;
 			    else
@@ -109,8 +122,9 @@ function dumpBookmarks(query)
 				    	}
 			  		});
 
+				    let sub_result_number = 1;
 				    total++;
-				    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
+				  
 				    for (var dd in obj[key])
 				    {
 
@@ -121,17 +135,18 @@ function dumpBookmarks(query)
 					   	temp = temp.replace(/_/g, '');
 					   
 
-						var str = '#myStar'+temp;
+				//		var strng = '#myStar'+temp;
 					
 
-					   	filenames[str]=fname;
+				//	   	filenames[strng]=fname;
 
 					   	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)) {
 						   	if(!favs.includes(fname)) {
-						   		$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star'></i><br></li>");
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
 						   	} else {
-							   	$('#bookmarks').append("<li><a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+""+obj[key][dd]+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
 						   	}
+						   	sub_result_number++;
 						}
 				   	
 					   	$('#myStar'+temp).on("click",function () {
@@ -139,11 +154,26 @@ function dumpBookmarks(query)
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
 					   	  	updateFavs(this, filenames[filename_pos]);
 					    });	
-
-
 					}
 
-				    $('#bookmarks').append("</ul>");
+					//Individual Cards 
+				    var card = document.createElement('div');
+				    card.setAttribute("class", "card");
+				    card.setAttribute("style","margin-bottom: 8px");
+				    
+				    var card_title = document.createElement('div');
+				    card_title.setAttribute("class","card-title");
+				    card_title.innerHTML = str;
+
+				    var card_body = document.createElement('div');
+				    card_body.setAttribute("class","card-body");
+				    card_body.innerHTML = inside_text;
+
+				    card.appendChild(card_title);
+				    card.appendChild(card_body);
+
+				    //Adding Card to Brick Layer
+				    bricklayer.append(card);
 				}
 			}
 		}
@@ -160,16 +190,17 @@ function dumpBookmarks(query)
 
 	if (found == 0 && found_word!=0)
 	{
-		var happy = "<p style='text-align: center'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
-		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
-		$('#bookmarks').append(happy);
+		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
+		happy += '<img id="fact"  src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
+		 $('#error-message').append(happy);
 	}
 	else if (found_word == 0)
 	{
 		var happy = "<p style='text-align: center'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
-		$('#bookmarks').append(happy);
+		$('#error-message').append(happy);
 	}
+
 }
 
 
@@ -239,6 +270,9 @@ function initialize()
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+
+	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     initialize();
