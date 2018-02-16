@@ -6,7 +6,7 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 
 //Tags for easy search  
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
-
+	var bricklayer ;
 function AddNewTags (tagName)
 {
 	/*Function can be used and improved for adding new Tags in the tags array 
@@ -17,17 +17,23 @@ function AddNewTags (tagName)
 
 $(function() {
   $('#search').change(function() {
-     $('#bookmarks').empty();
+     $('.bricklayer').empty();
+     $('#error-message').empty();
      $('#no_of_results').empty();
      dumpBookmarks($('#search').val());
+     
+
   });
 });
 
 $(function(){
 	$(document).on("click", ".button-pop", function(){
- 		$('#bookmarks').empty();
+ 		$('.bricklayer').empty();
+ 		$('#error-message').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
+		
+
 	});
 });
 
@@ -35,17 +41,17 @@ function dumpBookmarks(query)
 {
 	$('#search').val(query);
 	$("#front").hide();
+	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+
 
 	var found = 0;
 	var single_query = query.split(" ");
-	console.log(single_query);
-
 	var found_word = 0;
 	var total=0;
 
 	for(var pos in single_query)
 	{
-
+		
 		current_query = single_query[pos];
 		if(current_query != "")
 		{
@@ -59,28 +65,62 @@ function dumpBookmarks(query)
 		{
 			var current_found = 0;
 
+
 			for(var pos in single_query)
 			{
+
 				current_query = single_query[pos];
 				if(current_query == "")
 					continue;
 
 			    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
 			    {
+
 				    found = 1;
 				    current_found = 1;
+
+				    let str = key;
+				    let inside_text = '';
+				    str = str.split("/").pop();
+				    str = str.split('_').join(' ');
+					str = str.replace(/\w\S*/g, function(txt) {
+						return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+					});
+				   
 				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
 				    	continue;
 				    else
-				    {
+				    {					   
+					    let sub_result_number = 1;
 				    	total++;
-					    $('#bookmarks').append("<ul>"+"<p><strong>"+(key.replace(/\//g, ' / ')).replace(/\_/g, ' ')+"</strong></p>");
 					    for (var dd in obj[key])
 					    {
-					    	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
-					    		$('#bookmarks').append("<a target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+"<li>"+obj[key][dd]+"</li></a>");
+					    	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
+
+					    	else{					    			    		
+					    		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a><br>";
+					    		sub_result_number++;
+					    	}
 					    }
-					    $('#bookmarks').append("</ul>");
+					    //Individual Cards 
+					    var card = document.createElement('div');
+					    card.setAttribute("class", "card");
+					    card.setAttribute("style","margin-bottom: 8px");
+					    
+					    var card_title = document.createElement('div');
+					    card_title.setAttribute("class","card-title");
+					    card_title.innerHTML = str;
+
+					    var card_body = document.createElement('div');
+					    card_body.setAttribute("class","card-body");
+					    card_body.innerHTML = inside_text;
+
+					    card.appendChild(card_title);
+					    card.appendChild(card_body);
+
+					    //Adding Card to Brick Layer
+					    bricklayer.append(card);
+					    
 					}
 				}
 			}
@@ -95,16 +135,17 @@ function dumpBookmarks(query)
 		
 	if (found == 0 && found_word!=0)
 	{
-		var happy = "<p style='text-align: center'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
-		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
-		$('#bookmarks').append(happy);
+		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
+		happy += '<img id="fact"  src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
+		 $('#error-message').append(happy);
 	}
 	else if (found_word == 0)
 	{
 		var happy = "<p style='text-align: center'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
-		$('#bookmarks').append(happy);
+		$('#error-message').append(happy);
 	}
+
 }
 
 
@@ -124,8 +165,11 @@ function addtags()
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+
+	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     addtags();
-    //dumpBookmarks();
+
 });
