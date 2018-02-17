@@ -162,9 +162,28 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
+//Function To Display Help
+function help_show() {
+	document.getElementById('search').style.display = "none";
+	document.getElementById('help_popup').style.display = "block";
+}
+//Function to Hide Help
+function help_hide() {
+	document.getElementById('search').style.display = "block";
+	document.getElementById('help_popup').style.display = "none";
+}
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+
+	document.getElementById('help').addEventListener('click', function(event){
+	  help_show();
+	});
+
+
+	document.getElementById('close').addEventListener('click', function(event){
+	  help_hide();
+	});
 
 	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
 
