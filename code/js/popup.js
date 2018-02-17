@@ -6,10 +6,7 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 
 //Tags for easy search  
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
-var favs = [];
-var filenames = [];
-var bricklayer ;
-
+	var bricklayer ;
 function AddNewTags (tagName)
 {
 	/*Function can be used and improved for adding new Tags in the tags array 
@@ -17,33 +14,6 @@ function AddNewTags (tagName)
 	tags.push(tagName);
 }
 
-function updateFavs(x, filename) {
-    x.classList.toggle("checked");
-	  
-	if (chrome && chrome.storage) {
-	    chrome.storage.sync.get({favs: []}, function(items) {
-		    if (!chrome.runtime.error) {
-		      	favs = items.favs;
-		
-		      	if(!favs.includes(filename)) {
-			      	favs.push(filename);
-			    } else {
-			       	var index = favs.indexOf(filename);
-			       	if (index > -1) {
-				   		favs.splice(index, 1);
-					}	
-			    }
-
-			    chrome.storage.sync.set({ favs : favs }, function() {
-				    if (chrome.runtime.error) {
-				      	console.log("Runtime error.");
-				    }
-				});
-		
-		    }
-	  	});
-	}
-}
 
 $(function() {
   $('#search').change(function() {
@@ -51,20 +21,22 @@ $(function() {
      $('#error-message').empty();
      $('#no_of_results').empty();
      dumpBookmarks($('#search').val());
+     
+
   });
 });
 
-$(function() {
+$(function(){
 	$(document).on("click", ".button-pop", function(){
-		
  		$('.bricklayer').empty();
  		$('#error-message').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
+		
+
 	});
 });
 
-var current_fname;
 function dumpBookmarks(query) 
 {
 	$('#search').val(query);
@@ -79,6 +51,7 @@ function dumpBookmarks(query)
 
 	for(var pos in single_query)
 	{
+		
 		current_query = single_query[pos];
 		if(current_query != "")
 		{
@@ -88,99 +61,70 @@ function dumpBookmarks(query)
 	}
 
 	if(found_word == 1)
-
-	for (var key in obj) 
-	{
-		var current_found = 0;
-
-		for(var pos in single_query)
+		for (var key in obj) 
 		{
-			current_query = single_query[pos];
-			if(current_query == "")
-				continue;
+			var current_found = 0;
 
-		    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
-		    {
-			    found = 1;
-			    current_found = 1;
 
-			    let str = key;
-			    let inside_text = '';
-			    str = str.split("/").pop();
-			    str = str.split('_').join(' ');
-				str = str.replace(/\w\S*/g, function(txt) {
-					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-				});
-			   
-			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
-			    	continue;
-			    else
+			for(var pos in single_query)
+			{
+
+				current_query = single_query[pos];
+				if(current_query == "")
+					continue;
+
+			    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
 			    {
-			    	if(chrome && chrome.storage) {
-					    chrome.storage.sync.get({favs: []}, function(items) {
-						    if (!chrome.runtime.error) {
-						      	favs = items.favs;			      
+
+				    found = 1;
+				    current_found = 1;
+
+				    let str = key;
+				    let inside_text = '';
+				    str = str.split("/").pop();
+				    str = str.split('_').join(' ');
+					str = str.replace(/\w\S*/g, function(txt) {
+						return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+					});
+				   
+				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+				    	continue;
+				    else
+				    {					   
+					    let sub_result_number = 1;
+				    	total++;
+					    for (var dd in obj[key])
+					    {
+					    	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
+
+					    	else{					    			    		
+					    		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a><br>";
+					    		sub_result_number++;
 					    	}
-				  		});
+					    }
+					    //Individual Cards 
+					    var card = document.createElement('div');
+					    card.setAttribute("class", "card");
+					    card.setAttribute("style","margin-bottom: 8px");
+					    
+					    var card_title = document.createElement('div');
+					    card_title.setAttribute("class","card-title");
+					    card_title.innerHTML = str;
+
+					    var card_body = document.createElement('div');
+					    card_body.setAttribute("class","card-body");
+					    card_body.innerHTML = inside_text;
+
+					    card.appendChild(card_title);
+					    card.appendChild(card_body);
+
+					    //Adding Card to Brick Layer
+					    bricklayer.append(card);
+					    
 					}
-
-				    let sub_result_number = 1;
-				    total++;
-				  
-				    for (var dd in obj[key])
-				    {
-					   	var fname= key+"/"+obj[key][dd];
-					   	
-					   	temp = fname;
-					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-					   	temp = temp.replace(/_/g, '');
-					   	
-
-					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
-
-					    else
-					    {	  	
-	
-						   	if(!favs.includes(fname)) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<div ><i id='myStar"+temp+"\' class='fa fa-star'></i></div><br>";
-						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
-						   	}
-						   	sub_result_number++;
-						}
-						
-						var send = '#myStar'+temp;
-						$(document).on("click", send , function() {
-					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
-					   	  	updateFavs(this, filenames[filename_pos]);
-					    });	
-					   
-					   
-					}
-
-					//Individual Cards 
-				    var card = document.createElement('div');
-				    card.setAttribute("class", "card");
-				    card.setAttribute("style","margin-bottom: 8px");
-				    
-				    var card_title = document.createElement('div');
-				    card_title.setAttribute("class","card-title");
-				    card_title.innerHTML = str;
-
-				    var card_body = document.createElement('div');
-				    card_body.setAttribute("class","card-body");
-				    card_body.innerHTML = inside_text;
-
-				    card.appendChild(card_title);
-				    card.appendChild(card_body);
-
-				    //Adding Card to Brick Layer
-				    bricklayer.append(card);
 				}
 			}
-		}
-	}
-
+		} 
 
 	if(total>1)
 		res="results";
@@ -189,7 +133,6 @@ function dumpBookmarks(query)
 	if(total!=0)
 		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
 		
-
 	if (found == 0 && found_word!=0)
 	{
 		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
@@ -205,6 +148,7 @@ function dumpBookmarks(query)
 
 }
 
+
 function addtags()
 {
 	var tags_display_number = 10 ;
@@ -218,64 +162,33 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
-
-function addFavorites()
-{
-	$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul>");
-	
-	if (chrome && chrome.storage) {
-	    chrome.storage.sync.get({favs: []}, function(items) {
-		    if (!chrome.runtime.error) {
-		      	favs = items.favs;
-	
-			    for (var fname in favs)
-			    {
-			    	temp = favs[fname];
-				   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-				   	temp = temp.replace(/_/g, '');
-				   
-					var str = '#myStar'+temp;
-					var filename = favs[fname].replace(/^.*[\\\/]/, '')
-
-					$('#favorites').append("<li><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
-
-			    	$('#myStar'+temp).on("click",function () {						   	
-				   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
-				   	  	updateFavs(this, filenames[filename_pos]);
-			    	});	
-
-			    }
-				$('#favorites').append("<br><br><br><br><br></ul>");
-	    	}
-	 	});
-	}
+//Function To Display Help
+function help_show() {
+	document.getElementById('search').style.display = "none";
+	document.getElementById('help_popup').style.display = "block";
 }
-
-function initialize() 
-{
-	for (var key in obj) 
-	{
-	    for (var dd in obj[key])
-		{
-		   	var fname= key+"/"+obj[key][dd];
-		   	temp = fname;
-		   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-		   	temp = temp.replace(/_/g, '');
-		
-			var str = '#myStar'+temp;
-		   	filenames[str]=fname;
-		}
-	}	
+//Function to Hide Help
+function help_hide() {
+	document.getElementById('search').style.display = "block";
+	document.getElementById('help_popup').style.display = "none";
 }
 
 document.addEventListener('DOMContentLoaded', function () 
 {
 
+	document.getElementById('help').addEventListener('click', function(event){
+	  help_show();
+	});
+
+
+	document.getElementById('close').addEventListener('click', function(event){
+	  help_hide();
+	});
+
 	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
 
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
-    initialize();
     addtags();
-	addFavorites();
+
 });
