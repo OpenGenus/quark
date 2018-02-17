@@ -56,7 +56,7 @@ $(function() {
 
 $(function() {
 	$(document).on("click", ".button-pop", function(){
-		$('#bookmarks').empty();
+		
  		$('.bricklayer').empty();
  		$('#error-message').empty();
  		$('#no_of_results').empty();
@@ -116,44 +116,46 @@ function dumpBookmarks(query)
 			    	continue;
 			    else
 			    {
-				    chrome.storage.sync.get({favs: []}, function(items) {
-					    if (!chrome.runtime.error) {
-					      	favs = items.favs;			      
-				    	}
-			  		});
+			    	if(chrome && chrome.storage) {
+					    chrome.storage.sync.get({favs: []}, function(items) {
+						    if (!chrome.runtime.error) {
+						      	favs = items.favs;			      
+					    	}
+				  		});
+					}
 
 				    let sub_result_number = 1;
 				    total++;
 				  
 				    for (var dd in obj[key])
 				    {
-
 					   	var fname= key+"/"+obj[key][dd];
-
+					   	
 					   	temp = fname;
 					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
 					   	temp = temp.replace(/_/g, '');
-					   
+					   	
 
-				//		var strng = '#myStar'+temp;
-					
+					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
 
-				//	   	filenames[strng]=fname;
-
-					   	if(!((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)) {
+					    else
+					    {	  	
+	
 						   	if(!favs.includes(fname)) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<div ><i id='myStar"+temp+"\' class='fa fa-star'></i></div><br>";
 						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
 						   	}
 						   	sub_result_number++;
 						}
-				   	
-					   	$('#myStar'+temp).on("click",function () {
-					   	
+						
+						var send = '#myStar'+temp;
+						$(document).on("click", send , function() {
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
 					   	  	updateFavs(this, filenames[filename_pos]);
 					    });	
+					   
+					   
 					}
 
 					//Individual Cards 
@@ -202,8 +204,6 @@ function dumpBookmarks(query)
 	}
 
 }
-
-
 
 function addtags()
 {
