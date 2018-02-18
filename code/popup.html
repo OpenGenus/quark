@@ -1,7 +1,12 @@
 <html>
 <head>
+
   <script src="js/jquery.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
   <script src="js/bricklayer.min.js"></script>
+  <script src="js/moment.js"></script>
+  <script src="js/moment-timezone-with-data.js"></script>
   <script src="js/popup.js"></script>
   <link rel="stylesheet" type="text/css" href="css/bricklayer.min.css">
   <link rel="stylesheet" type="text/css" href="css/popup.css">
@@ -13,6 +18,7 @@
 </head>
  
 <body>
+
   <div class="container">
         <br>
         <div class="row">
@@ -29,12 +35,159 @@
             </div>
 
             <div class="col-sm-4">
+                  
                   <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
-            </div>
 
-        </div><br>
+
+
+
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle calc_button float-right" type="button" data-toggle="dropdown">More Apps<span class="caret"></span></button>
+                    <ul class="dropdown-menu" id="main_drop_menu">
+                        
+                      <li
+                          class="calc_button " title="Click to open Calculator" data-toggle="modal" data-target="#myModal" >Calculator
+                      </li>
+                      <div class="dropdown-divider"></div>
+
+                      <li class="calc_button" title="Click to open Stopwatch" data-toggle="modal" data-target="#myModal2" >Stopwatch
+                      </li> 
+                      <div class="dropdown-divider"></div>
+
+                      <li class="calc_button" title="Click to open Time Zone Converter" data-toggle="modal" data-target="#myModal3" >Time Zone Converter
+                      </li> 
+
+                    </ul>
+
+                  </div>
+
+                 
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog" style="left: 17%;">
+                          <div class="modal-dialog ">
+                          
+                            <!-- Modal content-->
+                            <div class="modal-content" style="display: block;">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Calculator</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                              </div>
+                             
+                              <div class="modal-body" id="calculator">
+                                    <!-- Screen and clear key -->
+                                    <div class="top">
+                                      <span class="clear">C</span>
+                                      <div class="screen" id="result"></div>
+                                    </div>
+                                    
+                                    <div class="keys">
+                                      <!-- operators and other keys -->
+                                      <span class="press_btn">7</span>
+                                      <span class="press_btn">8</span>
+                                      <span class="press_btn press_btn">9</span>
+                                      <span class="operator press_btn">+</span>
+                                      <span class="press_btn">4</span>
+                                      <span class="press_btn">5</span>
+                                      <span class="press_btn">6</span>
+                                      <span class="operator press_btn">-</span>
+                                      <span class="press_btn">1</span>
+                                      <span class="press_btn">2</span>
+                                      <span class="press_btn">3</span>
+                                      <span class="operator press_btn">/</span>
+                                      <span class="press_btn">0</span>
+                                      <span class="press_btn">.</span>
+                                      <span class="operator press_btn">*</span>
+                                       <span class="operator press_btn">^</span>
+                                       <span class="eval" id="calculate" >=</span>
+                                    </div>
+                                  </div>
+                                
+                                    
+
+                              </div>
+                            </div>
+                            
+                          
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal2" role="dialog" style="left: 17%;">
+                          <div class="modal-dialog ">
+                          
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Stopwatch</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                              </div>
+                               <div class="modal-body" id="stopwatch">
+                                        <div style="text-align: center;">
+                                            <p><span id="seconds">00</span><span style="font-size: 2em;"> : </span> <span id="tens">00</span></p>
+                                            <button id="button-start" class="stopW_btn">Start</button>
+                                            <button id="button-stop" class="stopW_btn">Stop</button>
+                                            <button id="button-reset" class="stopW_btn">Reset</button>
+                                          </div> 
+                               </div>                      
+                            </div>
+                           </div>                  
+                          </div>
+
+                          <!-- Modal -->
+                        <div class="modal fade" id="myModal3" role="dialog" style="left: 17%;">
+                          <div class="modal-dialog ">
+                          
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Time Zone Converter</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                              </div>
+                               <div class="modal-body row" id="timeZone_converter">
+
+                               <div class="col-sm-6" style="text-align: center;">
+
+                               <input id="h1" type="number" name="hour1" min="0" max="23" value="00"></input>
+                               <span>:</span><input id="m1" type="number" name="min1" min="0" max="59" value="00">
+                              <br><br>
+                               <div class="dropdown"  id="myDropdown">
+                                <button class="btn dropdown-toggle " type="button" data-toggle="dropdown" id="drop_button">Time Zone 1<span class="caret"></span></button>
+
+                                <ul class="dropdown-menu TimeZoneNames pre-scrollable">
+                                  <input type="text" placeholder="Search.." id="myInput" >
+                                </ul>
+                                </div>
+                               </div> 
+                               
+                                
+                               <div class="col-sm-6" style="text-align: center;">
+                              <label id="h2">00</label>
+                               <span>:</span>
+                               <label id="m2">00</label>
+                               <br><br>
+                               
+                                <div class="dropdown" id="myDropdown2">
+                                <button class="btn dropdown-toggle " type="button" data-toggle="dropdown" id="drop_button2">Time Zone 2<span class="caret"></span></button>
+                                <ul class="dropdown-menu TimeZoneNames2 pre-scrollable">
+                                  <input type="text" placeholder="Search.." id="myInput2" >
+                                </ul>
+                                </div>
+                                </div>
+                                <br><br><br>
+                                
+                               
+
+                               </div> 
+                              <button class="btn tzconvert">Convert</button>
+                     
+                            </div>
+                           </div>                  
+                          </div>
+
+            </div><br>
 
     </div>
+    </div>
+
 
     <div id="front">
 	    <h1 style="text-align: center;">World's first Offline Search Engine</h1>
