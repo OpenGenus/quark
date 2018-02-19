@@ -49,15 +49,16 @@ $(function() {
   $('#search').change(function() {
      $('.bricklayer').empty();
      $('#error-message').empty();
-     $('#no_of_results').empty();
-     dumpBookmarks($('#search').val());
+     $('#no_of_results').empty(); 			
+ 	 dumpBookmarks($('#search').val());
   });
 });
 
 $(function() {
 	$(document).on("click", ".button-pop", function(){
-		
- 		$('.bricklayer').empty();
+		$('#front').show();
+		$('#no_of_results').show();
+		$('.bricklayer').empty();
  		$('#error-message').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
@@ -69,7 +70,9 @@ function dumpBookmarks(query)
 {
 	$('#search').val(query);
 	$("#front").hide();
-	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+	$("#favorites").hide();
+	$('.bricklayer').show();			
+ 	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
 
 
 	var found = 0;
@@ -142,7 +145,7 @@ function dumpBookmarks(query)
 					    {	  	
 	
 						   	if(!favs.includes(fname)) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<div ><i id='myStar"+temp+"\' class='fa fa-star'></i></div><br>";
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
 						   	} else {
 						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
 						   	}
@@ -218,34 +221,44 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
-
 function addFavorites()
 {
-	$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul>");
-	
+	$('#favorites').empty();
 	if (chrome && chrome.storage) {
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
-	
-			    for (var fname in favs)
-			    {
-			    	temp = favs[fname];
-				   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-				   	temp = temp.replace(/_/g, '');
-				   
-					var str = '#myStar'+temp;
-					var filename = favs[fname].replace(/^.*[\\\/]/, '')
 
-					$('#favorites').append("<li><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
 
-			    	$('#myStar'+temp).on("click",function () {						   	
-				   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
-				   	  	updateFavs(this, filenames[filename_pos]);
-			    	});	
+				
+				if(favs.length==0) {
+					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr>");
+					$('#favorites').append("<p style='text-align: center;'>No favorites yet!</p><p style='text-align: center;'>Click on the star icon beside your favorite codes to access them easily.</p><br><br><br><br><br><br><br><br>");
+		
+		
+				} else {
+					
+					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
 
-			    }
-				$('#favorites').append("<br><br><br><br><br></ul>");
+				    for (var fname in favs)
+				    {
+				    	temp = favs[fname];
+					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					   	temp = temp.replace(/_/g, '');
+					   
+						var str = '#myStar'+temp;
+						var filename = favs[fname].replace(/^.*[\\\/]/, '')
+
+						$('#favorites').append("<li class='favListItem'><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
+
+				    	$('#myStar'+temp).on("click",function () {						   	
+					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	  	updateFavs(this, filenames[filename_pos]);
+				    	});	
+
+				    }
+					$('#favorites').append("</ul><br><br><br><br><br>");
+				}
 	    	}
 	 	});
 	}
@@ -270,12 +283,17 @@ function initialize()
 
 document.addEventListener('DOMContentLoaded', function () 
 {
-
-	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+	document.getElementById('favButton').addEventListener('click', function(event){
+		console.log("favvvvvv")
+	  	$('#favorites').show();
+		$('#front').hide();
+		$('#no_of_results').hide();
+	  	$('.bricklayer').hide();
+ 		addFavorites();
+	});
 
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     initialize();
     addtags();
-	addFavorites();
 });
