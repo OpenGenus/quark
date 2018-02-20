@@ -1,0 +1,31 @@
+#bookmarks{
+	padding-bottom:60px; 
+}
+.input-group{
+	border:1px solid #ced4da;
+	border-radius:5px;
+	border-width: 2px;
+	margin-top: 25px;
+}
+.input-group search{
+	float: left;
+	width: 90%;
+	border: none;
+	padding: 0px;
+}
+.input-group button{
+	height: 40px;
+	margin: 0px;
+	border-radius:px;
+	float:left;
+	width:10%;
+	border-left:none;
+	cursor:pointer;
+}
+#pop-tags{
+	    padding-left: 20%;
+}
+@media (min-width: 1200px)
+.container {
+    max-width: 100% !important;
+}
