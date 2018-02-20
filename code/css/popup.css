@@ -18,6 +18,7 @@ html {
         padding-bottom: 15%;
         margin: 0 auto;
     }
+
     
     .footer {
         position: relative;
@@ -27,6 +28,11 @@ html {
         line-height: 60px;
         background-color: #f5f5f5;
         margin-top: 2%;
+    }
+
+    .favListItem {
+        display: inline-block;
+        width: 33%;
     }
 
     li {
@@ -46,7 +52,20 @@ html {
         height: 24px;
         font-size: 12px;
     }
-    
+
+
+.fa {
+        font-size: 15px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .fa:hover {
+      color: darkblue;
+    }
+    .checked {
+            color: orange;
+        }
 
     .card-title{
         font-size: 20px;

@@ -6,7 +6,11 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 
 //Tags for easy search  
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
+
+var favs = [];
+var filenames = [];
 var bricklayer ;
+
 function AddNewTags (tagName)
 {
 	/*Function can be used and improved for adding new Tags in the tags array 
@@ -16,34 +20,62 @@ function AddNewTags (tagName)
 var zone_name1='';
 var zone_name2='';
 
+function updateFavs(x, filename) {
+    x.classList.toggle("checked");
+	  
+	if (chrome && chrome.storage) {
+	    chrome.storage.sync.get({favs: []}, function(items) {
+		    if (!chrome.runtime.error) {
+		      	favs = items.favs;
+		
+		      	if(!favs.includes(filename)) {
+			      	favs.push(filename);
+			    } else {
+			       	var index = favs.indexOf(filename);
+			       	if (index > -1) {
+				   		favs.splice(index, 1);
+					}	
+			    }
+
+			    chrome.storage.sync.set({ favs : favs }, function() {
+				    if (chrome.runtime.error) {
+				      	console.log("Runtime error.");
+				    }
+				});
+		
+		    }
+	  	});
+	}
+}
 
 $(function() {
   $('#search').change(function() {
      $('.bricklayer').empty();
      $('#error-message').empty();
-     $('#no_of_results').empty();
-     dumpBookmarks($('#search').val());
-     
-
+     $('#no_of_results').empty(); 			
+ 	 dumpBookmarks($('#search').val());
   });
 });
 
-$(function(){
+$(function() {
 	$(document).on("click", ".button-pop", function(){
- 		$('.bricklayer').empty();
+		$('#front').show();
+		$('#no_of_results').show();
+		$('.bricklayer').empty();
  		$('#error-message').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
-		
-
 	});
 });
 
+var current_fname;
 function dumpBookmarks(query) 
 {
 	$('#search').val(query);
 	$("#front").hide();
-	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+	$("#favorites").hide();
+	$('.bricklayer').show();			
+ 	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
 
 
 	var found = 0;
@@ -53,7 +85,6 @@ function dumpBookmarks(query)
 
 	for(var pos in single_query)
 	{
-		
 		current_query = single_query[pos];
 		if(current_query != "")
 		{
@@ -63,70 +94,99 @@ function dumpBookmarks(query)
 	}
 
 	if(found_word == 1)
-		for (var key in obj) 
+
+	for (var key in obj) 
+	{
+		var current_found = 0;
+
+		for(var pos in single_query)
 		{
-			var current_found = 0;
+			current_query = single_query[pos];
+			if(current_query == "")
+				continue;
 
+		    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
+		    {
+			    found = 1;
+			    current_found = 1;
 
-			for(var pos in single_query)
-			{
-
-				current_query = single_query[pos];
-				if(current_query == "")
-					continue;
-
-			    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
+			    let str = key;
+			    let inside_text = '';
+			    str = str.split("/").pop();
+			    str = str.split('_').join(' ');
+				str = str.replace(/\w\S*/g, function(txt) {
+					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+				});
+			   
+			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+			    	continue;
+			    else
 			    {
-
-				    found = 1;
-				    current_found = 1;
-
-				    let str = key;
-				    let inside_text = '';
-				    str = str.split("/").pop();
-				    str = str.split('_').join(' ');
-					str = str.replace(/\w\S*/g, function(txt) {
-						return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-					});
-				   
-				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
-				    	continue;
-				    else
-				    {					   
-					    let sub_result_number = 1;
-				    	total++;
-					    for (var dd in obj[key])
-					    {
-					    	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
-
-					    	else{					    			    		
-					    		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a><br>";
-					    		sub_result_number++;
+			    	if(chrome && chrome.storage) {
+					    chrome.storage.sync.get({favs: []}, function(items) {
+						    if (!chrome.runtime.error) {
+						      	favs = items.favs;			      
 					    	}
-					    }
-					    //Individual Cards 
-					    var card = document.createElement('div');
-					    card.setAttribute("class", "card");
-					    card.setAttribute("style","margin-bottom: 8px");
-					    
-					    var card_title = document.createElement('div');
-					    card_title.setAttribute("class","card-title");
-					    card_title.innerHTML = str;
-
-					    var card_body = document.createElement('div');
-					    card_body.setAttribute("class","card-body");
-					    card_body.innerHTML = inside_text;
-
-					    card.appendChild(card_title);
-					    card.appendChild(card_body);
-
-					    //Adding Card to Brick Layer
-					    bricklayer.append(card);
-					    
+				  		});
 					}
+
+				    let sub_result_number = 1;
+				    total++;
+				  
+				    for (var dd in obj[key])
+				    {
+					   	var fname= key+"/"+obj[key][dd];
+					   	
+					   	temp = fname;
+					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					   	temp = temp.replace(/_/g, '');
+					   	
+
+					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
+
+					    else
+					    {	  	
+	
+						   	if(!favs.includes(fname)) {
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+						   	} else {
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+						   	}
+						   	sub_result_number++;
+						}
+						
+						var send = '#myStar'+temp;
+						$(document).on("click", send , function() {
+					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	  	updateFavs(this, filenames[filename_pos]);
+					    });	
+					   
+					   
+					}
+
+					//Individual Cards 
+				    var card = document.createElement('div');
+				    card.setAttribute("class", "card");
+				    card.setAttribute("style","margin-bottom: 8px");
+				    
+				    var card_title = document.createElement('div');
+				    card_title.setAttribute("class","card-title");
+				    card_title.innerHTML = str;
+
+				    var card_body = document.createElement('div');
+				    card_body.setAttribute("class","card-body");
+				    card_body.innerHTML = inside_text;
+
+				    card.appendChild(card_title);
+				    card.appendChild(card_body);
+
+				    //Adding Card to Brick Layer
+				    bricklayer.append(card);
 				}
 			}
-		} 
+		}
+	}
+
 
 	if(total>1)
 		res="results";
@@ -135,6 +195,7 @@ function dumpBookmarks(query)
 	if(total!=0)
 		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
 		
+
 	if (found == 0 && found_word!=0)
 	{
 		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
@@ -150,7 +211,6 @@ function dumpBookmarks(query)
 
 }
 
-
 function addtags()
 {
 	var tags_display_number = 10 ;
@@ -164,15 +224,81 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
+function addFavorites()
+{
+	$('#favorites').empty();
+	if (chrome && chrome.storage) {
+	    chrome.storage.sync.get({favs: []}, function(items) {
+		    if (!chrome.runtime.error) {
+		      	favs = items.favs;
+
+
+				
+				if(favs.length==0) {
+					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr>");
+					$('#favorites').append("<p style='text-align: center;'>No favorites yet!</p><p style='text-align: center;'>Click on the star icon beside your favorite codes to access them easily.</p><br><br><br><br><br><br><br><br>");
+		
+		
+				} else {
+					
+					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
+
+				    for (var fname in favs)
+				    {
+				    	temp = favs[fname];
+					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					   	temp = temp.replace(/_/g, '');
+					   
+						var str = '#myStar'+temp;
+						var filename = favs[fname].replace(/^.*[\\\/]/, '')
+
+						$('#favorites').append("<li class='favListItem'><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
+
+				    	$('#myStar'+temp).on("click",function () {						   	
+					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	  	updateFavs(this, filenames[filename_pos]);
+				    	});	
+
+				    }
+					$('#favorites').append("</ul><br><br><br><br><br>");
+				}
+	    	}
+	 	});
+	}
+}
+
+function initialize() 
+{
+	for (var key in obj) 
+	{
+	    for (var dd in obj[key])
+		{
+		   	var fname= key+"/"+obj[key][dd];
+		   	temp = fname;
+		   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+		   	temp = temp.replace(/_/g, '');
+		
+			var str = '#myStar'+temp;
+		   	filenames[str]=fname;
+		}
+	}	
+}
+
 document.addEventListener('DOMContentLoaded', function () 
 {
-
-	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
+	document.getElementById('favButton').addEventListener('click', function(event){
+		console.log("favvvvvv")
+	  	$('#favorites').show();
+		$('#front').hide();
+		$('#no_of_results').hide();
+	  	$('.bricklayer').hide();
+ 		addFavorites();
+	});
 
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
+    initialize();
     addtags();
-
 });
 
 
