@@ -107,6 +107,7 @@ function dumpBookmarks(query)
 			    found = 1;
 			    current_found = 1;
 
+			    let temp = key;
 			    let str = key;
 			    let inside_text = '';
 			    str = str.split("/").pop();
@@ -114,6 +115,8 @@ function dumpBookmarks(query)
 				str = str.replace(/\w\S*/g, function(txt) {
 					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 				});
+				temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+				temp = temp.replace(/_/g, '');
 			   
 			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
 			    	continue;
@@ -170,7 +173,7 @@ function dumpBookmarks(query)
 				    var card_title = document.createElement('div');
 				    card_title.setAttribute("class","card-title");
 				    card_title.setAttribute("target","_blank");
-				    card_title.setAttribute("id","card_title_"+str);
+				    card_title.setAttribute("id","card_title_"+temp);
 				    card_title.setAttribute("href","javascript:void(0)");
 				    card_title.setAttribute("onmouseover","");
 				    card_title.setAttribute("style","cursor: pointer;");
@@ -178,7 +181,7 @@ function dumpBookmarks(query)
 
 				    var card_body = document.createElement('div');
 				    card_body.setAttribute("class","card-body");
-				    card_body.setAttribute("id","card_body_"+str);
+				    card_body.setAttribute("id","card_body_"+temp);
 				    card_body.setAttribute("style","display: none;");
 				    card_body.innerHTML = inside_text;
 
@@ -188,13 +191,11 @@ function dumpBookmarks(query)
 				    //Adding Card to Brick Layer
 				    bricklayer.append(card);
 
-					document.getElementById("card_title_"+str).addEventListener('click', function(event){
-						if( document.getElementById("card_body_"+str).style.display == "none" ) {
-							console.log("open it");
-							document.getElementById("card_body_"+str).style.display = "block";
+					document.getElementById("card_title_"+temp).addEventListener('click', function(event){
+						if( document.getElementById("card_body_"+temp).style.display == "none" ) {
+							document.getElementById("card_body_"+temp).style.display = "block";
 						} else {
-							console.log("close it");
-							document.getElementById("card_body_"+str).style.display = "none";
+							document.getElementById("card_body_"+temp).style.display = "none";
 						} 
 					});				    
 
