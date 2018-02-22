@@ -162,16 +162,24 @@ function dumpBookmarks(query)
 					}
 
 					//Individual Cards 
-				    var card = document.createElement('div');
+
+              	    var card = document.createElement('div');
 				    card.setAttribute("class", "card");
 				    card.setAttribute("style","margin-bottom: 8px");
 				    
 				    var card_title = document.createElement('div');
 				    card_title.setAttribute("class","card-title");
+				    card_title.setAttribute("target","_blank");
+				    card_title.setAttribute("id","card_title_"+str);
+				    card_title.setAttribute("href","javascript:void(0)");
+				    card_title.setAttribute("onmouseover","");
+				    card_title.setAttribute("style","cursor: pointer;");
 				    card_title.innerHTML = str;
 
 				    var card_body = document.createElement('div');
 				    card_body.setAttribute("class","card-body");
+				    card_body.setAttribute("id","card_body_"+str);
+				    card_body.setAttribute("style","display: none;");
 				    card_body.innerHTML = inside_text;
 
 				    card.appendChild(card_title);
@@ -179,6 +187,17 @@ function dumpBookmarks(query)
 
 				    //Adding Card to Brick Layer
 				    bricklayer.append(card);
+
+					document.getElementById("card_title_"+str).addEventListener('click', function(event){
+						if( document.getElementById("card_body_"+str).style.display == "none" ) {
+							console.log("open it");
+							document.getElementById("card_body_"+str).style.display = "block";
+						} else {
+							console.log("close it");
+							document.getElementById("card_body_"+str).style.display = "none";
+						} 
+					});				    
+
 				}
 			}
 		}
