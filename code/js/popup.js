@@ -6,7 +6,6 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 
 //Tags for easy search  
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
-
 var favs = [];
 var filenames = [];
 var bricklayer ;
@@ -17,6 +16,7 @@ function AddNewTags (tagName)
 	to allow further development (such as suggestions)*/
 	tags.push(tagName);
 }
+
 var zone_name1='';
 var zone_name2='';
 
@@ -224,6 +224,17 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
+//Function To Display Help
+function help_show() {
+	document.getElementById('search').style.display = "none";
+	document.getElementById('help_popup').style.display = "block";
+}
+//Function to Hide Help
+function help_hide() {
+	document.getElementById('search').style.display = "block";
+	document.getElementById('help_popup').style.display = "none";
+}
+
 function addFavorites()
 {
 	$('#favorites').empty();
@@ -231,7 +242,6 @@ function addFavorites()
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
-
 
 				
 				if(favs.length==0) {
@@ -284,8 +294,19 @@ function initialize()
 	}	
 }
 
+
 document.addEventListener('DOMContentLoaded', function () 
 {
+	document.getElementById('help').addEventListener('click', function(event){
+	  help_show();
+	});
+
+
+	document.getElementById('close').addEventListener('click', function(event){
+	  help_hide();
+	});
+
+
 	document.getElementById('favButton').addEventListener('click', function(event){
 		console.log("favvvvvv")
 	  	$('#favorites').show();
@@ -294,6 +315,7 @@ document.addEventListener('DOMContentLoaded', function ()
 	  	$('.bricklayer').hide();
  		addFavorites();
 	});
+
 
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";

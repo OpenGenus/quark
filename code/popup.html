@@ -32,14 +32,19 @@
                     <div class="input-group">
                         <input id="search" class="form-control text-center" type="search" size="128" placeholder="Search any code; Try: sorting">
                     </div>
-			<div id="pop-tags"></div>
+			             <div id="pop-tags"></div>
             </div>
 
+            
             <div class="col-sm-4">
 
-
                   <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
+
+                  <a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
+
                   <a class="btn float-right" target="_blank" id="favButton" href="javascript:void(0)">Favorites</a>
+
+
                   
                   <div class="dropdown">
                     <button class="btn dropdown-toggle calc_button float-right" type="button" data-toggle="dropdown">More Apps<span class="caret"></span></button>
@@ -109,6 +114,13 @@
                             
                           
                         </div>
+                  
+            </div>
+
+            
+
+        </div><br>
+
 
                         <!-- Modal -->
                         <div class="modal fade" id="myModal2" role="dialog" style="left: 17%;">
@@ -205,7 +217,7 @@
     <div id="error-message" class="row"></div>
      
     <div id="favorites"></div> 
-    
+
     <footer class="footer">
         <div class="container">
               <span class="text-muted">Built with ❤ @<a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a> 
@@ -214,6 +226,18 @@
         </div>
 
     </footer>
+
+
+  <div id="help_popup">
+      <div id="popup">
+      <form action="#" id="form" method="post" name="form">
+      <img id="close" src="image/12.png" >
+      <h2>Welcome to Quark!</h2>
+      <hr>
+      <h6>This is the World's first offline code Search Engine presented by <a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a>. <br> <br> Now search code for any algorithm or data-structure in your favorite language even when you are not connected to the internet! <br> <br> Add frequently visited codes easily to your favorites by clicking on the star icon. <br> <br> Have any suggestions? Feel free to share your valuable feedback at this <a target="_blank" title="Works only when you are online" href="https://discourse.opengenus.org/t/feedback-for-quark/125">Discourse topic</a>!  <br> <br> </h6>
+      </form>
+      </div>
+    </div>
 
 
 </body>
