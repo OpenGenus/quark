@@ -472,7 +472,7 @@ $(document).ready(function() {
 	  }
 
 
-		/*TimeZone convertor Logic*/
+		/*TimeZone converter Logic*/
 
 
 		function myFunction() {
