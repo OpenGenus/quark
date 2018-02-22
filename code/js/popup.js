@@ -221,6 +221,18 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
+
+//Function To Display Help
+function help_show() {
+	document.getElementById('search').style.display = "none";
+	document.getElementById('help_popup').style.display = "block";
+}
+//Function to Hide Help
+function help_hide() {
+	document.getElementById('search').style.display = "block";
+	document.getElementById('help_popup').style.display = "none";
+}
+
 function addFavorites()
 {
 	$('#favorites').empty();
@@ -228,8 +240,6 @@ function addFavorites()
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
-
-
 				
 				if(favs.length==0) {
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr>");
@@ -281,8 +291,20 @@ function initialize()
 	}	
 }
 
+
+
 document.addEventListener('DOMContentLoaded', function () 
 {
+	document.getElementById('help').addEventListener('click', function(event){
+	  help_show();
+	});
+
+
+	document.getElementById('close').addEventListener('click', function(event){
+	  help_hide();
+	});
+
+
 	document.getElementById('favButton').addEventListener('click', function(event){
 		console.log("favvvvvv")
 	  	$('#favorites').show();
@@ -291,6 +313,7 @@ document.addEventListener('DOMContentLoaded', function ()
 	  	$('.bricklayer').hide();
  		addFavorites();
 	});
+
 
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
