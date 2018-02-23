@@ -11,91 +11,45 @@
   <link rel="shortcut icon" type="image/png" href="/icon/icon.png"/>
   <title>OpenGenus: World's first Offline Search Engine</title>
   <meta charset='utf-8'>
-  <style> {
-  box-sizing: border-box;
-}
-body {
-  font: 16px Arial;  
-}
-.autocomplete {
-  /*the container must be positioned relative:*/
-  position: relative;
-  display: inline-block;
-}
-input {
-  border: 1px solid transparent;
-  background-color: #fff;
-  padding: 10px;
-  font-size: 16px;
-}
-input[type=text] {
-  background-color: #fff;
-  width: 100%;
-}
-input[type=submit] {
-  background-color: DodgerBlue;
-  color: #000;
-  cursor: pointer;
-}
-.autocomplete-items {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
-}
-.autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #C0C0C0; 
-  border-bottom: 1px solid #000; 
-}
-.autocomplete-items div:hover {
-  /*when hovering an item:*/
-  background-color: #000; 
-}
-.autocomplete-active {
-  /*when navigating through the items using the arrow keys:*/
-  background-color: DodgerBlue !important; 
-  color: #fff; 
-}
-</style>
-  
 </head>
  
 <body>
-<div  class="header" id="myHeader">
+
   <div class="container">
         <br>
         <div class="row">
 
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <a class="navbar-brand" href="/popup.html"><img src="/logo/logo.png"></a>
             </div>
 
             <div class="col-sm-4">
-                    <div class="input-group" class="autocomplete">
+                    <div class="input-group">
                         <input id="search" class="form-control text-center" type="search" size="128" placeholder="Search any code; Try: sorting">
                     </div>
-			<div id="pop-tags"></div>
+			             <div id="pop-tags"></div>
             </div>
 
-            <div class="col-sm-4">
+            
+            <div class="col-sm-5">
+				
+				  <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://codecompilerun.herokuapp.com/">OnlineComplie</a>
+                  
+				  <a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
+
                   <a class="btn float-right" target="_blank" id="favButton" href="javascript:void(0)">Favorites</a>
+
                   <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
+                  
             </div>
+
+            
 
         </div><br>
 
     </div>
-</div>
-<div class="content" style="padding-top:120px">
+
     <div id="front">
-		<br><br><br><br>
 	    <h1 style="text-align: center;">World's first Offline Search Engine</h1>
 	    <hr>
 	    
@@ -110,78 +64,28 @@ input[type=submit] {
     
     <div id="error-message" class="row"></div>
      
-    <div id="favorites"></div> 
-	
-</div>    
+    <div id="favorites"></div>
+    
     <footer class="footer">
         <div class="container">
-              <span class="text-muted">Built with ❤ @<a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a> 
-              Email: <a target="_blank" title="Works offline if email app enabled" href="mailto:team@opengenus.org"> 📬 team@opengenus.org</a></span>
-              <span class="text-muted float-right">Maintained by and part of the <a target="_blank" title="Works only when you are online" href="http://www.opengenus.org/"> 👪 OpenGenus Foundation</a></span>
+              <span class="text-muted">Built with ? @<a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a> 
+              Email: <a target="_blank" title="Works offline if email app enabled" href="mailto:team@opengenus.org"> ?? team@opengenus.org</a></span>
+              <span class="text-muted float-right">Maintained by and part of the <a target="_blank" title="Works only when you are online" href="http://www.opengenus.org/"> ?? OpenGenus Foundation</a></span>
         </div>
 
     </footer>
-<script>
-function autocomplete(inp, arr) {
-  /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
-  var currentFocus;
-  /*execute a function when someone writes in the text field:*/
-  inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value;
-      /*close any already open lists of autocompleted values*/
-      closeAllLists();
-      if (!val) { return false;}
-      currentFocus = -1;
-      /*create a DIV element that will contain the items (values):*/
-      a = document.createElement("DIV");
-      a.setAttribute("id", this.id + "autocomplete-list");
-      a.setAttribute("class", "autocomplete-items");
-      /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
-      /*for each item in the array...*/
-      for (i = 0; i < arr.length; i++) {
-        /*check if the item starts with the same letters as the text field value:*/
-        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
-          b.addEventListener("click", function(e) {
-              /*insert the value for the autocomplete text field:*/
-              inp.value = this.getElementsByTagName("input")[0].value;
-              /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-              closeAllLists();
-          });
-          a.appendChild(b);
-        }
-      }
-  });
-  function closeAllLists(elmnt) {
-    /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
-    var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
-      if (elmnt != x[i] && elmnt != inp) {
-        x[i].parentNode.removeChild(x[i]);
-      }
-    }
-  }
-  /*execute a function when someone clicks in the document:*/
-  document.addEventListener("click", function (e) {
-      closeAllLists(e.target);
-      });
-}
 
-/*An array containing all the country names in the world:*/
-var algos=["search","sort","binary search","search binary","bubble sort","insertion sort"]
-autocomplete(document.getElementById("search"), algos);
-</script>
+
+  <div id="help_popup">
+      <div id="popup">
+      <form action="#" id="form" method="post" name="form">
+      <img id="close" src="image/12.png" >
+      <h2>Welcome to Quark!</h2>
+      <hr>
+      <h6>This is the World's first offline code Search Engine presented by <a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a>. <br> <br> Now search code for any algorithm or data-structure in your favorite language even when you are not connected to the internet! <br> <br> Add frequently visited codes easily to your favorites by clicking on the star icon. <br> <br> Have any suggestions? Feel free to share your valuable feedback at this <a target="_blank" title="Works only when you are online" href="https://discourse.opengenus.org/t/feedback-for-quark/125">Discourse topic</a>!  <br> <br> </h6>
+      </form>
+      </div>
+    </div>
 
 
 </body>
