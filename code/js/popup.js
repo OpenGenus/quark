@@ -149,9 +149,10 @@ function dumpBookmarks(current_query)
 					    {	  	
 	
 						   	if(!favs.includes(fname)) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+						   		//<a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
+						   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
 						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+						   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
 						   	}
 						   	sub_result_number++;
 						}
@@ -161,7 +162,18 @@ function dumpBookmarks(current_query)
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
 					   	  	updateFavs(this, filenames[filename_pos]);
 					    });	
-					   
+
+					    send = '#myId'+temp;
+						$(document).on("click", send , function() {
+							var filename_pos = '#myStar'+this.id.substr(4, this.id.length);
+					   	 	var win = window.open("/code/"+filenames[filename_pos]);
+					   	 	win.addEventListener("load", function(){
+					   	 		if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+								    win.document.body.style.backgroundColor = "#333333";  
+								    win.document.body.style.color = "#FFFFFF";  
+								}
+							});
+					    });						   
 					   
 					}
 
