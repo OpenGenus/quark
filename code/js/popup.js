@@ -51,6 +51,7 @@ $(function() {
      $('#error-message').empty();
      $('#no_of_results').empty(); 			
  	 dumpBookmarks($('#search').val());
+	 current_query = $('#search').val();
   });
 });
 
@@ -62,12 +63,15 @@ $(function() {
  		$('#error-message').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
+		current_query = $(this).val();
 	});
 });
 
 var current_fname;
-function dumpBookmarks(query) 
+var current_query;
+function dumpBookmarks(current_query) 
 {
+	var query = current_query;
 	$('#search').val(query);
 	$("#front").hide();
 	$("#favorites").hide();
@@ -82,8 +86,8 @@ function dumpBookmarks(query)
 
 	for(var pos in single_query)
 	{
-		current_query = single_query[pos];
-		if(current_query != "")
+		curr_query = single_query[pos];
+		if(curr_query != "")
 		{
 			found_word = 1;
 			break;
@@ -165,20 +169,30 @@ function dumpBookmarks(query)
 				    var card = document.createElement('div');
 				    card.setAttribute("class", "card");
 				    card.setAttribute("style","margin-bottom: 8px");
-				    
+				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+				    	card.setAttribute("style","margin-bottom: 8px; background-color: #142634");
+				    }
+				
 				    var card_title = document.createElement('div');
 				    card_title.setAttribute("class","card-title");
+				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+				    	card_title.setAttribute("style","background-color: #CC9A06");
+				    }
 				    card_title.innerHTML = str;
 
 				    var card_body = document.createElement('div');
 				    card_body.setAttribute("class","card-body");
 				    card_body.innerHTML = inside_text;
+				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+				    	card_body.setAttribute("style","margin-bottom: 8px; background-color: #142634");
+				    }
 
 				    card.appendChild(card_title);
 				    card.appendChild(card_body);
 
 				    //Adding Card to Brick Layer
 				    bricklayer.append(card);
+
 				}
 			}
 		}
@@ -190,8 +204,10 @@ function dumpBookmarks(query)
 	else
 		res="result";
 	if(total!=0)
-		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
-		
+	{
+		$('#no_of_results').empty();
+		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #a56ed3'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #a56ed3'><b>'"+query +"'</b></span></h6>"+"</ul>");
+	}	
 
 	if (found == 0 && found_word!=0)
 	{
@@ -212,12 +228,18 @@ function addtags()
 {
 	var tags_display_number = 10 ;
 	var display_ele = '';
-	var style = 'margin: 2px;border-radius: 5px;';
+	var style;
+	if ( sessionStorage.getItem('bg') === 'rgb(255, 255, 255)') {			//light mode
+		style = 'margin: 2px;border-radius: 5px; filter:brightness(100%);';
+	} else {																//dark mode
+		style = 'margin: 2px;border-radius: 5px; filter:brightness(80%);';
+	}
 	for (var i =0 ;i<tags_display_number;i++)
 	{
 		display_ele += '<input type="button" style ="'+style+'"class="btn-xs button-pop btn-warning" value="'+tags[i]+'"/>'
 	}
 
+	$('#pop-tags').empty();
 	$('#pop-tags').append(display_ele);
 }
 
@@ -291,22 +313,109 @@ function initialize()
 	}	
 }
 
+function dark() { 
+    if ( sessionStorage.getItem('bg') === 'rgb(255, 255, 255)') {			//light mode to dark mode
+        sessionStorage.setItem('bg', 'rgb(51, 51, 51)');
+        sessionStorage.setItem('cc', '#EEEEEE');     
+        document.getElementById('logo').style.filter = "brightness(80%)";
+        document.getElementById('fact').style.filter = "brightness(80%)";
+        document.getElementById('search').style.filter = "brightness(80%)";
+        elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#adadad";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Light Mode";
+
+        addtags(); 
+        if(current_query!=""){ dumpBookmarks(current_query);}
+    }
+    else if (sessionStorage.getItem('bg') == null || undefined) {			//initial
+        sessionStorage.setItem('bg', 'rgb(51, 51, 51)');
+        sessionStorage.setItem('cc', '#EEEEEE');
+        document.getElementById('logo').style.filter = "brightness(80%)";
+        document.getElementById('fact').style.filter = "brightness(80%)";
+        document.getElementById('search').style.filter = "brightness(80%)";
+		elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#adadad";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Light Mode";
+    }
+    else if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {			//dark mode to light mode
+        sessionStorage.setItem('bg', 'rgb(255, 255, 255)');
+        sessionStorage.setItem('cc', '#333');  
+        document.getElementById('logo').style.filter = "brightness(100%)";
+        document.getElementById('fact').style.filter = "brightness(100%)";
+        document.getElementById('search').style.filter = "brightness(100%)";
+        elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#f5f5f5";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Dark Mode";
+        addtags();
+        if(current_query!=""){ dumpBookmarks(current_query);}
+    }
+	document.body.style.backgroundColor = sessionStorage.getItem('bg');
+	document.body.style.color = sessionStorage.getItem('cc');
+}
+
+function init_dark() {
+	current_query="";
+    if ( sessionStorage.getItem('bg') === 'rgb(255, 255, 255)') {			//light mode
+        sessionStorage.setItem('bg', 'rgb(255, 255, 255)');
+        sessionStorage.setItem('cc', '#333');  
+    }
+    else if (sessionStorage.getItem('bg') == null || undefined) {			//initial
+    	sessionStorage.setItem('bg', 'rgb(255, 255, 255)');
+        sessionStorage.setItem('cc', '#333');  
+    }
+    else if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {			//dark mode
+     	sessionStorage.setItem('bg', 'rgb(51, 51, 51)');
+        sessionStorage.setItem('cc', '#EEEEEE');
+        document.getElementById('logo').style.filter = "brightness(80%)";
+        document.getElementById('fact').style.filter = "brightness(80%)";
+        document.getElementById('search').style.filter = "brightness(80%)";
+        elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#adadad";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Light Mode";
+    }
+    //document.getElementById("dark_light").innerHTML ="changed";
+	document.body.style.backgroundColor = sessionStorage.getItem('bg');
+	document.body.style.color = sessionStorage.getItem('cc');
+}
 
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+	init_dark();
+
 	document.getElementById('help').addEventListener('click', function(event){
-	  help_show();
+		if ( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+			//$('#help_popup').append('<div id="popup"> <form action="#" id="form" method="post" name="form"><img id="close" src="image/12.png"> <h2>Welcome to Quark!</h2> <hr> <h6>This is the World\'s first offline code Search Engine presented by <a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a>. <br> <br> Now search code for any algorithm or data-structure in your favorite language even when you are not connected to the internet! <br> <br> Add frequently visited codes easily to your favorites by clicking on the star icon. <br> <br> Have any suggestions? Feel free to share your valuable feedback at this <a target="_blank" title="Works only when you are online" href="https://discourse.opengenus.org/t/feedback-for-quark/125">Discourse topic</a>!  <br> <br> </h6></form></div>');	 		
+	 		var elem = document.getElementById("form");
+	 		elem.setAttribute("style","background-color: #142634;");
+	 		elem = document.getElementById("welcome_heading");
+	 		elem.setAttribute("style","background-color: #CC9A06;");
+	 	}
+	
+	 	help_show();
+	
 	});
 
 
 	document.getElementById('close').addEventListener('click', function(event){
-	  help_hide();
+	  		help_hide();
+		});
+
+	
+	document.getElementById('dark_light').addEventListener('click', function(event){
+	  dark();
 	});
 
 
 	document.getElementById('favButton').addEventListener('click', function(event){
-		console.log("favvvvvv")
 	  	$('#favorites').show();
 		$('#front').hide();
 		$('#no_of_results').hide();
