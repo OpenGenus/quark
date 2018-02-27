@@ -20,6 +20,9 @@ function AddNewTags (tagName)
 	tags.push(tagName);
 }
 
+var zone_name1='';
+var zone_name2='';
+
 function updateFavs(x, filename) {
     x.classList.toggle("checked");
 	  
@@ -205,7 +208,7 @@ function dumpBookmarks(query)
 	}
 	else if (found_word == 0)
 	{
-		var happy = "<p style='text-align: center'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
+		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
 		$('#error-message').append(happy);
 	}
@@ -225,7 +228,6 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
-
 //Function To Display Help
 function help_show() {
 	document.getElementById('search').style.display = "none";
@@ -244,6 +246,7 @@ function addFavorites()
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
+
 				
 				if(favs.length==0) {
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr>");
@@ -296,7 +299,6 @@ function initialize()
 }
 
 
-
 document.addEventListener('DOMContentLoaded', function () 
 {
 	document.getElementById('help').addEventListener('click', function(event){
@@ -323,3 +325,7 @@ document.addEventListener('DOMContentLoaded', function ()
     initialize();
     addtags();
 });
+
+
+
+

@@ -1,10 +1,24 @@
 <html>
 <head>
+
   <script src="js/jquery.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
   <script src="js/bricklayer.min.js"></script>
+  <script src="js/moment.js"></script>
+  <script src="js/moment-timezone-with-data.js"></script>
+  <script src="js/addOfflineApps.js"></script>
   <script src="js/popup.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/stopwatch.js"></script>
+  <script src="js/timezone.js"></script>
   <link rel="stylesheet" type="text/css" href="css/bricklayer.min.css">
   <link rel="stylesheet" type="text/css" href="css/popup.css">
+    <link rel="stylesheet" type="text/css" href="css/calculator.css">
+  <link rel="stylesheet" type="text/css" href="css/timezone.css">
+
+    <link rel="stylesheet" type="text/css" href="css/stopwatch.css">
+
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/font.css">
   <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css">
@@ -33,20 +47,44 @@
             
             <div class="col-sm-4">
 
+                  <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
+
                   <a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
 
                   <a class="btn float-right" target="_blank" id="favButton" href="javascript:void(0)">Favorites</a>
 
-                  <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
+
+                  
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">More Apps<span class="caret"></span></button>
+                        <ul class="dropdown-menu" id="main_drop_menu">
+                        
+                            <li
+                                class="dropdown_button " title="Click to open Calculator" data-toggle="modal" data-target="#myModal" >Calculator
+                            </li>
+                           <div class="dropdown-divider"></div>
+
+                            <li class="dropdown_button" title="Click to open Stopwatch" data-toggle="modal" data-target="#myModal2" >Stopwatch
+                            </li> 
+                            <div class="dropdown-divider"></div>
+
+                            <li class="dropdown_button" title="Click to open Time Zone Converter" data-toggle="modal" data-target="#myModal3" >Time Zone Converter
+                            </li> 
+
+                         </ul>
+
+                  </div>
+
+                  <div id="calculator_modal"></div>
+                  <div id="stopwatch_modal"></div>
+                  <div id="timeZone_converter_modal"></div>
                   
             </div>
-
-            
-
         </div><br>
 
-    </div>
+  </div><br>
 
+  
     <div id="front">
 	    <h1 style="text-align: center;">World's first Offline Search Engine</h1>
 	    <hr>
@@ -62,8 +100,8 @@
     
     <div id="error-message" class="row"></div>
      
-    <div id="favorites"></div>
-    
+    <div id="favorites"></div> 
+
     <footer class="footer">
         <div class="container">
               <span class="text-muted">Built with ❤ @<a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a> 
@@ -83,7 +121,7 @@
       <h6>This is the World's first offline code Search Engine presented by <a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a>. <br> <br> Now search code for any algorithm or data-structure in your favorite language even when you are not connected to the internet! <br> <br> Add frequently visited codes easily to your favorites by clicking on the star icon. <br> <br> Have any suggestions? Feel free to share your valuable feedback at this <a target="_blank" title="Works only when you are online" href="https://discourse.opengenus.org/t/feedback-for-quark/125">Discourse topic</a>!  <br> <br> </h6>
       </form>
       </div>
-    </div>
+  </div>
 
 
 </body>
