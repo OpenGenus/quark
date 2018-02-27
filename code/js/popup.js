@@ -149,7 +149,6 @@ function dumpBookmarks(current_query)
 					    {	  	
 	
 						   	if(!favs.includes(fname)) {
-						   		//<a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
 						   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
 						   	} else {
 						   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
@@ -339,7 +338,25 @@ function dark() {
 	    document.getElementById("dark_light").innerHTML ="Light Mode";
 
         addtags(); 
-        if(current_query!=""){ dumpBookmarks(current_query);}
+        if(current_query!=""){ 
+
+		elements = document.getElementsByClassName("card");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#142634";
+	        elements[i].style.marginBottom="8px";
+	    }
+	    elements = document.getElementsByClassName("card-title");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#CC9A06";
+	    }
+	    elements = document.getElementsByClassName("card-body");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#142634";
+	        elements[i].style.marginBottom="8px";
+	    }
+
+
+        }
     }
     else if (sessionStorage.getItem('bg') == null || undefined) {			//initial
         sessionStorage.setItem('bg', 'rgb(51, 51, 51)');
@@ -365,7 +382,22 @@ function dark() {
 	    }
 	    document.getElementById("dark_light").innerHTML ="Dark Mode";
         addtags();
-        if(current_query!=""){ dumpBookmarks(current_query);}
+        if(current_query!=""){ 
+			elements = document.getElementsByClassName("card");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#FFFFFF";
+		        elements[i].style.marginBottom="8px";
+		    }
+		    elements = document.getElementsByClassName("card-title");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#FFC107";
+		    }
+		    elements = document.getElementsByClassName("card-body");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#FFFFFF";
+		        elements[i].style.marginBottom="8px";
+		    }
+        }
     }
 	document.body.style.backgroundColor = sessionStorage.getItem('bg');
 	document.body.style.color = sessionStorage.getItem('cc');
@@ -393,7 +425,6 @@ function init_dark() {
 	    }
 	    document.getElementById("dark_light").innerHTML ="Light Mode";
     }
-    //document.getElementById("dark_light").innerHTML ="changed";
 	document.body.style.backgroundColor = sessionStorage.getItem('bg');
 	document.body.style.color = sessionStorage.getItem('cc');
 }
@@ -405,7 +436,6 @@ document.addEventListener('DOMContentLoaded', function ()
 
 	document.getElementById('help').addEventListener('click', function(event){
 		if ( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
-			//$('#help_popup').append('<div id="popup"> <form action="#" id="form" method="post" name="form"><img id="close" src="image/12.png"> <h2>Welcome to Quark!</h2> <hr> <h6>This is the World\'s first offline code Search Engine presented by <a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a>. <br> <br> Now search code for any algorithm or data-structure in your favorite language even when you are not connected to the internet! <br> <br> Add frequently visited codes easily to your favorites by clicking on the star icon. <br> <br> Have any suggestions? Feel free to share your valuable feedback at this <a target="_blank" title="Works only when you are online" href="https://discourse.opengenus.org/t/feedback-for-quark/125">Discourse topic</a>!  <br> <br> </h6></form></div>');	 		
 	 		var elem = document.getElementById("form");
 	 		elem.setAttribute("style","background-color: #142634;");
 	 		elem = document.getElementById("welcome_heading");
