@@ -12,6 +12,7 @@ var tags = ['sort','search','math','string','crypto','data structures','graph','
 var favs = [];
 var filenames = [];
 var bricklayer ;
+var Algo_names =[];
 
 function AddNewTags (tagName)
 {
@@ -167,6 +168,11 @@ function dumpBookmarks(query)
 					   
 					   
 					}
+					 	var ID_name = key.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+		   				ID_name= ID_name.replace(/_/g, '');
+
+					var info_button = '<br><br><button id="infobtn'+ID_name+'" class="btn btn-success" data-toggle="modal" data-target="#info'+ID_name+'" >Know More</button>'
+				    var info_modal = '<div class="modal fade bd-example-modal-lg" id="info'+ID_name+'" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button></div><div class="modal-body" style="white-space: pre-line;" id="info'+ID_name+'body"><p>Oops! No information available.</p></div></div></div></div>';
 
 					//Individual Cards 
 				    var card = document.createElement('div');
@@ -175,20 +181,36 @@ function dumpBookmarks(query)
 				    
 				    var card_title = document.createElement('div');
 				    card_title.setAttribute("class","card-title");
+
 				    card_title.innerHTML = str;
 
 				    var card_body = document.createElement('div');
 				    card_body.setAttribute("class","card-body");
-				    card_body.innerHTML = inside_text;
+				    card_body.innerHTML = inside_text+''+info_button+''+info_modal;
 
 				    card.appendChild(card_title);
 				    card.appendChild(card_body);
+					
+				    //Extracting Algo Info From README.md
+				    
+				    $(document).on("click", "#infobtn"+ID_name, function() {
+  						var pos = this.id.substr(7, this.id.length);		  		
+				  		jQuery.get('./code/'+Algo_names[pos]+'/README.md').done(function(data) {
+				  			$('#info'+ID_name+'body').text(data);
+				  			
+						}).fail(function(){
+							
+						});
+					});
 
-				    //Adding Card to Brick Layer
-				    bricklayer.append(card);
+					 bricklayer.append(card);
+
 				}
 			}
 		}
+
+
+
 	}
 
 
@@ -238,6 +260,7 @@ function help_hide() {
 	document.getElementById('search').style.display = "block";
 	document.getElementById('help_popup').style.display = "none";
 }
+
 
 function addFavorites()
 {
@@ -294,13 +317,19 @@ function initialize()
 		
 			var str = '#myStar'+temp;
 		   	filenames[str]=fname;
+
 		}
+            
+		   	var keyname = key.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+			keyname = keyname.replace(/_/g, '');
+		   	Algo_names[keyname]=key;
 	}	
 }
 
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+	
 	document.getElementById('help').addEventListener('click', function(event){
 	  help_show();
 	});
@@ -309,7 +338,6 @@ document.addEventListener('DOMContentLoaded', function ()
 	document.getElementById('close').addEventListener('click', function(event){
 	  help_hide();
 	});
-
 
 	document.getElementById('favButton').addEventListener('click', function(event){
 	  	$('#favorites').show();
