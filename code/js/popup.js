@@ -430,6 +430,16 @@ function initialize()
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+	var val=localStorage.getItem("openThroughWeb");
+	if(val=="yes")
+	{
+		$('.bricklayer').empty();
+	    $('#error-message').empty();
+	    $('#no_of_results').empty(); 
+	    localStorage.setItem("openThroughWeb", "no");			
+	 	dumpBookmarks(localStorage.getItem("value"));
+	}
+
 	document.getElementById('help').addEventListener('click', function(event){
 	  help_show();
 	});
