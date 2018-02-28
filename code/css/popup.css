@@ -53,8 +53,8 @@ html {
         font-size: 12px;
     }
 
-
 .fa {
+
         font-size: 15px;
         cursor: pointer;
         user-select: none;
@@ -144,4 +144,15 @@ hr {
     margin:10px -50px;
     border:0;
     border-top:1px solid #ccc
+}
+
+.dropdown_button
+{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: #077bff;
 }
