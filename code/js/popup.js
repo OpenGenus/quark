@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function ()
 
 
 	document.getElementById('favButton').addEventListener('click', function(event){
-		
+		console.log("favvvvvv")
 	  	$('#favorites').show();
 		$('#front').hide();
 		$('#no_of_results').hide();

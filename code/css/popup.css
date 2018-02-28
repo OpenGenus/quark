@@ -52,9 +52,8 @@ html {
         height: 24px;
         font-size: 12px;
     }
-
-
-.fa {
+    
+    .fa {
         font-size: 15px;
         cursor: pointer;
         user-select: none;
@@ -66,6 +65,7 @@ html {
     .checked {
             color: orange;
         }
+    
 
     .card-title{
         font-size: 20px;
