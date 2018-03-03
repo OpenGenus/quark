@@ -1,0 +1,38 @@
+ /*Stopwatch Css*/
+     
+    @mixin transition {
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    }
+    @mixin corners ($radius) {
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+    border-radius: $radius; 
+    -khtml-border-radius: $radius; 
+    }
+    #seconds, #tens{
+      font-size:2em;
+    }
+
+    .stopW_btn
+    {
+          
+            width: 66px;
+            height: 36px;
+            border-radius: 3px;
+            background: #ff9fa8;
+            color: white;
+            margin: 0 5px 11px 0;
+            box-shadow: 0px 0px #d3545d;
+            line-height: 36px;
+            text-align: center;
+            user-select: none;
+            transition: all 0.2s ease;
+    }
+
+    .stopW_btn:hover {
+        background: #ff707d;
+        box-shadow: 0px 4px #e4d6d8;
+        color: #ffffff;
+    }
