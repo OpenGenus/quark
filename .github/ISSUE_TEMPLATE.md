@@ -14,3 +14,15 @@ Thanks for filing an issue! Before submitting, please fill in the following info
 **Details:**
 <!-- Details to be added/updated to aid others to join your discussion -->
 
+<!-- In case of any bug or error  -->
+**Expected Behavior**:
+<!-- Describe what you're currently experiencing from this process, and thereby explain the bug. -->
+
+**Actual Behavior**:
+
+**Screenshots (if any)**:
+
+**Would you like to work on this issue?**
+<!-- choose one by changing [ ] to [x] -->
+- [ ] Yes
+- [ ] No
