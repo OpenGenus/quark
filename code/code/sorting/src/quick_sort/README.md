@@ -14,10 +14,6 @@ Quicksort is a comparison sort algorithm. It has an average performance of O(n\*
 
 - https://en.wikipedia.org/wiki/Quicksort
 
----
 
-<p align="center">
-	A massive collaborative effort by <a href="https://github.com/OpenGenus/cosmos">OpenGenus Foundation</a> 
-</p>
+A large scale collaboration of [OpenGenus](https://github.com/opengenus)
 
----
