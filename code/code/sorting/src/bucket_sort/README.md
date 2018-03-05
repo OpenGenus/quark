@@ -12,7 +12,7 @@ Bucket sort works as follows:
 
 
 ## Further Reading
-[Wikipedia - Merge sort](https://en.wikipedia.org/wiki/Bucket_sort)
+[Wikipedia - Bucket sort](https://en.wikipedia.org/wiki/Bucket_sort)
 
 
 A large scale collaboration of [OpenGenus](https://github.com/opengenus)
