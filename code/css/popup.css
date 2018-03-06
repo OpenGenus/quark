@@ -8,7 +8,7 @@ html {
         font-family: 'Roboto Mono', monospace;
         padding-bottom: 60px;
     }
-    
+
     article {
         display: block;
         text-align: left;
@@ -18,7 +18,7 @@ html {
         margin: 0 auto;
     }
 
-    
+
     .footer {
         position: absolute;
         bottom: 0;
@@ -76,7 +76,7 @@ html {
          /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
 
         }
-    
+
 
     @media screen and (min-width: 768px) {
       .bricklayer-column-sizer {
@@ -156,4 +156,38 @@ hr {
     overflow: hidden;
     outline:none;
     color: #077bff;
+}
+
+
+#searchSuggest .ui-menu-item{
+    list-style: none outside none;
+    width: 100%;
+
+    padding: 0px;
+
+
+   }
+
+    #search {
+    margin-bottom: 15px;
+}
+#searchSuggest {
+    width: 100%;
+border:3px solid black;
+
+
+    margin-bottom: 15px;
+}
+
+#searchSuggest .ui-autocomplete {
+  width: 100%;
+    position: relative;
+    float: none;
+}
+#searchSuggest .ui-menu-item:hover{
+  background-color: #D3D3D3;
+}
+#searchSuggest .ui-menu .ui-menu-item {
+    float: none;
+
 }
