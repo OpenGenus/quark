@@ -436,7 +436,3 @@ document.addEventListener('DOMContentLoaded', function ()
     initialize();
     addtags();
 });
-
-
-
-
