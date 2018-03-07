@@ -29,6 +29,7 @@ html {
         line-height: 60px;
         background-color: #E5E8E8;
         margin-top: 2%;
+        margin-bottom: 0;
     }
 
     .favListItem {
@@ -52,9 +53,10 @@ html {
         margin-top: 7px;
         height: 24px;
         font-size: 12px;
+        cursor: pointer;
     }
 
-.fa {
+    .fa {
 
         font-size: 15px;
         cursor: pointer;
@@ -66,7 +68,7 @@ html {
     }
     .checked {
             color: orange;
-        }
+    }
 
     .card-title{
         font-size: 20px;
@@ -156,4 +158,27 @@ hr {
     overflow: hidden;
     outline:none;
     color: #077bff;
+}
+#pop-tags{
+    padding-left: 20%;
+}
+.input-group{
+    border:1px solid #ced4da;
+    border-radius:5px;
+    border-width: 2px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+#search{
+    float: left;
+    width: 90%;
+    border: none;
+}
+#search_button{
+    width: 8%;
+    margin-right: 5px;
+}
+#search_button i{
+    font-size: 17px;
+    margin-top: 10px;
 }
