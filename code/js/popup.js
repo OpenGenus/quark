@@ -20,6 +20,9 @@ function AddNewTags (tagName)
 	tags.push(tagName);
 }
 
+var zone_name1='';
+var zone_name2='';
+
 function updateFavs(x, filename) {
     x.classList.toggle("checked");
 	  
@@ -111,6 +114,7 @@ function dumpBookmarks(query)
 			    found = 1;
 			    current_found = 1;
 
+			    let temp = key;
 			    let str = key;
 			    let inside_text = '';
 			    str = str.split("/").pop();
@@ -118,7 +122,9 @@ function dumpBookmarks(query)
 				str = str.replace(/\w\S*/g, function(txt) {
 					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 				});
-			   
+				temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+				temp = temp.replace(/_/g, '');
+
 			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
 			    	continue;
 			    else
@@ -138,10 +144,9 @@ function dumpBookmarks(query)
 				    {
 					   	var fname= key+"/"+obj[key][dd];
 					   	
-					   	temp = fname;
-					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-					   	temp = temp.replace(/_/g, '');
-					   	
+					   	temp2 = fname;
+					   	temp2 = temp2.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					   	temp2 = temp2.replace(/_/g, '');
 
 					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
 
@@ -149,14 +154,14 @@ function dumpBookmarks(query)
 					    {	  	
 	
 						   	if(!favs.includes(fname)) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
 						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
 						   	}
 						   	sub_result_number++;
 						}
 						
-						var send = '#myStar'+temp;
+						var send = '#myStar'+temp2;
 						$(document).on("click", send , function() {
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
 					   	  	updateFavs(this, filenames[filename_pos]);
@@ -165,17 +170,29 @@ function dumpBookmarks(query)
 					   
 					}
 
-					//Individual Cards 
-				    var card = document.createElement('div');
+					//Individual Cards
+
+              	    var card = document.createElement('div');
 				    card.setAttribute("class", "card");
 				    card.setAttribute("style","margin-bottom: 8px");
 				    
 				    var card_title = document.createElement('div');
 				    card_title.setAttribute("class","card-title");
+				    card_title.setAttribute("target","_blank");
+				    card_title.setAttribute("id","card_title_"+temp);
+				    card_title.setAttribute("href","javascript:void(0)");
+				    card_title.setAttribute("onmouseover","");
+				    card_title.setAttribute("style","cursor: pointer;");
 				    card_title.innerHTML = str;
 
 				    var card_body = document.createElement('div');
 				    card_body.setAttribute("class","card-body");
+				    card_body.setAttribute("id","card_body_"+temp);
+				    if (total == 1 || total == 2 || total ==3) {
+				    	card_body.setAttribute("style","display: block;");
+					} else {
+						card_body.setAttribute("style","display: none;");
+					}
 				    card_body.innerHTML = inside_text;
 
 				    card.appendChild(card_title);
@@ -183,11 +200,20 @@ function dumpBookmarks(query)
 
 				    //Adding Card to Brick Layer
 				    bricklayer.append(card);
-				}
-			}
-		}
-	}
 
+					document.getElementById("card_title_"+temp).addEventListener('click', function(event){
+						if( document.getElementById("card_body_"+temp).style.display == "none" ) {
+							document.getElementById("card_body_"+temp).style.display = "block";
+						} else {
+							document.getElementById("card_body_"+temp).style.display = "none";
+						} 
+					});				    
+
+				}
+			
+			}
+		}		
+	}
 
 	if(total>1)
 		res="results";
@@ -205,7 +231,7 @@ function dumpBookmarks(query)
 	}
 	else if (found_word == 0)
 	{
-		var happy = "<p style='text-align: center'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
+		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
 		$('#error-message').append(happy);
 	}
@@ -225,7 +251,6 @@ function addtags()
 	$('#pop-tags').append(display_ele);
 }
 
-
 //Function To Display Help
 function help_show() {
 	document.getElementById('search').style.display = "none";
@@ -244,6 +269,7 @@ function addFavorites()
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
+
 				
 				if(favs.length==0) {
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr>");
@@ -296,7 +322,6 @@ function initialize()
 }
 
 
-
 document.addEventListener('DOMContentLoaded', function () 
 {
 	document.getElementById('help').addEventListener('click', function(event){
@@ -323,3 +348,7 @@ document.addEventListener('DOMContentLoaded', function ()
     initialize();
     addtags();
 });
+
+
+
+
