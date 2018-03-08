@@ -1,34 +1,33 @@
 html {
-            position: relative;
-            min-height: 100%;
-    }
+    position: relative;
+    min-height: 100%;
+}
 
-    body {
-        position: relative;
-        font-family: 'Roboto Mono', monospace;
-        margin-bottom: 60px;
+body {
+    position: relative;
+    font-family: 'Roboto Mono', monospace;
+    margin-bottom: 60px;
+}
 
-    }
-    
-    article {
-        display: block;
-        text-align: left;
-        width: 80%;
-        padding-top: 2%;
-        padding-bottom: 15%;
-        margin: 0 auto;
-    }
-
-    
-    .footer {
-        position: relative;
-        bottom: 0;
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        background-color: #f5f5f5;
-        margin-top: 2%;
-    }
+article {
+    display: block;
+    text-align: left;
+    width: 80%;
+    padding-top: 2%;
+    padding-bottom: 15%;
+    margin: 0 auto;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #E5E8E8;
+    margin-top: 2%;
+}
 
     .favListItem {
         text-align: center;
@@ -57,63 +56,64 @@ html {
         float:center; 
     }
 
-    li {
-    	padding-left: 40px;
-    }
 
-    .navbar-brand {
-	  padding: 0px;
-	}
-	.navbar-brand>img {
-	  height: 10%;
-	  padding: 15px;
-	  width: auto;
-	}
-    .btn-xs{
-        margin-top: 7px;
-        height: 24px;
-        font-size: 12px;
-    }
+li {
+    padding-left: 40px;
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+.navbar-brand>img {
+    height: 10%;
+    padding: 15px;
+    width: auto;
+}
+.btn-xs{
+    margin-top: 7px;
+    height: 24px;
+    font-size: 12px;
+}
 
 .fa {
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+}
 
-        font-size: 15px;
-        cursor: pointer;
-        user-select: none;
-    }
+.fa:hover {
+    color: darkblue;
+}
 
-    .fa:hover {
-      color: darkblue;
-    }
-    .checked {
-            color: orange;
-        }
+.checked {
+    color: orange;
+}
 
-    .card-title{
-        font-size: 20px;
-        font-weight: bolder;
-        text-align: center;
-        background-color:rgb(255, 193, 7);
-         /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
 
-        }
-    
+.card-title{
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: center;
+    background-color:rgb(255, 193, 7);
+    /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
+}
 
-    @media screen and (min-width: 768px) {
-      .bricklayer-column-sizer {
+
+@media screen and (min-width: 768px) {
+    .bricklayer-column-sizer {
         /* Each column will be 100px width and there will be 5 columns. */
         width: 33%;
-      }
     }
+}
 
-    /* You should add more media queries to make it fully responsive. */
+/* You should add more media queries to make it fully responsive. */
 
-    @media screen and (min-width: 768px) {
-      .bricklayer-column-sizer {
+@media screen and (min-width: 768px) {
+    .bricklayer-column-sizer {
         /* Each column will be 125px width and there will be 4 columns. */
         width: 33%;
-      }
     }
+}
 
 #help_popup {
     width:100%;
