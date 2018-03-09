@@ -29,10 +29,32 @@ article {
     margin-top: 2%;
 }
 
-.favListItem {
-    display: inline-block;
-    width: 33%;
-}
+    .favListItem {
+        text-align: center;
+    }
+
+    .sortbythis:hover
+    {
+        cursor: pointer;
+        background-color: #ffc10757;
+    }
+
+    #sortfavby{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 10px #E8E8E8 inset;
+    height: 40px;
+    margin: 0 0 0 25px;
+    padding: 10px;
+    min-width: 120px;
+    }
+
+    #favSearchInputBox
+    {
+        text-align: center;
+        float:center; 
+    }
 
 
 li {
