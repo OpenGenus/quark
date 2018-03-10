@@ -187,20 +187,19 @@ function dumpBookmarks(current_query)
 							    }
 							}		
 
-						   	if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') { //dark
+							if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') { //dark
 						   		if(found_in_Favs==false) {
-							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
 								} else {
-							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star checked'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
 							   	}
 						   	} else {  //light
 						   		if(found_in_Favs==false) {
-							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
 							   	} else { 
-							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star checked'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
 							   	}
 						   }
-
 						   	sub_result_number++;
 						}
 						var send = '#myStar'+temp2;
@@ -221,8 +220,7 @@ function dumpBookmarks(current_query)
 								    win.document.body.style.color = "#FFFFFF";  
 								}
 							});
-					    });						   
-					   
+					    });			
 					}
 
 					//Individual Cards
