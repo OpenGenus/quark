@@ -11,7 +11,7 @@ obj_keys.sort();
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
 var favs = [];
 var filenames = [];
-var bricklayer ;
+var bricklayer;
 
 function AddNewTags (tagName)
 {
@@ -154,12 +154,20 @@ function dumpBookmarks(current_query)
 
 					    else
 					    {	  	
-	
-						   	if(!favs.includes(fname)) {
-						   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
-						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+						   	if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') { //dark
+						   		if(!favs.includes(fname)) {
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+								} else {
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+							   	}
+						   	} else {  //light
+						   		if(!favs.includes(fname)) {
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+							   	} else { 
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+							   	}
 						   	}
+
 						   	sub_result_number++;
 						}
 						
@@ -299,12 +307,29 @@ function addFavorites()
 						var str = '#myStar'+temp;
 						var filename = favs[fname].replace(/^.*[\\\/]/, '')
 
-						$('#favorites').append("<li class='favListItem'><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
+				  	 	if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+							$('#favorites').append("<li class='favListItem'><a target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
+					   	} else {
+						   	$('#favorites').append("<li class='favListItem'><a target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");   	
+					   	}
 
 				    	$('#myStar'+temp).on("click",function () {						   	
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
 					   	  	updateFavs(this, filenames[filename_pos]);
 				    	});	
+
+				    	send = '#myId'+temp;
+						$(document).on("click", send , function() {
+							//console.log(send)
+							var filename_pos = '#myStar'+this.id.substr(4, this.id.length);
+					   	 	var win = window.open("/code/"+filenames[filename_pos]);
+					   	 	win.addEventListener("load", function(){
+					   	 		if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+								    win.document.body.style.backgroundColor = "#333333";  
+								    win.document.body.style.color = "#FFFFFF";  
+								}
+							});
+					    });	
 
 				    }
 					$('#favorites').append("</ul><br><br><br><br><br>");
@@ -338,6 +363,35 @@ function dark() {
         document.getElementById('logo').style.filter = "brightness(80%)";
         document.getElementById('fact').style.filter = "brightness(80%)";
         document.getElementById('search').style.filter = "brightness(80%)";
+        document.getElementById('dark_light').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dark_light').style.fontWeight = "bold";
+ 		document.getElementById('help').style.color = "rgb(255, 255, 255)";
+        document.getElementById('help').style.fontWeight = "bold";
+		document.getElementById('favButton').style.color = "rgb(255, 255, 255)";
+        document.getElementById('favButton').style.fontWeight = "bold";
+        document.getElementById('gitHub').style.color = "rgb(255, 255, 255)";
+        document.getElementById('gitHub').style.fontWeight = "bold";
+        document.getElementById('dropBut').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dropBut').style.fontWeight = "bold";
+        
+        elements = document.getElementById("favorites");
+        var s = elements.innerHTML;
+		pos = 0;
+		ii = -1;
+		prev = 0;
+		var r = "";
+		while (pos != -1) {
+		    pos = s.indexOf('target="_blank"', ii + 1);
+		    ii = pos;
+		    
+		    r+=s.slice(prev,pos+16);
+		    r+="style='color: rgb(255, 255, 255); font-weight: bold' "
+		   
+		   	if(pos!=-1) prev=pos;
+		}
+		r+=s.slice(prev);
+		elements.innerHTML = r;
+
         elements = document.getElementsByClassName("footer");
 	        for (var i = 0; i < elements.length; i++) {
 	        elements[i].style.backgroundColor="#adadad";
@@ -345,24 +399,41 @@ function dark() {
 	    document.getElementById("dark_light").innerHTML ="Light Mode";
 
         addtags(); 
+
         if(current_query!=""){ 
+			elements = document.getElementsByClassName("card");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#142634";
+		        elements[i].style.marginBottom="8px";
+		    }
+		    elements = document.getElementsByClassName("card-title");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#CC9A06";
+		    }
+		    elements = document.getElementsByClassName("card-body");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#142634";
+		        elements[i].style.marginBottom="8px";
 
-		elements = document.getElementsByClassName("card");
-	        for (var i = 0; i < elements.length; i++) {
-	        elements[i].style.backgroundColor="#142634";
-	        elements[i].style.marginBottom="8px";
-	    }
-	    elements = document.getElementsByClassName("card-title");
-	        for (var i = 0; i < elements.length; i++) {
-	        elements[i].style.backgroundColor="#CC9A06";
-	    }
-	    elements = document.getElementsByClassName("card-body");
-	        for (var i = 0; i < elements.length; i++) {
-	        elements[i].style.backgroundColor="#142634";
-	        elements[i].style.marginBottom="8px";
-	    }
-
-
+				var s = elements[i].innerHTML;
+				pos = 0;
+				ii = -1;
+				prev = 0;
+				var r = "";
+				
+				while (pos != -1) {
+				    pos = s.indexOf('target="_blank"', ii + 1);
+				    ii = pos;
+				    
+				    r+=s.slice(prev,pos+16);
+				    r+="style='color: rgb(255, 255, 255); font-weight: bold' "
+				   
+				   	if(pos!=-1) prev=pos;
+				}
+				r+=s.slice(prev);
+				elements[i].innerHTML = r;
+			}
+        	
         }
     }
     else if (sessionStorage.getItem('bg') == null || undefined) {			//initial
@@ -371,6 +442,18 @@ function dark() {
         document.getElementById('logo').style.filter = "brightness(80%)";
         document.getElementById('fact').style.filter = "brightness(80%)";
         document.getElementById('search').style.filter = "brightness(80%)";
+        document.getElementById('dark_light').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dark_light').style.fontWeight = "bold";
+ 		document.getElementById('help').style.color = "rgb(255, 255, 255)";
+        document.getElementById('help').style.fontWeight = "bold";
+		document.getElementById('favButton').style.color = "rgb(255, 255, 255)";
+        document.getElementById('favButton').style.fontWeight = "bold";
+        document.getElementById('gitHub').style.color = "rgb(255, 255, 255)";
+        document.getElementById('gitHub').style.fontWeight = "bold";
+        document.getElementById('dropBut').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dropBut').style.fontWeight = "bold";
+        
+
 		elements = document.getElementsByClassName("footer");
 	        for (var i = 0; i < elements.length; i++) {
 	        elements[i].style.backgroundColor="#adadad";
@@ -383,6 +466,22 @@ function dark() {
         document.getElementById('logo').style.filter = "brightness(100%)";
         document.getElementById('fact').style.filter = "brightness(100%)";
         document.getElementById('search').style.filter = "brightness(100%)";
+        document.getElementById('dark_light').style.color = "rgb(0, 127, 255)";
+        document.getElementById('dark_light').style.fontWeight = "normal";
+        document.getElementById('help').style.color = "rgb(0, 127, 255)";
+        document.getElementById('help').style.fontWeight = "normal";
+		document.getElementById('favButton').style.color = "rgb(0, 127, 255)";
+        document.getElementById('favButton').style.fontWeight = "normal";
+		document.getElementById('gitHub').style.color = "rgb(0, 127, 255)";
+        document.getElementById('gitHub').style.fontWeight = "normal";
+        document.getElementById('dropBut').style.color = "rgb(0, 127, 255)";
+        document.getElementById('dropBut').style.fontWeight = "normal";
+        
+        elements = document.getElementById("favorites");
+        var s = elements.innerHTML;
+		var r = s.replace(/style\=\"color\: rgb\(255\, 255\, 255\)\; font\-weight\: bold\"/g, "style='color: rgb(0, 127, 255); font-weight: normal'");
+		elements.innerHTML = r;
+
         elements = document.getElementsByClassName("footer");
 	        for (var i = 0; i < elements.length; i++) {
 	        elements[i].style.backgroundColor="#f5f5f5";
@@ -403,6 +502,10 @@ function dark() {
 		        for (var i = 0; i < elements.length; i++) {
 		        elements[i].style.backgroundColor="#FFFFFF";
 		        elements[i].style.marginBottom="8px";
+
+		        var s = elements[i].innerHTML;
+    			var r = s.replace(/style\=\"color\: rgb\(255\, 255\, 255\)\; font\-weight\: bold\"/g, "style='color: rgb(0, 127, 255); font-weight: normal'");
+				elements[i].innerHTML = r;
 		    }
         }
     }
@@ -426,6 +529,16 @@ function init_dark() {
         document.getElementById('logo').style.filter = "brightness(80%)";
         document.getElementById('fact').style.filter = "brightness(80%)";
         document.getElementById('search').style.filter = "brightness(80%)";
+        document.getElementById('dark_light').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dark_light').style.fontWeight = "bold";
+ 		document.getElementById('help').style.color = "rgb(255, 255, 255)";
+        document.getElementById('help').style.fontWeight = "bold";
+		document.getElementById('favButton').style.color = "rgb(255, 255, 255)";
+        document.getElementById('favButton').style.fontWeight = "bold";
+		document.getElementById('gitHub').style.color = "rgb(255, 255, 255)";
+        document.getElementById('gitHub').style.fontWeight = "bold";
+        document.getElementById('dropBut').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dropBut').style.fontWeight = "bold";
         elements = document.getElementsByClassName("footer");
 	        for (var i = 0; i < elements.length; i++) {
 	        elements[i].style.backgroundColor="#adadad";
@@ -438,6 +551,8 @@ function init_dark() {
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+	$('#favorites').hide();
+
 	init_dark();
 
 	document.getElementById('help').addEventListener('click', function(event){
@@ -468,16 +583,13 @@ document.addEventListener('DOMContentLoaded', function ()
 		$('#front').hide();
 		$('#no_of_results').hide();
 	  	$('.bricklayer').hide();
- 		addFavorites();
+	  	addFavorites();
 	});
 
 
+	
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     initialize();
     addtags();
 });
-
-
-
-
