@@ -282,6 +282,7 @@ function help_show() {
 	document.getElementById('search').style.display = "none";
 	document.getElementById('help_popup').style.display = "block";
 }
+
 //Function to Hide Help
 function help_hide() {
 	document.getElementById('search').style.display = "block";
@@ -295,6 +296,7 @@ function sortFav(val)
 	});
 }
 
+//refresh Favourites
 function refreshFav()
 {
 	chrome.storage.sync.set({ favs : favs }, function() {
@@ -304,6 +306,23 @@ function refreshFav()
 				});
 	addFavorites();	
 }
+
+//Clear All Favourites
+ $(function() {
+ 	$(document).on("click", "#clearfav", function(){
+		 
+ 		  chrome.storage.sync.set({ favs : [] }, function() {
+ 				    if (chrome.runtime.error) {
+ 				      	console.log("Runtime error."); 				    }
+ 				});
+
+		$('#front').hide();
+		$('#no_of_results').hide();
+	  	$('.bricklayer').hide();
+ 		addFavorites();
+
+ 	});
+ });
 
 
 //Search using search box
@@ -352,7 +371,7 @@ function addFavorites()
 
 
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
-					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' ></center><br>");				
+					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' >  <input type='button' id='clearfav' class='btn btn-warning' value='Clear All &#10062;'></input></center><br>");				
 						$(function(){
 							$("#favSearchInputBox").keyup(function(){				 		
 							 		searchfav();
