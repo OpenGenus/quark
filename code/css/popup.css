@@ -1,108 +1,181 @@
 html {
-            position: relative;
-            min-height: 100%;
-    }
+    position: relative;
+    min-height: 100%;
+}
 
-    body {
-        position: relative;
-        font-family: 'Roboto Mono', monospace;
-        margin-bottom: 60px;
-        background-color: rgb(255, 255, 255)
-    }
-    
-    article {
-        display: block;
-        text-align: left;
-        width: 80%;
-        padding-top: 2%;
-        padding-bottom: 15%;
-        margin: 0 auto;
-    }
+body {
+    position: relative;
+    font-family: 'Roboto Mono', monospace;
+    margin-bottom: 60px;
+    background-color: rgb(255, 255, 255)
+}
 
-    
-    .footer {
-        position: relative;
-        bottom: 0;
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        background-color: #f5f5f5;
-        margin-top: 2%;
-    }
+article {
+    display: block;
+    text-align: left;
+    width: 80%;
+    padding-top: 2%;
+    padding-bottom: 15%;
+    margin: 0 auto;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #E5E8E8;
+    margin-top: 2%;
+}
 
     .favListItem {
-        display: inline-block;
-        width: 33%;
+        text-align: center;
+
     }
 
-    li {
-    	padding-left: 40px;
+    .sortbythis:hover
+    {
+        cursor: pointer;
+        background-color: #ffc10757;
     }
 
-    .navbar-brand {
-	  padding: 0px;
-	}
-	.navbar-brand>img {
-	  height: 10%;
-	  padding: 15px;
-	  width: auto;
-	}
-    .btn-xs{
-        margin-top: 7px;
-        height: 24px;
-        font-size: 12px;
+    #sortfavby{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 10px #E8E8E8 inset;
+    height: 40px;
+    margin: 0 0 0 25px;
+    padding: 10px;
+    min-width: 120px;
     }
+
+    #favSearchInputBox
+    {
+        text-align: center;
+        float:center; 
+    }
+
+
+li {
+    padding-left: 40px;
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+.navbar-brand>img {
+    height: 10%;
+    padding: 15px;
+    width: auto;
+}
+.btn-xs {
+    margin-top: 7px;
+    height: 24px;
+    font-size: 12px;
+}
 
 .fa {
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+}
 
-        font-size: 15px;
-        cursor: pointer;
-        user-select: none;
-    }
+.fa:hover {
+    color: darkblue;
+}
 
-    .fa:hover {
-      color: darkblue;
-    }
-    .checked {
-            color: orange;
-        }
+.checked {
+    color: orange;
+}
 
-    .card-title{
-        font-size: 20px;
-        font-weight: bolder;
-        text-align: center;
-        background-color:rgb(255, 193, 7);
-         /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
+.card-title{
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: center;
+    background-color:rgb(255, 193, 7);
+    /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
+}
 
-        }
-    
 
-    @media screen and (min-width: 768px) {
-      .bricklayer-column-sizer {
+@media screen and (min-width: 768px) {
+    .bricklayer-column-sizer {
         /* Each column will be 100px width and there will be 5 columns. */
         width: 33%;
-      }
     }
+}
 
-    /* You should add more media queries to make it fully responsive. */
+/* You should add more media queries to make it fully responsive. */
 
-    @media screen and (min-width: 768px) {
-      .bricklayer-column-sizer {
+@media screen and (min-width: 768px) {
+    .bricklayer-column-sizer {
         /* Each column will be 125px width and there will be 4 columns. */
         width: 33%;
-      }
     }
+}
 
-    .dropdown_button
-    {
-        background-color: Transparent;
-        background-repeat:no-repeat;
-        border: none;
-        cursor:pointer;
-        overflow: hidden;
-        outline:none;
-        color: #077bff;
-    }
+#help_popup {
+    width:100%;
+    height:100%;
+    opacity:.99;
+    top:0;
+    left:0;
+    display:none;
+    position:fixed;
+    background-color:#313131;
+    overflow:auto
+}
 
+img#close {
+    position:absolute;
+    right:-14px;
+    top:-14px;
+    cursor:pointer
+}
 
-   
+div#popup {
+    position:absolute;
+    left:50%;
+    top:17%;
+    margin-left:-402px;
+}
+
+form {
+    max-width:800px;
+    min-width:400px;
+    padding:10px 50px;
+    border:2px solid gray;
+    border-radius:10px;
+    background-color:#fff
+}
+
+h2 {
+    background-color:#fcee45;
+    padding:20px 35px;
+    margin:-10px -50px;
+    text-align:center;
+    border-radius:10px 10px 0 0
+}
+
+h4 {
+    text-align:justify;
+}
+
+hr {
+    margin:10px -50px;
+    border:0;
+    border-top:1px solid #ccc
+}
+
+.dropdown_button
+{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: #077bff;
+}

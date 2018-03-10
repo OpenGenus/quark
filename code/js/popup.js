@@ -24,17 +24,36 @@ var zone_name1='';
 var zone_name2='';
 
 function updateFavs(x, filename) {
-    x.classList.toggle("checked");
-	  
+    x.classList.toggle("checked");	  
 	if (chrome && chrome.storage) {
 	    chrome.storage.sync.get({favs: []}, function(items) {
+
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
-		
-		      	if(!favs.includes(filename)) {
-			      	favs.push(filename);
+		      	let found = false;
+		      	let index = 0;
+		      	for(let i in favs ) {
+				    if (favs[i].filename == filename) {
+				        found = true;
+				        index = i;
+				        break;
+				    }
+				}		
+		      	if(found==false) {
+		      	    let area = filename.substr(0, filename.indexOf('/')); 
+		      	    area = area.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					area = area.replace(/_/g, ' ');
+					area = area.replace(/\w\S*/g, function(txt) {
+					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+					});
+		      		let lang = filename.split(".").pop();
+		      		let f1 = new Object();
+		      		f1.filename = filename;
+		      		f1.date = moment().format('DD MMM YYYY | HH:mm:ss');
+		      		f1.language = lang;
+		      		f1.area = area;
+			      	favs.push(f1);
 			    } else {
-			       	var index = favs.indexOf(filename);
 			       	if (index > -1) {
 				   		favs.splice(index, 1);
 					}	
@@ -75,8 +94,10 @@ $(function() {
 
 var current_fname;
 var current_query;
+var y=0;
 function dumpBookmarks(current_query) 
 {
+	y++;
 	var query = current_query;
 	$('#search').val(query);
 	$("#front").hide();
@@ -118,6 +139,7 @@ function dumpBookmarks(current_query)
 			    found = 1;
 			    current_found = 1;
 
+			    let temp = key;
 			    let str = key;
 			    let inside_text = '';
 			    str = str.split("/").pop();
@@ -125,7 +147,9 @@ function dumpBookmarks(current_query)
 				str = str.replace(/\w\S*/g, function(txt) {
 					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 				});
-			   
+				temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+				temp = temp.replace(/_/g, '');
+
 			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
 			    	continue;
 			    else
@@ -145,41 +169,51 @@ function dumpBookmarks(current_query)
 				    {
 					   	var fname= key+"/"+obj[key][dd];
 					   	
-					   	temp = fname;
-					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-					   	temp = temp.replace(/_/g, '');
-					   	
+					   	temp2 = fname;
+					   	temp2 = temp2.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					   	temp2 = temp2.replace(/_/g, '');
+						temp2=temp2+y;
 
 					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
 
 					    else
 					    {	  	
+	
+					    	let found_in_Favs = false;
+					      	for(let i in favs ) {
+							    if (favs[i].filename == fname) {
+							        found_in_Favs = true;
+							        break;
+							    }
+							}		
+
 						   	if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') { //dark
-						   		if(!favs.includes(fname)) {
-							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+						   		if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star'></i><br>";
 								} else {
-							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star checked'></i><br>";
 							   	}
 						   	} else {  //light
-						   		if(!favs.includes(fname)) {
-							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star'></i><br>";
+						   		if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star'></i><br>";
 							   	} else { 
-							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<i id='myStar"+temp2+"\' class='fa fa-star checked'></i><br>";
 							   	}
-						   	}
+						   }
 
 						   	sub_result_number++;
 						}
-						
-						var send = '#myStar'+temp;
+						var send = '#myStar'+temp2;
 						$(document).on("click", send , function() {
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	  	filename_pos = filename_pos.replace(/[0-9]/g, '');
 					   	  	updateFavs(this, filenames[filename_pos]);
 					    });	
 
-					    send = '#myId'+temp;
+					    send = '#myId'+temp2;
 						$(document).on("click", send , function() {
 							var filename_pos = '#myStar'+this.id.substr(4, this.id.length);
+							filename_pos = filename_pos.replace(/[0-9]/g, '');
 					   	 	var win = window.open("/code/"+filenames[filename_pos]);
 					   	 	win.addEventListener("load", function(){
 					   	 		if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
@@ -191,8 +225,9 @@ function dumpBookmarks(current_query)
 					   
 					}
 
-					//Individual Cards 
-				    var card = document.createElement('div');
+					//Individual Cards
+
+              	    var card = document.createElement('div');
 				    card.setAttribute("class", "card");
 				    card.setAttribute("style","margin-bottom: 8px");
 				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
@@ -204,13 +239,28 @@ function dumpBookmarks(current_query)
 				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
 				    	card_title.setAttribute("style","background-color: #CC9A06");
 				    }
+				    card_title.setAttribute("target","_blank");
+				    card_title.setAttribute("id","card_title_"+temp);
+				    card_title.setAttribute("href","javascript:void(0)");
+				    card_title.setAttribute("onmouseover","");
+				    card_title.setAttribute("style","cursor: pointer;");
 				    card_title.innerHTML = str;
 
 				    var card_body = document.createElement('div');
 				    card_body.setAttribute("class","card-body");
+				    card_body.setAttribute("id","card_body_"+temp);
+				    if (total == 1 || total == 2 || total ==3) {
+				    	card_body.setAttribute("style","display: block;");
+					} else {
+						card_body.setAttribute("style","display: none;");
+					}
 				    card_body.innerHTML = inside_text;
 				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
-				    	card_body.setAttribute("style","margin-bottom: 8px; background-color: #142634");
+					    if (total == 1 || total == 2 || total ==3) {
+					    	card_body.setAttribute("style","margin-bottom: 8px; background-color: #142634; display: block;");
+						} else {
+							card_body.setAttribute("style","margin-bottom: 8px; background-color: #142634; display: none;");
+						}
 				    }
 
 				    card.appendChild(card_title);
@@ -219,11 +269,19 @@ function dumpBookmarks(current_query)
 				    //Adding Card to Brick Layer
 				    bricklayer.append(card);
 
-				}
-			}
-		}
-	}
+					document.getElementById("card_title_"+temp).addEventListener('click', function(event){
+						if( document.getElementById("card_body_"+temp).style.display == "none" ) {
+							document.getElementById("card_body_"+temp).style.display = "block";
+						} else {
+							document.getElementById("card_body_"+temp).style.display = "none";
+						} 
+					});				    
 
+				}
+			
+			}
+		}		
+	}
 
 	if(total>1)
 		res="results";
@@ -279,49 +337,114 @@ function help_hide() {
 	document.getElementById('search').style.display = "block";
 	document.getElementById('help_popup').style.display = "none";
 }
+//Sort Favourites according to key
+function sortFav(val)
+{
+	favs = favs.sort(function (a, b) {
+    return a[val].localeCompare( b[val] );
+	});
+}
 
+function refreshFav()
+{
+	chrome.storage.sync.set({ favs : favs }, function() {
+				    if (chrome.runtime.error) {
+				      	console.log("Runtime error.");
+				    }
+				});
+	addFavorites();	
+}
+
+
+//Search using search box
+function searchfav(){
+
+		    input = document.getElementById("favSearchInputBox");
+		    filter = input.value.toUpperCase();
+		    div = document.getElementById("t1");
+		    a = div.getElementsByTagName("tr");
+		    for (i = 0; i < a.length; i++) {
+		        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+		            a[i].style.display = "";
+		        } else {
+		            a[i].style.display = "none";
+		        }
+		    }
+}
+
+//Add header sorts
+$(function() {
+	$(document).on("click", ".sortbythis", function(){
+		var temp = $(this)[0].attributes.sortby.value;
+		sortFav(temp);
+		refreshFav();
+	});
+});
+
+
+
+
+//Add Favorites
+var x=0;
 function addFavorites()
 {
+	x=x+1;
 	$('#favorites').empty();
 	if (chrome && chrome.storage) {
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
 
-				
 				if(favs.length==0) {
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr>");
 					$('#favorites').append("<p style='text-align: center;'>No favorites yet!</p><p style='text-align: center;'>Click on the star icon beside your favorite codes to access them easily.</p><br><br><br><br><br><br><br><br>");
 		
 		
 				} else {
-					
-					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
 
+
+					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
+					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' ></center><br>");				
+						$(function(){
+							$("#favSearchInputBox").keyup(function(){				 		
+							 		searchfav();
+								});
+							});
+					let table_start = '<table id="t1" class="table table-hover"><thead><tr><th style="text-align: center;" scope="col">Code File</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="language">Language </th><th style="text-align: center;" scope="col" class="sortbythis" sortby="date">Date/Time</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="area">Area</th></tr></thead><tbody>';
+				    let table_body = '';
+				    let table_end = "</tbody></table></ul><br><br><br><br><br>";
 				    for (var fname in favs)
 				    {
-				    	temp = favs[fname];
+				    	temp = favs[fname].filename;
 					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-					   	temp = temp.replace(/_/g, '');
-					   
+					   	temp = temp.replace(/_/g, '');	
+
 						var str = '#myStar'+temp;
-						var filename = favs[fname].replace(/^.*[\\\/]/, '')
+						var filename = favs[fname].filename.replace(/^.*[\\\/]/, '');
+						
+						temp=temp+x;
+						if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') { //dark
+							table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i><a class='favListItem' target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+						} else {
+							table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i><a class='favListItem' target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";							
+						}
 
-				  	 	if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
-							$('#favorites').append("<li class='favListItem'><a target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
-					   	} else {
-						   	$('#favorites').append("<li class='favListItem'><a target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");   	
-					   	}
+						table_body += '<td class="favListItem ">'+favs[fname].language+'</td>';
+						table_body += '<td class="favListItem " >'+favs[fname].date+'</td>';
+						table_body += '<td class="favListItem " >'+favs[fname].area+'</td></tr>';
 
-				    	$('#myStar'+temp).on("click",function () {						   	
-					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+				    	$('#myStar'+temp).on("click",function () {	
+				    		var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	 	filename_pos = filename_pos.replace(/[0-9]/g, '');
 					   	  	updateFavs(this, filenames[filename_pos]);
+					   	  	
+
 				    	});	
 
 				    	send = '#myId'+temp;
 						$(document).on("click", send , function() {
-							//console.log(send)
 							var filename_pos = '#myStar'+this.id.substr(4, this.id.length);
+					   	 	filename_pos = filename_pos.replace(/[0-9]/g, '');
 					   	 	var win = window.open("/code/"+filenames[filename_pos]);
 					   	 	win.addEventListener("load", function(){
 					   	 		if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
@@ -329,10 +452,12 @@ function addFavorites()
 								    win.document.body.style.color = "#FFFFFF";  
 								}
 							});
+					   	 
 					    });	
-
+						
 				    }
-					$('#favorites').append("</ul><br><br><br><br><br>");
+
+				    $('#favorites').append(table_start+table_body+table_end);
 				}
 	    	}
 	 	});
@@ -549,6 +674,8 @@ function init_dark() {
 	document.body.style.color = sessionStorage.getItem('cc');
 }
 
+
+
 document.addEventListener('DOMContentLoaded', function () 
 {
 	$('#favorites').hide();
@@ -561,6 +688,11 @@ document.addEventListener('DOMContentLoaded', function ()
 	 		elem.setAttribute("style","background-color: #142634;");
 	 		elem = document.getElementById("welcome_heading");
 	 		elem.setAttribute("style","background-color: #CC9A06;");
+	 	} else {
+	 		var elem = document.getElementById("form");
+	 		elem.setAttribute("style","background-color: #FFFFFF;");
+	 		elem = document.getElementById("welcome_heading");
+	 		elem.setAttribute("style","background-color: #FEF200;");
 	 	}
 	
 	 	help_show();
