@@ -313,7 +313,7 @@ function searchfav(){
 		    filter = input.value.toUpperCase();
 		    div = document.getElementById("t1");
 		    a = div.getElementsByTagName("tr");
-		    for (i = 0; i < a.length; i++) {
+		    for (i = 1; i < a.length; i++) {
 		        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
 		            a[i].style.display = "";
 		        } else {
