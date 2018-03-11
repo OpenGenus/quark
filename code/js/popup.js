@@ -265,6 +265,7 @@ function help_hide() {
 function addFavorites()
 {
 	$('#favorites').empty();
+	var promise = $.Deferred();
 	if (chrome && chrome.storage) {
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
@@ -300,8 +301,10 @@ function addFavorites()
 					$('#favorites').append("</ul><br><br><br><br><br>");
 				}
 	    	}
+	    	promise.resolve();
 	 	});
 	}
+	return promise;
 }
 
 function initialize() 
@@ -335,11 +338,20 @@ document.addEventListener('DOMContentLoaded', function ()
 
 
 	document.getElementById('favButton').addEventListener('click', function(event){
+
+		if (this.getAttribute('data-clicked') == 'true') return;
+		this.setAttribute('data-clicked', true);
+
 	  	$('#favorites').show();
 		$('#front').hide();
 		$('#no_of_results').hide();
 	  	$('.bricklayer').hide();
- 		addFavorites();
+	  	
+ 		var promise = addFavorites();
+ 		var now = this;
+ 		promise.always(function(){
+ 			now.setAttribute('data-clicked', false);
+ 		});
 	});
 
 
