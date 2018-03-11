@@ -1,14 +1,17 @@
-html {
-    position: relative;
-    min-height: 100%;
-}
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    position:absolute;
 
+}
 body {
-    position: relative;
-    font-family: 'Roboto Mono', monospace;
-    margin-bottom: 60px;
-}
 
+    font-family: 'Roboto Mono', monospace;
+}
 article {
     display: block;
     text-align: left;
@@ -17,16 +20,16 @@ article {
     padding-bottom: 15%;
     margin: 0 auto;
 }
-.footer {
-    position: absolute;
+footer {
+    clear:both;
+    position: fixed;
     bottom: 0;
     right: 0;
     left: 0;
     width: 100%;
     height: 60px;
     line-height: 60px;
-    background-color: #E5E8E8;
-    margin-top: 2%;
+    background-color: #E5E8E8;    
 }
 
     .favListItem {
@@ -108,7 +111,10 @@ li {
     background-color:rgb(255, 193, 7);
     /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
 }
-
+.bricklayer
+{    
+     margin-bottom: 200px;
+}
 
 @media screen and (min-width: 768px) {
     .bricklayer-column-sizer {
