@@ -282,6 +282,7 @@ function help_show() {
 	document.getElementById('search').style.display = "none";
 	document.getElementById('help_popup').style.display = "block";
 }
+
 //Function to Hide Help
 function help_hide() {
 	document.getElementById('search').style.display = "block";
@@ -295,6 +296,7 @@ function sortFav(val)
 	});
 }
 
+//refresh Favourites
 function refreshFav()
 {
 	chrome.storage.sync.set({ favs : favs }, function() {
@@ -304,6 +306,23 @@ function refreshFav()
 				});
 	addFavorites();	
 }
+
+//Clear All Favourites
+ $(function() {
+ 	$(document).on("click", "#clearfav", function(){
+		 
+ 		  chrome.storage.sync.set({ favs : [] }, function() {
+ 				    if (chrome.runtime.error) {
+ 				      	console.log("Runtime error."); 				    }
+ 				});
+
+		$('#front').hide();
+		$('#no_of_results').hide();
+	  	$('.bricklayer').hide();
+ 	 	addFavorites();
+
+ 	});
+ });
 
 
 //Search using search box
@@ -332,8 +351,6 @@ $(function() {
 });
 
 
-
-
 //Add Favorites
 function addFavorites()
 {
@@ -352,13 +369,14 @@ function addFavorites()
 
 
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
-					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' ></center><br>");				
+					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' >  </center><br>");				
 						$(function(){
 							$("#favSearchInputBox").keyup(function(){				 		
 							 		searchfav();
 								});
 							});
-					let table_start = '<table id="t1" class="table table-hover"><thead><tr><th style="text-align: center;" scope="col">Code File</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="language">Language </th><th style="text-align: center;" scope="col" class="sortbythis" sortby="date">Date/Time</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="area">Area</th></tr></thead><tbody>';
+					let addModal =' <div class="modal" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div><div class="modal-body"><p>You are about to delete all your Favorites.<b><i class="title"></i></b><p> This procedure is irreversible.</p><p>Do you want to proceed?</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" data-dismiss="modal" id="clearfav" class="btn btn-danger btn-ok">Delete</button></div></div></div></div>';	
+					let table_start = '<table id="t1" class="table table-hover"><thead><tr><th scope="col"> <button class="btn btn-warning" data-record-id="54" data-record-title="Something cool" data-toggle="modal" data-target="#confirm-delete">Clear All &#10062;</button></th><th style="text-align: center;" scope="col">Code File</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="language">Language </th><th style="text-align: center;" scope="col" class="sortbythis" sortby="date">Date/Time</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="area">Area</th></tr></thead><tbody>';
 				    let table_body = '';
 				    let table_end = "</tbody></table></ul><br><br><br><br><br>";
 				    for (var fname in favs)
@@ -368,7 +386,7 @@ function addFavorites()
 					   	temp = temp.replace(/_/g, '');					   
 						var str = '#myStar'+temp;
 						var filename = favs[fname].filename.replace(/^.*[\\\/]/, '');
-						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i><a class='favListItem' target='_blank' href='/code/"+favs[fname].filename+"'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' href='/code/"+favs[fname].filename+"'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
 						table_body += '<td class="favListItem ">'+favs[fname].language+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].date+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].area+'</td></tr>';
@@ -383,7 +401,7 @@ function addFavorites()
 
 				    }
 
-				    $('#favorites').append(table_start+table_body+table_end);
+				    $('#favorites').append(addModal+table_start+table_body+table_end);
 				}
 	    	}
 	 	});
