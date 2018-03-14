@@ -425,9 +425,6 @@ function initialize()
 	}	
 }
 
-
-
-
 document.addEventListener('DOMContentLoaded', function () 
 {
 	var val=localStorage.getItem("openThroughWeb");
