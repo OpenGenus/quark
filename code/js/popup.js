@@ -455,7 +455,6 @@ document.addEventListener('DOMContentLoaded', function ()
 	});
 	
 	$(window).bind('mousewheel', function(event) {
-		console.log(document.body.scrollTop)
 		if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
 	        document.getElementById("scrollBtn").style.display = "block";
 	    } else {
