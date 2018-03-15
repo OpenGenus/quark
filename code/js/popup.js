@@ -369,7 +369,7 @@ function addFavorites()
 
 
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
-					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' >  </center><br>");				
+					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' >  </center><br><h3>Total Saved Favorites : "+favs.length+"</h3>");				
 						$(function(){
 							$("#favSearchInputBox").keyup(function(){				 		
 							 		searchfav();
