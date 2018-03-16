@@ -1,0 +1,38 @@
+var search_words = ["array","count set bits","dynamic programming","karger minimum cut", "sleep sort", "bridges in graph", "pairing heap", "rod cutting", "rat in a maze", "egyptian fraction", "area of triangle", "twice unique number", "adjacency lists", "project euler", "doubly linked list", "steiner tree", "binary search", "suffix array", "longest common substring", "modular inverse", "biggest suffix", "jacobi method", "sort", "bubble sort", "reverse queue", "hamming distance","graph", "directed graph", "sudoku solve", "longest common increasing subsequence", "permutations of string", "amicable numbers", "nth node linked list", "check if square", "undirected graph", "remove duplicate" ,"trie", "minimum cost polygon triangulation", "diameter", "2d line intersection", "affine cipher", "diophantine", "prime numbers", "queue stream", "quick sort", "sort stack", "reverse number", "eulerian path", "rabin karp algorithm", "lipogram checker", "ford fulkerson maximum flow", "jaccard similarity", "convolution", "kruskal minimum spanning tree", "palindrome partition", "babylonian method", "heap sort", "minimum subarray size with degree", "tokenizer", "2d separating axis test", "circle sort", "dinic maximum flow", "sieve of eratosthenes", "fleury algorithm euler path", "armstrong numbers", "perfect number", "shuffle array", "lossy compression","tridiagonal matrix", "decision tree", "count trailing zeroes", "prim minimum spanning tree", "cut vertices", "palindrome checker", "average stream numbers", "make mirror tree", "log of factorial", "password strength checker", "binomial coefficient", "fast fourier transform", "interval tree", "stack","queue","graham scan", "newton polynomial", "intro sort", "sum of binary numbers", "red black tree", "largest sum contiguous subarray", "left view binary tree", "shortest seek time first", "centroid decomposition", "support vector machine", "lexicographic string rank", "multi level feedback queue scheduling", "hash table", "xor swap", "subset sum", "partitions of set", "job sequencing", "hillclimber", "closest pair of points", "bead sort", "peterson algorithm for mutual exclusion", "circular buffer", "pandigital number", "validate IP", "palindrome check", "randomized quick sort", "fibonacci number", "lagrange polynomial", "bresenham line","bipartite checking", "reverse factorial", "gaussian mixture model","dijkstra", "fractals", "bogo sort", "lucas theorem", "topological sort", "shortest path","strongly connected components", "doubly linked list", "knapsack", "linked list", "longest common subsequence","transitive closure graph","bellman ford algorithm", "bloom filter", "longest bitonic sequence", "print reverse", "karatsuba multiplication", "min cost path", "horner polynomial evaluation", "huffman coding", "morse code", "first come first serve", "lucky number", "bit division", "interpolation search", "maximum bipartite matching", "kasai algorithm", "k means", "naive bayes", "soft heap", "polybius cipher", "tree sort","observer pattern", "cycle sort", "merge sort", "xor linked list", "segmented sieve of eratosthenes", "kruskal", "skip list", "sum equals xor", "random forests", "queue using stack", "exponentiation by squaring", "hierachical clustering", "atbash cipher","knight tour", "median", "rail fence cipher", "warnock algorithm", "bucket sort", "path sum", "coin change", "max heap","smallest digit in number", "Logistic Regression", "fuzzy search", "shaker sort","shortest common supersequence", "longest increasing subsequence", "circular linked list", "fractional knapsack", "bankers algorithm", "connected components", "stack", "multiply polynomial","stooge sort", "porta cipher", "AVL tree", "B tree", "vigenere cipher", "union find", "gnome sort", "binomial coefficient", "queue", "minimum insertion palindrome", "morse cipher", "min heap", "right view","euler totient","josephus problem", "catalan number", "pythagorean triplet", "comb sort", "principal component analysis", "flip bits", "maximum height", "rsa", "jarvis march", "kuhn maximum matching", "invert bit", "number of ways in maze", "pangram checker","neural network", "maximum sum increasing subsequence","biconnected_components", "genetic algorithm", "greatest digit in number", "next larger number","pascal triangle", "quad tree", "weighted job scheduling", "ternary search", "n queen", "graph coloring", "hamiltonian path", "factorization machines","quickhull", "split list", "singleton pattern", "median sort", "bridge tree", "magic square","naive pattern search", "producer consumer", "tribonacci numbers","hopcroft karp algorithm" ,"fermats little theorem", "bron kerbosch algorithm", "spiral printing", "minimum height","finite automata", "sutherland hodgeman clipping", "boolean parenthesization", "bottom view binary tree", "k Nearest Neighbours", "suffix array", "distance between points","breadth first search","balanced expression", "caesar cipher", "shell sort", "magic number", "inversion count", "permutation in lexicographic order", "convert number in binary", "k centers", "factorial", "activity selection", "edit distance", "reader writer", "hamiltonian cycle", "fibonacci search", "Linear Regression", "longest independent set","round robin scheduling","treap","matrix chain multiplication", "detect cycle", "sieve of atkin", "prime factors", "egg dropping puzzle", "floyd warshall algorithm", "columnar transposition cipher", "sum of digits", "splay tree", "shuffle an array", "kmp algorithm", "russian peasant multiplication", "linear search", "travelling salesman mst", "fenwick tree", "anagram search", "selection sort","insertion sort","kd tree", "least recently used","binomial heap","radix sort", "median of medians","segment tree","palindrome checker" ,"astar algorithm","topological sort", "leftist tree","coprime numbers", "depth first search", "automorphic numbers", "reservoir sampling", "tiling problem", "integer to roman","quick sort","subset generation","boyer moore algorithm","vertex cover","strongly connected components", "dining philosophers","area of polygon", "average", "queue using linked list","reverse stack","minimum coins","crossword puzzle", "infix to postfix","jump search", "smallest remaining time first","karger minimum cut algorithm","tower of hanoi", "fermat primality test", "gcd","lcm","newton raphson method", "hill climbing","merge sort"];
+
+function find(val)
+{
+  //this function is to make the search for certain words in web page case-insensitive
+	$.extend($.expr[":"], {
+	    "containsIN": function(elem, i, match, array) {
+	    return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+	    }
+	    });  
+
+  //this function searches for 'val' in all the <p> elements of web page 
+	 $("p:containsIN('"+val+"')").each( function() {
+       	var content =$( this ).text();
+        var ch='<a href="#" class="link" data-toggle="tooltip" title="Search in quark">'+val+'</a>'// replaces 'val' with this clickable 'val'
+       	var pattern = new RegExp(val, 'gi');
+        content = content.replace(pattern,ch);
+      	$( this ).html(content);// new html content would allow to click on 'val' and will show 'Search in quark' while hovering
+      });
+}
+$(document).ready(function(){
+      for(var i=0;i<search_words.length;i++)
+      {
+        find(search_words[i]);
+      }
+      //when any of such word is clicked then message will be sent from content script to the extension
+      $(function() {
+      $(document).on("click", ".link", function(){
+        var val=$(this).text();
+        chrome.runtime.sendMessage({clicked: "true", value: val }, function(response) {
+            console.log(response.mesg);
+            
+      });
+    });
+});
+});
+
+
