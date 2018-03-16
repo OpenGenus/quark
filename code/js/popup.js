@@ -53,7 +53,6 @@ function updateFavs(x, filename) {
 		      		f1.area = area;
 			      	favs.push(f1);
 			    } else {
-			       	// var index = favs.indexOf(filename);
 			       	if (index > -1) {
 				   		favs.splice(index, 1);
 					}	
@@ -89,6 +88,11 @@ $(function() {
 		dumpBookmarks($(this).val());
 	});
 });
+
+function remRow(row, pos) {
+    var table = document.getElementById('t1');
+    table.deleteRow(pos);
+}
 
 var current_fname;
 function dumpBookmarks(query) 
@@ -187,9 +191,29 @@ function dumpBookmarks(query)
 						   	}
 						   	sub_result_number++;
 						}
+
 						var send = '#myStar'+temp2;
 						$(document).on("click", send , function() {
+					   	  	
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	 	var fname = this.id.substr(6, this.id.length);
+							var pos = 0;
+
+							for(let i in favs ) {
+								f = favs[i].filename;
+							   	f = f.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+							   	f = f.replace(/_/g, '');
+							    if ( f == fname) {
+							    	pos = i;
+							        break;
+							    }
+							}		
+
+					   	  	if($('#favorites').is(':hidden')) {} else {
+					   	  		pos++;
+				   	  			remRow(this, pos)
+				   	  		}
+					   	 	
 					   	  	updateFavs(this, filenames[filename_pos]);
 					    });	
 					   
@@ -351,6 +375,9 @@ $(function() {
 });
 
 
+
+
+
 //Add Favorites
 function addFavorites()
 {
@@ -386,7 +413,7 @@ function addFavorites()
 					   	temp = temp.replace(/_/g, '');					   
 						var str = '#myStar'+temp;
 						var filename = favs[fname].filename.replace(/^.*[\\\/]/, '');
-						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' href='/code/"+favs[fname].filename+"'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' href='/code/"+favs[fname].filename+"'>"+filename+"&nbsp;&nbsp;</a><br></ul></td>";
 						table_body += '<td class="favListItem ">'+favs[fname].language+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].date+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].area+'</td></tr>';
@@ -395,8 +422,6 @@ function addFavorites()
 				    	$('#myStar'+temp).on("click",function () {						   	
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
 					   	  	updateFavs(this, filenames[filename_pos]);
-					   	  	
-
 				    	});	
 
 				    }
