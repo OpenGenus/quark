@@ -220,3 +220,15 @@ ul.share-buttons .sr-only{
 #scrollBtn:hover {
   background-color: #555;
 }
+
+#share-buttons img {
+  width: 35px;
+  padding: 5px;
+}
+
+#share-footer{
+    background-color:#FFFA79;
+    margin:-2px -50px 0 -50px;
+    text-align:center;
+    border-radius:0 0 10px 10px;
+}
