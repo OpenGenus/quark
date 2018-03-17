@@ -186,6 +186,34 @@ hr {
     color: #077bff;
 }
 
+
+#searchSuggest .ui-menu-item{
+    list-style: none outside none;
+    width: 100%;
+    padding: 0px;
+   }
+
+#search {
+    margin-bottom: 15px;
+}
+
+#searchSuggest {
+    width: 100%;
+    border:3px solid black;
+    margin-bottom: 15px;
+}
+
+#searchSuggest .ui-autocomplete {
+  width: 100%;
+  position: relative;
+  float: none;
+}
+#searchSuggest .ui-menu-item:hover{
+  background-color: #D3D3D3;
+}
+#searchSuggest .ui-menu .ui-menu-item {
+    float: none;
+
 ul.share-buttons{
   list-style: none;
   padding: 0;
