@@ -1,0 +1,41 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Text Editor</title>
+  <script src="js/editor.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/editor.css">	
+</head>
+<body style="margin:2px">
+<h1 style="font-size:30px;color:#000"><b>EDIT YOUR CODE</b></h1>
+ 
+    <div class="toolbar">
+    <table>
+    <tr>
+        <td>Select a File to Load:</td>
+        <td><input type="file" id="fileToLoad"></td>
+        <td><button onclick="loadFileAsText()" class="dropbtn" style="width:60px">LOAD</button></td>
+	<td>
+		<div class="dropdown">
+			<button onclick="myFunction()" class="dropbtn" style="width:80px">EDIT</button>
+  			<div id="myDropdown" class="dropdown-content">
+    				<input type="button" value="ZoomIn" onclick="increaseFontSizeBy1px()" style="width:80px;background-color:#fff">
+				<input type="button" value="ZoomOut" onclick="decreaseFontSizeBy1px()"style="width:80px;background-color:#fff">	
+				<input type="button" value="Clear" onclick="javascript:eraseText()"style="width:80px;background-color:#fff"> 
+				<input type="button" value="Undo" onclick="javascript:loadFileAsText()"style="width:80px;background-color:#fff"> 
+  			</div>
+		</div>
+        </td>
+    <tr>
+    	<td colspan="20"><textarea id="inputTextToSave" cols="80" rows="25" >// Edit Your Code Here....</textarea></td>
+    </tr>
+     <tr>
+        <td>Filename to Save As:</td>
+        <td><input id="inputFileNameToSaveAs"></input></td>
+        <td><button onclick="saveTextAsFile()" style="width: 80px" class="dropbtn">SAVE</button></td>
+	<td><button style="width: 80px" class="dropbtn"><a href="popup.html" style="color:#fff;text-decoration:none;">CLOSE</a></button></td>
+    </tr>
+    </table>
+</body>
+</html>
