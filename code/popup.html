@@ -47,14 +47,23 @@
             
             <div class="col-sm-4">
 
-                  <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
-
-                  <a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
-
                   <a class="btn float-right" target="_blank" id="favButton" href="javascript:void(0)">Favorites</a>
 
+                  <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">Settings<span class="caret"></span></button>
+                        <ul class="dropdown-menu" id="main_drop_menu">
+                            <li class="dropdown_button" title="Refresh data">
+                                <a href="?#refresh">Refresh</a>
+                            </li>
+                            <div class="dropdown-divider"></div>
+                            <li>
+                                <a title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
+                            </li>
+                            <div class="dropdown-divider"></div>
+                            <li>
+                                <a target="_blank" id="help" href="javascript:void(0)">Help</a>
+                            </li>
+                         </ul>
 
-                  
                   <div class="dropdown">
                     <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">More Apps<span class="caret"></span></button>
                         <ul class="dropdown-menu" id="main_drop_menu">
