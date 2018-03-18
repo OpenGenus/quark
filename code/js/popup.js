@@ -11,7 +11,7 @@ obj_keys.sort();
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
 var favs = [];
 var filenames = [];
-var bricklayer ;
+var bricklayer;
 
 function AddNewTags (tagName)
 {
@@ -27,6 +27,7 @@ function updateFavs(x, filename) {
     x.classList.toggle("checked");	  
 	if (chrome && chrome.storage) {
 	    chrome.storage.sync.get({favs: []}, function(items) {
+
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
 		      	let found = false;
@@ -53,7 +54,6 @@ function updateFavs(x, filename) {
 		      		f1.area = area;
 			      	favs.push(f1);
 			    } else {
-			       	// var index = favs.indexOf(filename);
 			       	if (index > -1) {
 				   		favs.splice(index, 1);
 					}	
@@ -77,6 +77,7 @@ $(function() {
      $('#error-message').empty();
      $('#no_of_results').empty(); 			
  	 dumpBookmarks($('#search').val());
+	 current_query = $('#search').val();
   });
 });
 
@@ -88,12 +89,17 @@ $(function() {
  		$('#error-message').empty();
  		$('#no_of_results').empty();
 		dumpBookmarks($(this).val());
+		current_query = $(this).val();
 	});
 });
 
 var current_fname;
-function dumpBookmarks(query) 
+var current_query;
+var y=0;
+function dumpBookmarks(current_query) 
 {
+	y++;
+	var query = current_query;
 	$('#search').val(query);
 	$("#front").hide();
 	$("#favorites").hide();
@@ -108,8 +114,8 @@ function dumpBookmarks(query)
 
 	for(var pos in single_query)
 	{
-		current_query = single_query[pos];
-		if(current_query != "")
+		curr_query = single_query[pos];
+		if(curr_query != "")
 		{
 			found_word = 1;
 			break;
@@ -167,6 +173,7 @@ function dumpBookmarks(query)
 					   	temp2 = fname;
 					   	temp2 = temp2.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
 					   	temp2 = temp2.replace(/_/g, '');
+						temp2=temp2+y;
 
 					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
 
@@ -181,20 +188,40 @@ function dumpBookmarks(query)
 							    }
 							}		
 
-						   	if(found_in_Favs==false) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
-						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
-						   	}
+							if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') { //dark
+						   		if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
+								} else {
+							   		inside_text = inside_text + "<a  target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
+							   	}
+						   	} else {  //light
+						   		if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
+							   	} else { 
+							   		inside_text = inside_text + "<a  target='_blank' id='myId"+temp2+"' href='javascript:void(0)'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a href='/code/"+key+"/"+obj[key][dd]+"' download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
+							   	}
+						   }
 						   	sub_result_number++;
 						}
 						var send = '#myStar'+temp2;
 						$(document).on("click", send , function() {
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	  	filename_pos = filename_pos.replace(/[0-9]/g, '');
 					   	  	updateFavs(this, filenames[filename_pos]);
 					    });	
-					   
-					   
+
+					    send = '#myId'+temp2;
+						$(document).on("click", send , function() {
+							var filename_pos = '#myStar'+this.id.substr(4, this.id.length);
+							filename_pos = filename_pos.replace(/[0-9]/g, '');
+					   	 	var win = window.open("/code/"+filenames[filename_pos]);
+					   	 	win.addEventListener("load", function(){
+					   	 		if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+								    win.document.body.style.backgroundColor = "#333333";  
+								    win.document.body.style.color = "#FFFFFF";  
+								}
+							});
+					    });			
 					}
 
 					//Individual Cards
@@ -202,9 +229,15 @@ function dumpBookmarks(query)
               	    var card = document.createElement('div');
 				    card.setAttribute("class", "card");
 				    card.setAttribute("style","margin-bottom: 8px");
-				    
+				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+				    	card.setAttribute("style","margin-bottom: 8px; background-color: #142634");
+				    }
+				
 				    var card_title = document.createElement('div');
 				    card_title.setAttribute("class","card-title");
+				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+				    	card_title.setAttribute("style","background-color: #CC9A06");
+				    }
 				    card_title.setAttribute("target","_blank");
 				    card_title.setAttribute("id","card_title_"+temp);
 				    card_title.setAttribute("href","javascript:void(0)");
@@ -221,6 +254,13 @@ function dumpBookmarks(query)
 						card_body.setAttribute("style","display: none;");
 					}
 				    card_body.innerHTML = inside_text;
+				    if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+					    if (total == 1 || total == 2 || total ==3) {
+					    	card_body.setAttribute("style","margin-bottom: 8px; background-color: #142634; display: block;");
+						} else {
+							card_body.setAttribute("style","margin-bottom: 8px; background-color: #142634; display: none;");
+						}
+				    }
 
 				    card.appendChild(card_title);
 				    card.appendChild(card_body);
@@ -247,8 +287,10 @@ function dumpBookmarks(query)
 	else
 		res="result";
 	if(total!=0)
-		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
-		
+	{
+		$('#no_of_results').empty();
+		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #a56ed3'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #a56ed3'><b>'"+query +"'</b></span></h6>"+"</ul>");
+	}	
 
 	if (found == 0 && found_word!=0)
 	{
@@ -269,12 +311,18 @@ function addtags()
 {
 	var tags_display_number = 10 ;
 	var display_ele = '';
-	var style = 'margin: 2px;border-radius: 5px;';
+	var style;
+	if ( sessionStorage.getItem('bg') === 'rgb(255, 255, 255)') {			//light mode
+		style = 'margin: 2px;border-radius: 5px; filter:brightness(100%);';
+	} else {																//dark mode
+		style = 'margin: 2px;border-radius: 5px; filter:brightness(80%);';
+	}
 	for (var i =0 ;i<tags_display_number;i++)
 	{
 		display_ele += '<input type="button" style ="'+style+'"class="btn-xs button-pop btn-warning" value="'+tags[i]+'"/>'
 	}
 
+	$('#pop-tags').empty();
 	$('#pop-tags').append(display_ele);
 }
 
@@ -353,8 +401,10 @@ $(function() {
 
 
 //Add Favorites
+var x=0;
 function addFavorites()
 {
+	x=x+1;
 	$('#favorites').empty();
 	var promise = $.Deferred();
 	if (chrome && chrome.storage) {
@@ -385,22 +435,44 @@ function addFavorites()
 				    {
 				    	temp = favs[fname].filename;
 					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-					   	temp = temp.replace(/_/g, '');					   
+					   	temp = temp.replace(/_/g, '');	
+
 						var str = '#myStar'+temp;
 						var filename = favs[fname].filename.replace(/^.*[\\\/]/, '');
-						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' href='/code/"+favs[fname].filename+"'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+
+						temp=temp+x;
+						if(sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') { //dark
+							table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' style='color: rgb(255, 255, 255); font-weight: bold' id='myId"+temp+"' href='javascript:void(0)'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+						} else {
+							table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' id='myId"+temp+"' href='javascript:void(0)'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+						}
+
 						table_body += '<td class="favListItem ">'+favs[fname].language+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].date+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].area+'</td></tr>';
 
-
-				    	$('#myStar'+temp).on("click",function () {						   	
-					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+				    	$('#myStar'+temp).on("click",function () {	
+				    		var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+					   	 	filename_pos = filename_pos.replace(/[0-9]/g, '');
 					   	  	updateFavs(this, filenames[filename_pos]);
 					   	  	
 
 				    	});	
 
+				    	send = '#myId'+temp;
+						$(document).on("click", send , function() {
+							var filename_pos = '#myStar'+this.id.substr(4, this.id.length);
+					   	 	filename_pos = filename_pos.replace(/[0-9]/g, '');
+					   	 	var win = window.open("/code/"+filenames[filename_pos]);
+					   	 	win.addEventListener("load", function(){
+					   	 		if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+								    win.document.body.style.backgroundColor = "#333333";  
+								    win.document.body.style.color = "#FFFFFF";  
+								}
+							});
+					   	 
+					    });	
+						
 				    }
 
 				    $('#favorites').append(addModal+table_start+table_body+table_end);
@@ -429,8 +501,204 @@ function initialize()
 	}	
 }
 
+function dark() { 
+    if ( sessionStorage.getItem('bg') === 'rgb(255, 255, 255)') {			//light mode to dark mode
+        sessionStorage.setItem('bg', 'rgb(51, 51, 51)');
+        sessionStorage.setItem('cc', '#EEEEEE');     
+        document.getElementById('logo').style.filter = "brightness(80%)";
+        document.getElementById('fact').style.filter = "brightness(80%)";
+        document.getElementById('search').style.filter = "brightness(80%)";
+        document.getElementById('dark_light').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dark_light').style.fontWeight = "bold";
+ 		document.getElementById('help').style.color = "rgb(255, 255, 255)";
+        document.getElementById('help').style.fontWeight = "bold";
+		document.getElementById('favButton').style.color = "rgb(255, 255, 255)";
+        document.getElementById('favButton').style.fontWeight = "bold";
+        document.getElementById('gitHub').style.color = "rgb(255, 255, 255)";
+        document.getElementById('gitHub').style.fontWeight = "bold";
+        document.getElementById('dropBut').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dropBut').style.fontWeight = "bold";
+        
+        elements = document.getElementById("favorites");
+        var s = elements.innerHTML;
+		pos = 0;
+		ii = -1;
+		prev = 0;
+		var r = "";
+		while (pos != -1) {
+		    pos = s.indexOf('target="_blank"', ii + 1);
+		    ii = pos;
+		    
+		    r+=s.slice(prev,pos+16);
+		    r+="style='color: rgb(255, 255, 255); font-weight: bold' "
+		   
+		   	if(pos!=-1) prev=pos;
+		}
+		r+=s.slice(prev);
+		elements.innerHTML = r;
+
+        elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#adadad";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Light Mode";
+
+        addtags(); 
+
+        if(current_query!=""){ 
+			elements = document.getElementsByClassName("card");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#142634";
+		        elements[i].style.marginBottom="8px";
+		    }
+		    elements = document.getElementsByClassName("card-title");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#CC9A06";
+		    }
+		    elements = document.getElementsByClassName("card-body");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#142634";
+		        elements[i].style.marginBottom="8px";
+
+				var s = elements[i].innerHTML;
+				pos = 0;
+				ii = -1;
+				prev = 0;
+				var r = "";
+				
+				while (pos != -1) {
+				    pos = s.indexOf('target="_blank"', ii + 1);
+				    ii = pos;
+				    
+				    r+=s.slice(prev,pos+16);
+				    r+="style='color: rgb(255, 255, 255); font-weight: bold' "
+				   
+				   	if(pos!=-1) prev=pos;
+				}
+				r+=s.slice(prev);
+				elements[i].innerHTML = r;
+			}
+        	
+        }
+    }
+    else if (sessionStorage.getItem('bg') == null || undefined) {			//initial
+        sessionStorage.setItem('bg', 'rgb(51, 51, 51)');
+        sessionStorage.setItem('cc', '#EEEEEE');
+        document.getElementById('logo').style.filter = "brightness(80%)";
+        document.getElementById('fact').style.filter = "brightness(80%)";
+        document.getElementById('search').style.filter = "brightness(80%)";
+        document.getElementById('dark_light').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dark_light').style.fontWeight = "bold";
+ 		document.getElementById('help').style.color = "rgb(255, 255, 255)";
+        document.getElementById('help').style.fontWeight = "bold";
+		document.getElementById('favButton').style.color = "rgb(255, 255, 255)";
+        document.getElementById('favButton').style.fontWeight = "bold";
+        document.getElementById('gitHub').style.color = "rgb(255, 255, 255)";
+        document.getElementById('gitHub').style.fontWeight = "bold";
+        document.getElementById('dropBut').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dropBut').style.fontWeight = "bold";
+        
+
+		elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#adadad";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Light Mode";
+    }
+    else if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {			//dark mode to light mode
+        sessionStorage.setItem('bg', 'rgb(255, 255, 255)');
+        sessionStorage.setItem('cc', '#333');  
+        document.getElementById('logo').style.filter = "brightness(100%)";
+        document.getElementById('fact').style.filter = "brightness(100%)";
+        document.getElementById('search').style.filter = "brightness(100%)";
+        document.getElementById('dark_light').style.color = "rgb(0, 127, 255)";
+        document.getElementById('dark_light').style.fontWeight = "normal";
+        document.getElementById('help').style.color = "rgb(0, 127, 255)";
+        document.getElementById('help').style.fontWeight = "normal";
+		document.getElementById('favButton').style.color = "rgb(0, 127, 255)";
+        document.getElementById('favButton').style.fontWeight = "normal";
+		document.getElementById('gitHub').style.color = "rgb(0, 127, 255)";
+        document.getElementById('gitHub').style.fontWeight = "normal";
+        document.getElementById('dropBut').style.color = "rgb(0, 127, 255)";
+        document.getElementById('dropBut').style.fontWeight = "normal";
+        
+        elements = document.getElementById("favorites");
+        var s = elements.innerHTML;
+		var r = s.replace(/style\=\"color\: rgb\(255\, 255\, 255\)\; font\-weight\: bold\"/g, "style='color: rgb(0, 127, 255); font-weight: normal'");
+		elements.innerHTML = r;
+
+        elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#f5f5f5";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Dark Mode";
+        addtags();
+        if(current_query!=""){ 
+			elements = document.getElementsByClassName("card");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#FFFFFF";
+		        elements[i].style.marginBottom="8px";
+		    }
+		    elements = document.getElementsByClassName("card-title");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#FFC107";
+		    }
+		    elements = document.getElementsByClassName("card-body");
+		        for (var i = 0; i < elements.length; i++) {
+		        elements[i].style.backgroundColor="#FFFFFF";
+		        elements[i].style.marginBottom="8px";
+
+		        var s = elements[i].innerHTML;
+    			var r = s.replace(/style\=\"color\: rgb\(255\, 255\, 255\)\; font\-weight\: bold\"/g, "style='color: rgb(0, 127, 255); font-weight: normal'");
+				elements[i].innerHTML = r;
+		    }
+        }
+    }
+	document.body.style.backgroundColor = sessionStorage.getItem('bg');
+	document.body.style.color = sessionStorage.getItem('cc');
+}
+
+function init_dark() {
+	current_query="";
+    if ( sessionStorage.getItem('bg') === 'rgb(255, 255, 255)') {			//light mode
+        sessionStorage.setItem('bg', 'rgb(255, 255, 255)');
+        sessionStorage.setItem('cc', '#333');  
+    }
+    else if (sessionStorage.getItem('bg') == null || undefined) {			//initial
+    	sessionStorage.setItem('bg', 'rgb(255, 255, 255)');
+        sessionStorage.setItem('cc', '#333');  
+    }
+    else if( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {			//dark mode
+     	sessionStorage.setItem('bg', 'rgb(51, 51, 51)');
+        sessionStorage.setItem('cc', '#EEEEEE');
+        document.getElementById('logo').style.filter = "brightness(80%)";
+        document.getElementById('fact').style.filter = "brightness(80%)";
+        document.getElementById('search').style.filter = "brightness(80%)";
+        document.getElementById('dark_light').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dark_light').style.fontWeight = "bold";
+ 		document.getElementById('help').style.color = "rgb(255, 255, 255)";
+        document.getElementById('help').style.fontWeight = "bold";
+		document.getElementById('favButton').style.color = "rgb(255, 255, 255)";
+        document.getElementById('favButton').style.fontWeight = "bold";
+		document.getElementById('gitHub').style.color = "rgb(255, 255, 255)";
+        document.getElementById('gitHub').style.fontWeight = "bold";
+        document.getElementById('dropBut').style.color = "rgb(255, 255, 255)";
+        document.getElementById('dropBut').style.fontWeight = "bold";
+        elements = document.getElementsByClassName("footer");
+	        for (var i = 0; i < elements.length; i++) {
+	        elements[i].style.backgroundColor="#adadad";
+	    }
+	    document.getElementById("dark_light").innerHTML ="Light Mode";
+    }
+	document.body.style.backgroundColor = sessionStorage.getItem('bg');
+	document.body.style.color = sessionStorage.getItem('cc');
+}
+
 document.addEventListener('DOMContentLoaded', function () 
 {
+	$('#favorites').hide();
+	init_dark();
+
 	var val=localStorage.getItem("openThroughWeb");
 	if(val=="yes")
 	{
@@ -442,12 +710,34 @@ document.addEventListener('DOMContentLoaded', function ()
 	}
 
 	document.getElementById('help').addEventListener('click', function(event){
-	  help_show();
+		if ( sessionStorage.getItem('bg') === 'rgb(51, 51, 51)') {
+	 		var elem = document.getElementById("form");
+	 		elem.setAttribute("style","background-color: #142634;");
+	 		elem = document.getElementById("welcome_heading");
+	 		elem.setAttribute("style","background-color: #CC9A06;");
+	 		elem = document.getElementById("share-footer");
+	 		elem.setAttribute("style","background-color: #CC9A06;");
+	 	} else {
+	 		var elem = document.getElementById("form");
+	 		elem.setAttribute("style","background-color: #FFFFFF;");
+	 		elem = document.getElementById("welcome_heading");
+	 		elem.setAttribute("style","background-color: #FEF200;");
+	 		elem = document.getElementById("share-footer");
+	 		elem.setAttribute("style","background-color: #FEF200;");
+	 	}
+	
+	 	help_show();
+	
 	});
 
 
 	document.getElementById('close').addEventListener('click', function(event){
-	  help_hide();
+	  		help_hide();
+		});
+
+	
+	document.getElementById('dark_light').addEventListener('click', function(event){
+	  dark();
 	});
 
 
@@ -467,6 +757,7 @@ document.addEventListener('DOMContentLoaded', function ()
  		promise.always(function(){
  			now.setAttribute('data-clicked', false);
  		});
+
 	});
 
 	document.getElementById('scrollBtn').addEventListener('click', function(event){
@@ -483,9 +774,9 @@ document.addEventListener('DOMContentLoaded', function ()
 	    };
 	});
 
+	
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     initialize();
     addtags();
-
 });
