@@ -50,6 +50,6 @@ function populate () {
 	});	
 }
 
-if (!localStorage["metadata"]) {
+if (!localStorage["metadata"] || location.hash === "#refresh") {
 	populate();
 }
