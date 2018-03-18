@@ -72,6 +72,7 @@ function updateFavs(x, filename) {
 
 $(function() {
   $('#search').change(function() {
+	 $('#no_of_results').show();
      $('.bricklayer').empty();
      $('#error-message').empty();
      $('#no_of_results').empty(); 			
@@ -459,9 +460,10 @@ document.addEventListener('DOMContentLoaded', function ()
 		$('#front').hide();
 		$('#no_of_results').hide();
 	  	$('.bricklayer').hide();
+	  	$('#error-message').empty();
 	  	
  		var promise = addFavorites();
- 		var now = this;
+ 		var now = this;	
  		promise.always(function(){
  			now.setAttribute('data-clicked', false);
  		});
