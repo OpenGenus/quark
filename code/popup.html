@@ -45,7 +45,7 @@
                    <div id="pop-tags"></div>
                    <center>
                    <ul class="share-buttons">
-                    <span style="weight:2;vertical-align: middle;"><b>Share Via</b></span>
+                    <span style="vertical-align: middle;"><b>Share Via</b></span>
                       <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn&quote=%23OpenGenus%20Quark%3A%20World's%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline" title="Share on Facebook" target="_blank"><img alt="Share on Facebook" src="image/Facebook.png" /></a></li>
                       <li><a href="https://twitter.com/intent/tweet?source=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn&text=%23OpenGenus%20Quark%3A%20World's%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline:%20https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn" target="_blank" title="Tweet"><img alt="Tweet" src="image/Twitter.png" /></a></li>
                       <li><a href="https://plus.google.com/share?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn" target="_blank" title="Share on Google+"><img alt="Share on Google+" src="image/Google+.png" /></a></li>
@@ -56,6 +56,15 @@
 
             
             <div class="col-sm-4">
+
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle dropdown_button float-right fa fa-cog" type="button" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu" id="main_drop_menu">
+                            <li
+                                class="dropdown_button " title="Click to set default language" data-toggle="modal" data-target="#languageModal" >Set Default Language
+                            </li>                  
+                         </ul>
+                  </div>
 
                   <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
 
@@ -88,7 +97,8 @@
                   <div id="calculator_modal"></div>
                   <div id="stopwatch_modal"></div>
                   <div id="timeZone_converter_modal"></div>
-                  
+                  <div id="language_modal"></div>
+
             </div>
         </div><br>
 

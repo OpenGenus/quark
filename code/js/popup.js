@@ -12,6 +12,7 @@ var tags = ['sort','search','math','string','crypto','data structures','graph','
 var favs = [];
 var filenames = [];
 var bricklayer ;
+var defaultLanguages = [];
 
 function AddNewTags (tagName)
 {
@@ -53,7 +54,6 @@ function updateFavs(x, filename) {
 		      		f1.area = area;
 			      	favs.push(f1);
 			    } else {
-			       	// var index = favs.indexOf(filename);
 			       	if (index > -1) {
 				   		favs.splice(index, 1);
 					}	
@@ -92,6 +92,7 @@ $(function() {
 });
 
 var current_fname;
+var langSet;
 function dumpBookmarks(query) 
 {
 	$('#search').val(query);
@@ -145,7 +146,7 @@ function dumpBookmarks(query)
 				temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
 				temp = temp.replace(/_/g, '');
 
-			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+			    if(obj[key].length == 1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
 			    	continue;
 			    else
 			    {
@@ -155,6 +156,16 @@ function dumpBookmarks(query)
 						      	favs = items.favs;			      
 					    	}
 				  		});
+				  		chrome.storage.sync.get("setLang", function(items) {
+		    				if (!chrome.runtime.error) {
+		    					langSet = items["setLang"];
+		    				}
+		    			});
+		    			chrome.storage.sync.get({defaultLanguages: []}, function(items) {
+						    if (!chrome.runtime.error) {
+						      	defaultLanguages = items.defaultLanguages;
+						    }
+						});
 					}
 
 				    let sub_result_number = 1;
@@ -163,38 +174,102 @@ function dumpBookmarks(query)
 				    for (var dd in obj[key])
 				    {
 					   	var fname= key+"/"+obj[key][dd];
-					   	
 					   	temp2 = fname;
 					   	temp2 = temp2.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
 					   	temp2 = temp2.replace(/_/g, '');
 
-					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
-
-					    else
-					    {	  	
+					   	ext = '.'+(fname.split('.'))[1];
 	
-					    	let found_in_Favs = false;
-					      	for(let i in favs ) {
-							    if (favs[i].filename == fname) {
-							        found_in_Favs = true;
-							        break;
-							    }
-							}		
+						if (langSet == 0 || defaultLanguages.length == 0) {
+						   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
 
-						   	if(found_in_Favs==false) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
-						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
-						   	}
-						   	sub_result_number++;
+						    else
+						    {	  	
+		
+						    	let found_in_Favs = false;
+						      	for(let i in favs ) {
+								    if (favs[i].filename == fname) {
+								        found_in_Favs = true;
+								        break;
+								    }
+								}		
+
+							   	if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
+							   	} else {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
+							   	}
+							   	sub_result_number++;
+							}
+							var send = '#myStar'+temp2;
+							$(document).on("click", send , function() {
+						   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+						   	  	updateFavs(this, filenames[filename_pos]);
+						    });	
+						} else if(defaultLanguages.indexOf(ext) != -1) {
+							if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
+
+						    else
+						    {	  	
+		
+						    	let found_in_Favs = false;
+						      	for(let i in favs ) {
+								    if (favs[i].filename == fname) {
+								        found_in_Favs = true;
+								        break;
+								    }
+								}		
+
+							   	if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
+							   	} else {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
+							   	}
+							   	sub_result_number++;
+							}
+							var send = '#myStar'+temp2;
+							$(document).on("click", send , function() {
+						   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+						   	  	updateFavs(this, filenames[filename_pos]);
+						    });	
 						}
-						var send = '#myStar'+temp2;
-						$(document).on("click", send , function() {
-					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
-					   	  	updateFavs(this, filenames[filename_pos]);
-					    });	
 					   
-					   
+					}
+
+					if(inside_text == "") {
+						for (var dd in obj[key])
+					    {
+						   	var fname= key+"/"+obj[key][dd];
+						   	temp2 = fname;
+						   	temp2 = temp2.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+						   	temp2 = temp2.replace(/_/g, '');
+		
+						   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
+
+						    else
+						    {	  	
+		
+						    	let found_in_Favs = false;
+						      	for(let i in favs ) {
+								    if (favs[i].filename == fname) {
+								        found_in_Favs = true;
+								        break;
+								    }
+								}		
+
+							   	if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
+							   	} else {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
+							   	}
+							   	sub_result_number++;
+							}
+							var send = '#myStar'+temp2;
+							$(document).on("click", send , function() {
+						   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+						   	  	updateFavs(this, filenames[filename_pos]);
+						    });	
+						}
 					}
 
 					//Individual Cards
@@ -468,6 +543,331 @@ document.addEventListener('DOMContentLoaded', function ()
  			now.setAttribute('data-clicked', false);
  		});
 	});
+
+	var extensions = "";
+ 	var myFile = new XMLHttpRequest()
+ 	myFile.open("GET", "extensions/extensions.txt", false);
+ 	myFile.onreadystatechange = function ()
+    {
+        if(myFile.readyState === 4)
+        {
+            if(myFile.status === 200 || myFile.status == 0)
+            {
+                extensions = myFile.responseText;
+            }
+        }
+    }
+    myFile.send(null);
+    extensions = extensions.split('\n');
+
+	var modal = '<div class="modal fades" id="languageModal" role="dialog" style="left: 17%;"><div class="modal-dialog ">';
+
+	var modal_content;
+
+	if (chrome && chrome.storage) {
+	    chrome.storage.sync.get("setLang", function(items) {
+		    if (!chrome.runtime.error) {
+
+		      	if(items.length == 0 || items["setLang"] == 0) {
+		      		langSet = 0;
+		      		modal_content= '<div class="modal-content" ><div class="modal-header"><br><br><h4 class="modal-title">Set Default Language</h4>&nbsp;&nbsp;&nbsp;<label id="sw" class="switch"><input type="checkbox"><span class="slider round"></span></label><button type="button" class="close" data-dismiss="modal">&times;</button></div>';
+				} else if (items["setLang"] == 1) {
+					langSet = 1;
+		    		modal_content= '<div class="modal-content" ><div class="modal-header"><br><br><h4 class="modal-title">Set Default Language</h4>&nbsp;&nbsp;&nbsp;<label id="sw" class="switch"><input type="checkbox" checked><span class="slider round"></span></label><button type="button" class="close" data-dismiss="modal">&times;</button></div>';
+	      	  	}
+
+				var modal_body = ' <div class="modal-body" style="overflow: auto;" id="language">';
+				modal_body+='<div class="langList" style="margin: 2px; width: 350px;">';
+
+
+				if (chrome && chrome.storage) {
+				    chrome.storage.sync.get({defaultLanguages: []}, function(items2) {
+					    if (!chrome.runtime.error) {
+					      	defaultLanguages = items2.defaultLanguages;
+
+					      	if (defaultLanguages.length == 0) {
+
+										var listLength = extensions.length;
+										var numInRow = Math.ceil(listLength / 3);
+
+										modal_body+='<div  class="listLang">';
+										var name = 0;
+										for(var i=0; i<numInRow; i++) {
+											temp = extensions[name].split(' ');
+											t = temp[0].split('.').join("");
+											if(items.length == 0 || items["setLang"] == 0) {
+												modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+											} else {
+												modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: red"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+											}
+											name = name + 1;					
+										}
+										modal_body+='</div>';
+
+										modal_body+='<div  class="listLang" >';
+										for(var i=0; i<numInRow; i++) {
+											temp = extensions[name].split(' ');
+											t = temp[0].split('.').join("");
+											if(items.length == 0 || items["setLang"] == 0) {
+												modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+											} else {
+												modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: red"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+											}
+											name = name + 1;
+										}
+										modal_body+='</div>';
+
+										modal_body+='<div class="listLang">';
+										for(var i=0; i<numInRow && name < extensions.length; i++) {
+											temp = extensions[name].split(' ');
+											t = temp[0].split('.').join("");
+											if(items.length == 0 || items["setLang"] == 0) {
+												modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+											} else {
+												modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: red"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+											}
+											name = name + 1;
+										}
+										modal_body+='</div>';
+										modal_body+='</div>';
+
+										modal_footer=""
+										var end_divs = '</div></div></div></div>';
+
+										$('#language_modal').append(modal+modal_content+modal_body+modal_footer+end_divs);
+										
+					      	} else {
+
+							      		var listLength = extensions.length;
+										var numInRow = Math.ceil(listLength / 3);
+
+										modal_body+='<div  class="listLang">';
+										var name = 0;
+										for(var i=0; i<numInRow; i++) {
+											temp = extensions[name].split(' ');
+											t = temp[0].split('.').join("");
+
+											if(defaultLanguages.indexOf(temp[0]) == -1) {
+												if(items.length == 0 || items["setLang"] == 0) {
+													modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+												} else {
+													modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: red"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+												}
+											} else {
+												if(items.length == 0 || items["setLang"] == 0) {
+													modal_body+='<i class="fa2 fa fa-check" id="tick'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+												} else {
+													modal_body+='<i class="fa2 fa fa-check" id="tick'+t+'" style="color: green"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+												}
+											}
+											name = name + 1;
+										}
+										modal_body+='</div>';
+
+										modal_body+='<div  class="listLang" >';
+										for(var i=0; i<numInRow; i++) {
+											temp = extensions[name].split(' ');
+											t = temp[0].split('.').join("");
+											if(defaultLanguages.indexOf(temp[0]) == -1) {
+												if(items.length == 0 || items["setLang"] == 0) {
+													modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+												} else {
+													modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: red"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+												}
+											} else {
+												if(items2.length == 0 || items2["setLang"] == 0) {
+													modal_body+='<i class="fa2 fa fa-check" id="tick'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+												} else {
+													modal_body+='<i class="fa2 fa fa-check" id="tick'+t+'" style="color: green"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+												}
+											}
+											name = name + 1;
+										}
+										modal_body+='</div>';
+
+										modal_body+='<div class="listLang">';
+										for(var i=0; i<numInRow && name < extensions.length; i++) {
+											temp = extensions[name].split(' ');
+											t = temp[0].split('.').join("");
+											if(defaultLanguages.indexOf(temp[0]) == -1) {
+												if(items.length == 0 || items["setLang"] == 0) {
+													modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+												} else {
+													modal_body+='<i class="fa2 fa fa-minus" id="dash'+t+'" style="color: red"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+												}
+											} else {
+												if(items.length == 0 || items["setLang"] == 0) {
+													modal_body+='<i class="fa2 fa fa-check" id="tick'+t+'" style="color: #868889"></i> <i class="extName" style="color: #868889">'+extensions[name]+'</i><br>';
+												} else {
+													modal_body+='<i class="fa2 fa fa-check" id="tick'+t+'" style="color: green"></i> <i class="extName" style="color: #000000">'+extensions[name]+'</i><br>';
+												}
+											}
+											name = name + 1;
+										}
+										modal_body+='</div>';
+										modal_body+='</div>';
+
+										modal_footer=""
+										var end_divs = '</div></div></div></div>';
+
+										$('#language_modal').append(modal+modal_content+modal_body+modal_footer+end_divs);
+					      			
+					      	}
+
+					      	if(items.length==0 || items["setLang"]==0) {
+										list = document.getElementsByClassName("fa2 fa-check");
+										for (var i=0; i<list.length; i++) {
+											list[i].style.pointerEvents = 'none';
+										}	
+										list = document.getElementsByClassName("fa2 fa-minus");
+										for (var i=0; i<list.length; i++) {
+											list[i].style.pointerEvents = 'none';
+										}		
+							}
+					    
+					      	for(var i=0; i<extensions.length; i++) {
+								temp = extensions[i].split(' ');
+								t = temp[0].split('.').join("");
+
+								$(document).on("click", "#dash"+t, function(){
+    								this.classList.toggle("fa-check");
+    								this.classList.toggle("fa-minus");
+    								list = document.getElementsByClassName("fa2 fa-check");
+									for (var i=0; i<list.length; i++) {
+										list[i].style.color = "green"										
+									}
+									list = document.getElementsByClassName("fa2 fa-minus");
+									for (var i=0; i<list.length; i++) {
+										list[i].style.color = "red"										
+									}	
+									var lang = "."+this.id;
+									lang = lang.replace("dash","");
+									var index = defaultLanguages.indexOf(lang);
+									if(index == -1) {
+										defaultLanguages.push(lang);
+									} else {
+										defaultLanguages.splice(index, 1);
+									}
+
+									chrome.storage.sync.set({ defaultLanguages : defaultLanguages }, function() {
+									    if (chrome.runtime.error) {
+									      	console.log("Runtime error.");
+									    }
+									});
+								});
+								$(document).on("click", "#tick"+t, function(){
+    								this.classList.toggle("fa-minus");
+    								this.classList.toggle("fa-check");
+    								list = document.getElementsByClassName("fa2 fa-check");
+									for (var i=0; i<list.length; i++) {
+										list[i].style.color = "green"										
+									}
+									list = document.getElementsByClassName("fa2 fa-minus");
+									for (var i=0; i<list.length; i++) {
+										list[i].style.color = "red"										
+									}	
+									var lang = "."+this.id;
+									lang = lang.replace("tick","");
+									var index = defaultLanguages.indexOf(lang);
+									if(index == -1) {
+										defaultLanguages.push(lang);
+									} else {
+										defaultLanguages.splice(index, 1);
+									}
+
+									chrome.storage.sync.set({ defaultLanguages : defaultLanguages }, function() {
+									    if (chrome.runtime.error) {
+									      	console.log("Runtime error.");
+									    }
+									});
+								});
+							}
+					    }
+					});
+				}
+
+				$(document).on("click", "#sw" , function() {
+					chrome.storage.sync.get("setLang", function(items) {
+		    			if (!chrome.runtime.error) {
+							if( items.length==0 || items["setLang"]==0 ) {
+								chrome.storage.sync.set({ "setLang" : 1 }, function() {
+								    if (chrome.runtime.error) {
+								      console.log("Runtime error.");
+								    } else {
+								    	langSet = 1;
+								    	var list = document.getElementsByClassName("listLang");
+										listed = list[0].getElementsByClassName("extName");
+										for (var i=0; i<listed.length; i++) {
+											listed[i].style.color = "#000000"
+											
+										}
+										listed = list[1].getElementsByClassName("extName");
+										for (var i=0; i<listed.length; i++) {
+											listed[i].style.color = "#000000"
+											
+										}
+										listed = list[2].getElementsByClassName("extName");
+										for (var i=0; i<listed.length; i++) {
+											listed[i].style.color = "#000000"
+											
+										}
+										
+										list = document.getElementsByClassName("fa2 fa-check");
+										for (var i=0; i<list.length; i++) {
+											list[i].style.color = "green"
+											list[i].style.pointerEvents = 'auto';
+										}	
+										list = document.getElementsByClassName("fa2 fa-minus");
+										for (var i=0; i<list.length; i++) {
+											list[i].style.color = "red"
+											list[i].style.pointerEvents = 'auto';
+										}											 
+								    }
+								});
+							} else {
+
+								chrome.storage.sync.set({ "setLang" : 0 }, function() {
+								    if (chrome.runtime.error) {
+								      console.log("Runtime error.");
+								    }  else {
+								    	langSet = 0;
+								    	var list = document.getElementsByClassName("listLang");
+										listed = list[0].getElementsByClassName("extName");
+										for (var i=0; i<listed.length; i++) {
+											listed[i].style.color = "#868889"
+											
+										}
+										listed = list[1].getElementsByClassName("extName");
+										for (var i=0; i<listed.length; i++) {
+											listed[i].style.color = "#868889"
+											
+										}
+										listed = list[2].getElementsByClassName("extName");
+										for (var i=0; i<listed.length; i++) {
+											listed[i].style.color = "#868889"
+											
+										}
+										list = document.getElementsByClassName("fa2 fa-check");
+										for (var i=0; i<list.length; i++) {
+											list[i].style.color = "#868889"
+											list[i].style.pointerEvents = 'none';											
+										}	
+										list = document.getElementsByClassName("fa2 fa-minus");
+										for (var i=0; i<list.length; i++) {
+											list[i].style.color = "#868889"
+											list[i].style.pointerEvents = 'none';											
+										}	
+								    }
+								});
+							}
+						}
+					}); 
+				});	
+
+
+    		}
+		});
+	}
 
 	document.getElementById('scrollBtn').addEventListener('click', function(event){
 	    document.body.scrollTop = 0;
