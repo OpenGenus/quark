@@ -467,13 +467,23 @@ document.addEventListener('DOMContentLoaded', function ()
  		});
 	});
 
+	document.getElementById('scrollBtn').addEventListener('click', function(event){
+	    document.body.scrollTop = 0;
+	    document.documentElement.scrollTop = 0;
+		$('#scrollBtn').hide();
+	});
+	
+	$(window).bind('mousewheel', function(event) {
+		if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+	        document.getElementById("scrollBtn").style.display = "block";
+	    } else {
+	        document.getElementById("scrollBtn").style.display = "none";
+	    };
+	});
 
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     initialize();
     addtags();
+
 });
-
-
-
-
