@@ -13,6 +13,8 @@ body {
     font-family: 'Roboto Mono', monospace;
     margin-bottom: 60px;
     background-color: rgb(255, 255, 255)
+    margin-bottom: 60px;
+    background-color: rgb(255, 255, 255)
 }
 article {
     display: block;
