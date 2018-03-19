@@ -24,17 +24,36 @@ var zone_name1='';
 var zone_name2='';
 
 function updateFavs(x, filename) {
-    x.classList.toggle("checked");
-	  
+    x.classList.toggle("checked");	  
 	if (chrome && chrome.storage) {
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
-		
-		      	if(!favs.includes(filename)) {
-			      	favs.push(filename);
+		      	let found = false;
+		      	let index = 0;
+		      	for(let i in favs ) {
+				    if (favs[i].filename == filename) {
+				        found = true;
+				        index = i;
+				        break;
+				    }
+				}		
+		      	if(found==false) {
+		      	    let area = filename.substr(0, filename.indexOf('/')); 
+		      	    area = area.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					area = area.replace(/_/g, ' ');
+					area = area.replace(/\w\S*/g, function(txt) {
+					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+					});
+		      		let lang = filename.split(".").pop();
+		      		let f1 = new Object();
+		      		f1.filename = filename;
+		      		f1.date = moment().format('DD MMM YYYY | HH:mm:ss');
+		      		f1.language = lang;
+		      		f1.area = area;
+			      	favs.push(f1);
 			    } else {
-			       	var index = favs.indexOf(filename);
+			       	// var index = favs.indexOf(filename);
 			       	if (index > -1) {
 				   		favs.splice(index, 1);
 					}	
@@ -53,6 +72,7 @@ function updateFavs(x, filename) {
 
 $(function() {
   $('#search').change(function() {
+	 $('#no_of_results').show();
      $('.bricklayer').empty();
      $('#error-message').empty();
      $('#no_of_results').empty(); 			
@@ -162,14 +182,21 @@ function dumpBookmarks(query)
 					    else
 					    {	  	
 	
-						   	if(!favs.includes(fname)) {
+					    	let found_in_Favs = false;
+					      	for(let i in favs ) {
+							    if (favs[i].filename == fname) {
+							        found_in_Favs = true;
+							        break;
+							    }
+							}		
+
+						   	if(found_in_Favs==false) {
 						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
 						   	} else {
 						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
 						   	}
 						   	sub_result_number++;
 						}
-						
 						var send = '#myStar'+temp2;
 						$(document).on("click", send , function() {
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
@@ -265,52 +292,133 @@ function help_show() {
 	document.getElementById('search').style.display = "none";
 	document.getElementById('help_popup').style.display = "block";
 }
+
 //Function to Hide Help
 function help_hide() {
 	document.getElementById('search').style.display = "block";
 	document.getElementById('help_popup').style.display = "none";
 }
+//Sort Favourites according to key
+function sortFav(val)
+{
+	favs = favs.sort(function (a, b) {
+    return a[val].localeCompare( b[val] );
+	});
+}
 
+//refresh Favourites
+function refreshFav()
+{
+	chrome.storage.sync.set({ favs : favs }, function() {
+				    if (chrome.runtime.error) {
+				      	console.log("Runtime error.");
+				    }
+				});
+	addFavorites();	
+}
+
+//Clear All Favourites
+ $(function() {
+ 	$(document).on("click", "#clearfav", function(){
+		 
+ 		  chrome.storage.sync.set({ favs : [] }, function() {
+ 				    if (chrome.runtime.error) {
+ 				      	console.log("Runtime error."); 				    }
+ 				});
+
+		$('#front').hide();
+		$('#no_of_results').hide();
+	  	$('.bricklayer').hide();
+ 	 	addFavorites();
+
+ 	});
+ });
+
+
+//Search using search box
+function searchfav(){
+
+		    input = document.getElementById("favSearchInputBox");
+		    filter = input.value.toUpperCase();
+		    div = document.getElementById("t1");
+		    a = div.getElementsByTagName("tr");
+		    for (i = 1; i < a.length; i++) {
+		        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+		            a[i].style.display = "";
+		        } else {
+		            a[i].style.display = "none";
+		        }
+		    }
+}
+
+//Add header sorts
+$(function() {
+	$(document).on("click", ".sortbythis", function(){
+		var temp = $(this)[0].attributes.sortby.value;
+		sortFav(temp);
+		refreshFav();
+	});
+});
+
+
+//Add Favorites
 function addFavorites()
 {
 	$('#favorites').empty();
+	var promise = $.Deferred();
 	if (chrome && chrome.storage) {
 	    chrome.storage.sync.get({favs: []}, function(items) {
 		    if (!chrome.runtime.error) {
 		      	favs = items.favs;
 
-				
 				if(favs.length==0) {
 					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr>");
 					$('#favorites').append("<p style='text-align: center;'>No favorites yet!</p><p style='text-align: center;'>Click on the star icon beside your favorite codes to access them easily.</p><br><br><br><br><br><br><br><br>");
 		
 		
 				} else {
-					
-					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
 
+
+					$('#favorites').append("<h1 style='text-align: center;'>Favorites</h1><hr><ul class='favList'>");
+					$('#favorites').append("<marquee behavior='alternate'>Sort Favourites either by clicking on the column header or Search them by Name/Language/Date/Area using this Search box!</marquee><br><center><input type='text' placeholder='Search Favorites..'' id='favSearchInputBox' >  </center><br>");				
+						$(function(){
+							$("#favSearchInputBox").keyup(function(){				 		
+							 		searchfav();
+								});
+							});
+					let addModal =' <div class="modal" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div><div class="modal-body"><p>You are about to delete all your Favorites.<b><i class="title"></i></b><p> This procedure is irreversible.</p><p>Do you want to proceed?</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" data-dismiss="modal" id="clearfav" class="btn btn-danger btn-ok">Delete</button></div></div></div></div>';	
+					let table_start = '<table id="t1" class="table table-hover"><thead><tr><th scope="col"> <button class="btn btn-warning" data-record-id="54" data-record-title="Something cool" data-toggle="modal" data-target="#confirm-delete">Clear All &#10062;</button></th><th style="text-align: center;" scope="col">Code File</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="language">Language </th><th style="text-align: center;" scope="col" class="sortbythis" sortby="date">Date/Time</th><th style="text-align: center;" scope="col" class="sortbythis" sortby="area">Area</th></tr></thead><tbody>';
+				    let table_body = '';
+				    let table_end = "</tbody></table></ul><br><br><br><br><br>";
 				    for (var fname in favs)
 				    {
-				    	temp = favs[fname];
+				    	temp = favs[fname].filename;
 					   	temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-					   	temp = temp.replace(/_/g, '');
-					   
+					   	temp = temp.replace(/_/g, '');					   
 						var str = '#myStar'+temp;
-						var filename = favs[fname].replace(/^.*[\\\/]/, '')
+						var filename = favs[fname].filename.replace(/^.*[\\\/]/, '');
+						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' href='/code/"+favs[fname].filename+"'>"+((+fname)+(+1))+". "+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+						table_body += '<td class="favListItem ">'+favs[fname].language+'</td>';
+						table_body += '<td class="favListItem " >'+favs[fname].date+'</td>';
+						table_body += '<td class="favListItem " >'+favs[fname].area+'</td></tr>';
 
-						$('#favorites').append("<li class='favListItem'><a target='_blank' href='/code/"+favs[fname]+"'>"+""+filename+"&nbsp;&nbsp;</a>" + "<i id='myStar"+temp+"\' class='fa fa-star checked'></i><br></li>");
 
 				    	$('#myStar'+temp).on("click",function () {						   	
 					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
 					   	  	updateFavs(this, filenames[filename_pos]);
+					   	  	
+
 				    	});	
 
 				    }
-					$('#favorites').append("</ul><br><br><br><br><br>");
+
+				    $('#favorites').append(addModal+table_start+table_body+table_end);
 				}
 	    	}
+	    	promise.resolve();
 	 	});
 	}
+	return promise;
 }
 
 function initialize() 
@@ -330,9 +438,18 @@ function initialize()
 	}	
 }
 
-
 document.addEventListener('DOMContentLoaded', function () 
 {
+	var val=localStorage.getItem("openThroughWeb");
+	if(val=="yes")
+	{
+		$('.bricklayer').empty();
+	    $('#error-message').empty();
+	    $('#no_of_results').empty(); 
+	    localStorage.setItem("openThroughWeb", "no");			
+	 	dumpBookmarks(localStorage.getItem("value"));
+	}
+
 	document.getElementById('help').addEventListener('click', function(event){
 	  help_show();
 	});
@@ -350,20 +467,40 @@ document.addEventListener('DOMContentLoaded', function ()
 }
 
 	document.getElementById('favButton').addEventListener('click', function(event){
+
+		if (this.getAttribute('data-clicked') == 'true') return;
+		this.setAttribute('data-clicked', true);
+
 	  	$('#favorites').show();
 		$('#front').hide();
 		$('#no_of_results').hide();
 	  	$('.bricklayer').hide();
- 		addFavorites();
+	  	$('#error-message').empty();
+	  	
+ 		var promise = addFavorites();
+ 		var now = this;	
+ 		promise.always(function(){
+ 			now.setAttribute('data-clicked', false);
+ 		});
 	});
 
+	document.getElementById('scrollBtn').addEventListener('click', function(event){
+	    document.body.scrollTop = 0;
+	    document.documentElement.scrollTop = 0;
+		$('#scrollBtn').hide();
+	});
+	
+	$(window).bind('mousewheel', function(event) {
+		if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+	        document.getElementById("scrollBtn").style.display = "block";
+	    } else {
+	        document.getElementById("scrollBtn").style.display = "none";
+	    };
+	});
 
 	var a = document.getElementById('fact'); 
     a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     initialize();
     addtags();
+
 });
-
-
-
-

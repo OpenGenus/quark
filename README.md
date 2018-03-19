@@ -5,7 +5,7 @@ This is the World's first Offline code Search Engine presented by OpenGenus Foun
 Get your offline code search engine from [**Chrome Web Store**](https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn)
 
 <p align="center">
-<img src="https://github.com/AdiChat/quark/blob/master/preview/screenshot.png" alt="Preview of the World's first Offline Search Engine" />
+<img src="./preview/quark_screenshot.png" alt="Preview of the World's first Offline Search Engine" />
 </p>
 
 We are on a mission to bring the best parts of the Internet Offline, enable people to work offline for a longer period of time and revolutionize the way people interact with the web. 
