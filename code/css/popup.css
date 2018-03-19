@@ -1,5 +1,4 @@
-html,body
-{
+html,body {
     width: 100%;
     height: 100%;
     margin: 0px;
@@ -8,10 +7,63 @@ html,body
     position:absolute;
 
 }
+
 body {
 
     font-family: 'Roboto Mono', monospace;
 }
+
+#theNavBar {
+    background-color: white;
+    border-bottom: 1px solid gray;
+}
+
+.navbar-brand>img {
+    height: 5%;
+    width: auto;
+}
+
+.navbar-expand-md .navbar-toggler {
+    background-color: #FEF200;
+    margin-right: 2%;
+}
+
+.nav-item {
+    text-align: center;
+}
+
+#topNavBar > li > a {
+    color: gray;
+    font-weight: bold;
+}
+
+#topNavBar > li > a:hover {
+    color: #333;
+    border: 0.75px solid #555;
+    border-radius: 3.7px;
+    background-color: #FEF200;
+}
+
+.dropdown_button {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: gray;
+}
+
+#pop-tags {
+    text-align: center;
+}
+
+#jumbo {
+    background-color: #ffffaa;
+    width: 95%;
+    margin: auto;
+}
+
 article {
     display: block;
     text-align: left;
@@ -37,13 +89,12 @@ footer {
     text-align: center;
 }
 
-.sortbythis:hover
-{
+.sortbythis:hover {
     cursor: pointer;
     background-color: #ffc10757;
 }
 
-#sortfavby{
+#sortfavby {
 background: none repeat scroll 0 0 #FFFFFF;
 border: 1px solid #E5E5E5;
 border-radius: 5px 5px 5px 5px;
@@ -54,21 +105,12 @@ padding: 10px;
 min-width: 120px;
 }
 
-#favSearchInputBox
-{
+#favSearchInputBox {
     text-align: center;
     float:center; 
 }
 
-.navbar-brand {
-    padding: 0px;
-}
-.navbar-brand>img {
-    height: 10%;
-    padding: 15px;
-    width: auto;
-}
-.btn-xs{
+.btn-xs {
     margin-top: 7px;
     height: 24px;
     font-size: 12px;
@@ -152,6 +194,10 @@ form {
     background-color:#fff
 }
 
+h1 {
+    text-align: center;
+}
+
 h2 {
     background-color:#fcee45;
     padding:20px 35px;
@@ -165,25 +211,14 @@ h4 {
 }
 
 hr {
-    margin:10px -50px;
-    border:0;
-    border-top:1px solid #ccc
+    margin: 10px -50px;
+    border: 0;
+    border-top: 1px solid #ccc
 }
 
-.dropdown_button
-{
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    color: #077bff;
-}
-
-ul.share-buttons{
+ul.share-buttons {
   list-style: none;
-  padding: 0;
+  padding-top: 5px;
 }
 
 ul.share-buttons li{
@@ -226,7 +261,7 @@ ul.share-buttons .sr-only{
   padding: 5px;
 }
 
-#share-footer{
+#share-footer {
     background-color:#FFFA79;
     margin:-2px -50px 0 -50px;
     text-align:center;

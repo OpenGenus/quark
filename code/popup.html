@@ -1,6 +1,7 @@
 <html>
 <head>
 
+  <!-- Required JavaScript -->
   <script src="js/jquery.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -12,137 +13,150 @@
   <script src="js/calculator.js"></script>
   <script src="js/stopwatch.js"></script>
   <script src="js/timezone.js"></script>
+
+  <!-- Required stylesheets -->
   <link rel="stylesheet" type="text/css" href="css/bricklayer.min.css">
   <link rel="stylesheet" type="text/css" href="css/popup.css">
-    <link rel="stylesheet" type="text/css" href="css/calculator.css">
+  <link rel="stylesheet" type="text/css" href="css/calculator.css">
   <link rel="stylesheet" type="text/css" href="css/timezone.css">
-
-    <link rel="stylesheet" type="text/css" href="css/stopwatch.css">
-
+  <link rel="stylesheet" type="text/css" href="css/stopwatch.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/font.css">
   <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css">
+
+  <!-- Required images -->
   <link rel="shortcut icon" type="image/png" href="/icon/icon.png"/>
 
   <title>OpenGenus: World's first Offline Search Engine</title>
   <meta charset='utf-8'>
+
 </head>
- 
+
 <body>
+<!-- Fixed navbar content -->
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-faded py-1" id="theNavBar">
+  <div class="container-fluid">
+    <a class="navbar-brand py-0" href="/popup.html"><img src="/logo/logo.png"></a>
 
-  <div class="container">
-        <br>
-        <div class="row">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul id="topNavBar" class="navbar-nav ml-auto">                  
 
-            <div class="col-sm-4">
-                <a class="navbar-brand" href="/popup.html"><img src="/logo/logo.png"></a>
-            </div>
+          <li class="nav-item"><a class="nav-link py-0" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a></li>
 
-            <div class="col-sm-4">
-                    <div class="input-group">
-                        <input id="search" class="form-control text-center" type="search" size="128" placeholder="Search any code; Try: sorting">
-                    </div>
-                   <div id="pop-tags"></div>
-                   <center>
-                   <ul class="share-buttons">
-                    <span style="weight:2;vertical-align: middle;"><b>Share Via</b></span>
-                      <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn&quote=%23OpenGenus%20Quark%3A%20World's%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline" title="Share on Facebook" target="_blank"><img alt="Share on Facebook" src="image/Facebook.png" /></a></li>
-                      <li><a href="https://twitter.com/intent/tweet?source=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn&text=%23OpenGenus%20Quark%3A%20World's%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline:%20https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn" target="_blank" title="Tweet"><img alt="Tweet" src="image/Twitter.png" /></a></li>
-                      <li><a href="https://plus.google.com/share?url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn" target="_blank" title="Share on Google+"><img alt="Share on Google+" src="image/Google+.png" /></a></li>
-                      <li><a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn&title=%23OpenGenus%20Quark%3A%20World's%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline&summary=&source=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fopengenus-offline-search%2Flfoloadpfjildomeafpdopahkdaoofbn" target="_blank" title="Share on LinkedIn"><img alt="Share on LinkedIn" src="image/LinkedIn.png" /></a></li>
-                    </ul>
-                  </center>
-            </div>
+          <li class="nav-item"><a class="nav-link py-0" target="_blank" id="help" href="javascript:void(0)">Help</a></li>
 
-            
-            <div class="col-sm-4">
+          <li class="nav-item"><a class="nav-link py-0" target="_blank" id="favButton" href="javascript:void(0)">Favorites</a></li>
 
-                  <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-                  <a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
+<br/>
+<br/>
 
-                  <a class="btn float-right" target="_blank" id="favButton" href="javascript:void(0)">Favorites</a>
-
-
-                  
-                  <div class="dropdown">
-                    <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">More Apps<span class="caret"></span></button>
-                        <ul class="dropdown-menu" id="main_drop_menu">
+<div class="container-fluid">
+  <!-- More apps -->
+  <div class="dropdown">
+      <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">More Apps <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" id="main_drop_menu">
                         
-                            <li
-                                class="dropdown_button " title="Click to open Calculator" data-toggle="modal" data-target="#myModal" >Calculator
-                            </li>
-                           <div class="dropdown-divider"></div>
+        <li class="dropdown_button " title="Click to open Calculator" data-toggle="modal" data-target="#myModal">Calculator</li>
+        <div class="dropdown-divider"></div>
 
-                            <li class="dropdown_button" title="Click to open Stopwatch" data-toggle="modal" data-target="#myModal2" >Stopwatch
-                            </li> 
-                            <div class="dropdown-divider"></div>
+        <li class="dropdown_button" title="Click to open Stopwatch" data-toggle="modal" data-target="#myModal2">Stopwatch</li> 
+        <div class="dropdown-divider"></div>
 
-                            <li class="dropdown_button" title="Click to open Time Zone Converter" data-toggle="modal" data-target="#myModal3" >Time Zone Converter
-                            </li> 
+        <li class="dropdown_button" title="Click to open Time Zone Converter" data-toggle="modal" data-target="#myModal3">Time Zone Converter</li> 
 
-                         </ul>
+      </ul>
+  </div>
 
-                  </div>
+  <div id="calculator_modal"></div>
+  <div id="stopwatch_modal"></div>
+  <div id="timeZone_converter_modal"></div>
 
-                  <div id="calculator_modal"></div>
-                  <div id="stopwatch_modal"></div>
-                  <div id="timeZone_converter_modal"></div>
-                  
-            </div>
-        </div><br>
+  <!-- Share links -->
+  <center>
+    <ul class="share-buttons">
+      <span><b>Share Via</b></span>
+      &nbsp;
+      <li><a href="https://goo.gl/Ytk26y" target="_blank"><img alt="Share on Facebook" src="image/Facebook.png" /></a></li>
+      &nbsp;
+      <li><a href="https://goo.gl/LEw9qP" target="_blank" title="Tweet"><img alt="Tweet" src="image/Twitter.png" /></a></li>
+      &nbsp;
+      <li><a href="https://goo.gl/xkkrJV" target="_blank" title="Share on Google+"><img alt="Share on Google+" src="image/Google+.png" /></a></li>
+      &nbsp;
+      <li><a href="https://goo.gl/WHz33Y" target="_blank" title="Share on LinkedIn"><img alt="Share on LinkedIn" src="image/LinkedIn.png" /></a></li>
+    </ul>
+  </center>
+</div>
 
-  </div><br>
+<div id="jumbo" class="jumbotron py-3">
+  <div class="container-fluid">
 
-  
+    <!-- Search box -->
+    <div class="input-group">
+        <input id="search" class="form-control text-center" type="search" size="128" placeholder="Search any code; Try: sorting">
+    </div>
+
+    <div class="py-1"></div>
+
+    <!-- Popular search tags -->
+    <div id="pop-tags"></div>
+
+    <!-- Title and coding meme -->
     <div id="front">
-      <h1 style="text-align: center;">World's first Offline Search Engine</h1>
+      <h1>World's first Offline Search Engine</h1>
       <hr>
-      
+
       <img id="fact" src="image/1.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>
 
       <hr>
-  </div>
+    </div>
 
     <div id="no_of_results"></div>
-    
     <div id="error-message" class="row"></div>
-
     <div class="bricklayer" id="bl"></div>
-     
+
+    <!-- Favorites tab -->
     <div id="favorites"></div> 
 
+    <!-- Scroll button to top -->
     <button id="scrollBtn" class="fa fa-angle-up" title="Go to top"></button>
-    
-    <footer class="footer">
-        <div class="container">
-              <span class="text-muted float-left">Built with ❤ @<a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a> 
-              Email: <a target="_blank" title="Works offline if email app enabled" href="mailto:team@opengenus.org"> 📬 team@opengenus.org</a></span>
-              <span class="text-muted float-right">Maintained by and part of the <a target="_blank" title="Works only when you are online" href="http://www.opengenus.org/"> 👪 OpenGenus Foundation</a></span>
-        </div>
 
+    <!-- Footer info -->
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted float-left">Built with ❤ @<a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a> 
+        Email: <a target="_blank" title="Works offline if email app enabled" href="mailto:team@opengenus.org"> 📬 team@opengenus.org</a></span>
+        <span class="text-muted float-right">Maintained by and part of the <a target="_blank" title="Works only when you are online" href="http://www.opengenus.org/"> 👪 OpenGenus Foundation</a></span>
+      </div>
     </footer>
 
-
-  <div id="help_popup">
+    <div id="help_popup">
       <div id="popup">
         <form action="#" id="form" method="post" name="form">
-          <img id="close" src="image/12.png" >
+          <img id="close" src="image/12.png">
           <h2>Welcome to Quark!</h2>
           <hr>
           <h6>This is the World's first offline code Search Engine presented by <a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a>. <br> <br> Now search code for any algorithm or data-structure in your favorite language even when you are not connected to the internet! <br> <br> Add frequently visited codes easily to your favorites by clicking on the star icon. <br> <br> Have any suggestions? Feel free to share your valuable feedback at this <a target="_blank" title="Works only when you are online" href="https://discourse.opengenus.org/t/feedback-for-quark/125">Discourse topic</a>!  <br> <br> </h6>
           <hr>
           <div id="share-footer" >   
             <p align="center" style="padding-top: 8px; margin-bottom: 2px"><b> Share Quark </b></p>
-            <a class="btn btn-default" target= "_blank" href="http://www.facebook.com/sharer.php?u=https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn&quote=%23OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline"><img id="share-buttons" src="image/Facebook.png" alt="Facebook" ></img></a>
-            <a class="btn btn-default" target= "_blank" href="http://twitter.com/share?text=OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline&url=https:%2F%2Fchrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn"><img id="share-buttons" src="image/Twitter.png" alt="Twitter"></img></a>
-            <a class="btn btn-default" target= "_blank" href="http://plus.google.com/share?url=https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn"><img id="share-buttons" src="image/Google+.png" alt="Google+"></a>
-            <a class="btn btn-default" target= "_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn&title=%23OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline&summary=&source="><img id="share-buttons" src="image/LinkedIn.png" alt="LinkedIn"></img></a>
+            <a class="btn btn-default" target= "_blank" href="https://goo.gl/9J7LVB"><img id="share-buttons" src="image/Facebook.png" alt="Facebook" ></img></a>
+            <a class="btn btn-default" target= "_blank" href="https://goo.gl/9ZFZtK"><img id="share-buttons" src="image/Twitter.png" alt="Twitter"></img></a>
+            <a class="btn btn-default" target= "_blank" href="https://goo.gl/SPQfP9"><img id="share-buttons" src="image/Google+.png" alt="Google+"></a>
+            <a class="btn btn-default" target= "_blank" href="https://goo.gl/371s43"><img id="share-buttons" src="image/LinkedIn.png" alt="LinkedIn"></img></a>
           </div>
         </form>
       </div>
+    </div>
   </div>
-
-
+</div>
 </body>
 </html>
