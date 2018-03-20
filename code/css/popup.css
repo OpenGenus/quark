@@ -138,18 +138,18 @@ img#close {
 
 div#popup {
     position:absolute;
-    left:50%;
-    top:17%;
-    margin-left:-402px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid gray;
+    border-radius: 15px;
+    background-color: white;
 }
 
 form {
-    max-width:800px;
-    min-width:400px;
+    max-width:100%;
+    max-height:700px;
     padding:10px 50px;
-    border:2px solid gray;
-    border-radius:10px;
-    background-color:#fff
 }
 
 h2 {
@@ -160,7 +160,7 @@ h2 {
     border-radius:10px 10px 0 0
 }
 
-h4 {
+h6 {
     text-align:justify;
 }
 
@@ -168,6 +168,16 @@ hr {
     margin:10px -50px;
     border:0;
     border-top:1px solid #ccc
+}
+
+@media (max-width:576px){
+    #popup{
+        overflow: auto;
+    }
+    #close{
+        right:-2px !important;
+        top:-2px !important;
+    }
 }
 
 .dropdown_button
