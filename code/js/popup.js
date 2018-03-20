@@ -70,13 +70,16 @@ function updateFavs(x, filename) {
 }
 
 $(function() {
-  $('#search').change(function() {
-	 $('#no_of_results').show();
-     $('.bricklayer').empty();
-     $('#error-message').empty();
-     $('#no_of_results').empty(); 			
- 	 dumpBookmarks($('#search').val());
-  });
+	$('#search').bind('keypress', function(e) {
+	var code = e.keyCode || e.which;
+		if(code == 13) { //if pressed key is 'Enter' 
+	 		$('#no_of_results').show();
+	 		$('.bricklayer').empty();
+	      	$('#error-message').empty();
+	      	$('#no_of_results').empty(); 			
+	  	  	dumpBookmarks($('#search').val());
+	 	}
+	});
 });
 
 $(function() {
