@@ -80,6 +80,15 @@ $(function() {
 });
 
 $(function() {
+  $('#search_button').on("click", function(){
+  	 $('.bricklayer').empty();
+     $('#bookmarks').empty();
+     $('#no_of_results').empty();
+     dumpBookmarks($('#search').val());
+  });
+});
+
+$(function() {
 	$(document).on("click", ".button-pop", function(){
 		$('#front').show();
 		$('#no_of_results').show();
@@ -475,6 +484,12 @@ document.addEventListener('DOMContentLoaded', function ()
 	  help_hide();
 	});
 
+	window.onclick = function(event) {
+    if (event.target == document.getElementById('help_popup')) {
+        document.getElementById('search').style.display = "block";
+		document.getElementById('help_popup').style.display = "none";
+    }
+}
 
 	document.getElementById('favButton').addEventListener('click', function(event){
 

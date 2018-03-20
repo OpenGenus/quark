@@ -12,14 +12,6 @@ body {
 
     font-family: 'Roboto Mono', monospace;
 }
-article {
-    display: block;
-    text-align: left;
-    width: 80%;
-    padding-top: 2%;
-    padding-bottom: 15%;
-    margin: 0 auto;
-}
 
 footer {
     clear:both;
@@ -30,13 +22,23 @@ footer {
     width: 100%;
     height: 60px;
     line-height: 60px;
-    background-color: #E5E8E8;    
+    background-color: #E5E8E8;
+    margin-top: 2%;
+    margin-bottom: 0;
 }
-
+article {
+    display: block;
+    text-align: left;
+    width: 80%;
+    padding-top: 2%;
+    padding-bottom: 15%;
+    margin: 0 auto;
+}
 .favListItem {
     text-align: center;
 }
-
+li {
+    padding-left: 40px;
 .sortbythis:hover
 {
     cursor: pointer;
@@ -72,6 +74,7 @@ min-width: 120px;
     margin-top: 7px;
     height: 24px;
     font-size: 12px;
+    cursor: pointer;
 }
 
 .fa {
@@ -79,37 +82,33 @@ min-width: 120px;
     cursor: pointer;
     user-select: none;
 }
-
 .fa:hover {
     color: darkblue;
 }
-
+.fa:hover {
+    color: darkblue;
+}
 .checked {
     color: orange;
 }
-
-
-.card-title{
+card-title{
     font-size: 20px;
     font-weight: bolder;
     text-align: center;
     background-color:rgb(255, 193, 7);
-    /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
+         /*Lighter shade for future use -> rgba(255, 191, 0, 0.52);*/
 }
 .bricklayer
 {    
      margin-bottom: 200px;
 }
-
 @media screen and (min-width: 768px) {
     .bricklayer-column-sizer {
         /* Each column will be 100px width and there will be 5 columns. */
         width: 33%;
     }
 }
-
 /* You should add more media queries to make it fully responsive. */
-
 @media screen and (min-width: 768px) {
     .bricklayer-column-sizer {
         /* Each column will be 125px width and there will be 4 columns. */
@@ -190,7 +189,29 @@ hr {
     outline:none;
     color: #077bff;
 }
-
+#pop-tags{
+    padding-left: 20%;
+}
+.input-group{
+    border:1px solid #ced4da;
+    border-radius:5px;
+    border-width: 2px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+#search{
+    float: left;
+    width: 90%;
+    border: none;
+}
+#search_button{
+    width: 8%;
+    margin-right: 5px;
+}
+#search_button i{
+    font-size: 17px;
+    margin-top: 10px;
+}
 ul.share-buttons{
   list-style: none;
   padding: 0;
@@ -242,3 +263,4 @@ ul.share-buttons .sr-only{
     text-align:center;
     border-radius:0 0 10px 10px;
 }
+
