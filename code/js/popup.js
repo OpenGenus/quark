@@ -107,190 +107,205 @@ function dumpBookmarks(query)
 	$('.bricklayer').show();			
  	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
 
+	var single_query = query.replace(/\s+/g,' ');// all words sep by ' ' 
+	if(single_query[0]==' ')
+		single_query=single_query.substr(1);
+	if(single_query.slice(-1)==' ')
+		single_query=single_query.slice(0,-1);// now fully by ' '
 
-	var found = 0;
-	var single_query = query.split(" ");
+	var single = single_query.split(" ");
 	var found_word = 0;
-	var total=0;
 
-	for(var pos in single_query)
+	for(var pos in single)
 	{
-		current_query = single_query[pos];
+		current_query = single[pos];
 		if(current_query != "")
 		{
 			found_word = 1;
 			break;
 		}
 	}
-
-	if(found_word == 1)
-
-	for (var key in obj_keys) 
+	if(found_word==1)
 	{
-		key = obj_keys[key];
-
-		var current_found = 0;
-		for(var pos in single_query)
+		var match_key=[];//stores the count of matched keywords from query with all keys of obj
+		var total=0;
+		for(var key in obj)
 		{
-			current_query = single_query[pos];
-			if(current_query == "")
-				continue;
-
-		    if ( current_found == 0 && ((String(key).toLowerCase()).indexOf(current_query.toLowerCase()) != -1)) 
-		    {
-			    found = 1;
-			    current_found = 1;
-
-			    let temp = key;
-			    let str = key;
-			    let inside_text = '';
-			    str = str.split("/").pop();
-			    str = str.split('_').join(' ');
-				str = str.replace(/\w\S*/g, function(txt) {
-					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-				});
-				temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-				temp = temp.replace(/_/g, '');
-
-			    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
-			    	continue;
-			    else
+			total=0;
+			for(var pos in single)
+			{
+				if((String(key).toLowerCase()).indexOf(single[pos].toLowerCase()) != -1)
+					total++;
+			}
+			match_key[key]=total;
+		}
+		
+		var values= Object.values(match_key);
+		maxVal=(Math.max(...values));//stores the maximum number of matched keywords
+		
+		if(maxVal!=0)
+		{
+			total=0;
+			for (var key in obj_keys) 
+			{
+				key = obj_keys[key];
+				var current_found = 0;
+				
+				if(match_key[key]==maxVal && current_found == 0)
 			    {
-			    	if(chrome && chrome.storage) {
-					    chrome.storage.sync.get({favs: []}, function(items) {
-						    if (!chrome.runtime.error) {
-						      	favs = items.favs;			      
-					    	}
-				  		});
-					}
+				    current_found = 1;
 
-				    let sub_result_number = 1;
-				    total++;
+				    let temp = key;
+				    let str = key;
+				    let inside_text = '';
+				    str = str.split("/").pop();
+				    str = str.split('_').join(' ');
+					str = str.replace(/\w\S*/g, function(txt) {
+						return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+					});
+					temp = temp.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+					temp = temp.replace(/_/g, '');
 
-				    for (var dd in obj[key])
+				    if(obj[key].length ==1 && ((String(obj[key]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1))
+				    	continue;
+				    else
 				    {
-					   	var fname= key+"/"+obj[key][dd];
-					   	
-					   	temp2 = fname;
-					   	temp2 = temp2.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-					   	temp2 = temp2.replace(/_/g, '');
-
-					   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
-
-					    else
-					    {	  	
-	
-					    	let found_in_Favs = false;
-					      	for(let i in favs ) {
-							    if (favs[i].filename == fname) {
-							        found_in_Favs = true;
-							        break;
-							    }
-							}		
-
-						   	if(found_in_Favs==false) {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
-						   	} else {
-						   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
-						   	}
-						   	sub_result_number++;
+				    	if(chrome && chrome.storage) {
+						    chrome.storage.sync.get({favs: []}, function(items) {
+							    if (!chrome.runtime.error) {
+							      	favs = items.favs;			      
+						    	}
+					  		});
 						}
 
-						var send = '#myStar'+temp2;
-						$(document).on("click", send , function() {
+					    let sub_result_number = 1;
+					    total++;
+					    flag=1;
+
+					    for (var dd in obj[key])
+					    {
+						   	var fname= key+"/"+obj[key][dd];
+						   	
+						   	temp2 = fname;
+						   	temp2 = temp2.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+						   	temp2 = temp2.replace(/_/g, '');
+
+						   	if(((String(obj[key][dd]).toLowerCase()).indexOf("README.md".toLowerCase()) != -1)){}
+
+						    else
+					    	{	  	
+	
+						    	let found_in_Favs = false;
+						      	for(let i in favs ) {
+								    if (favs[i].filename == fname) {
+								        found_in_Favs = true;
+								        break;
+								    }
+								}		
+
+							   	if(found_in_Favs==false) {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
+							   	} else {
+							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
+							   	}
+							   	sub_result_number++;
+							}
+
+							var send = '#myStar'+temp2;
+							$(document).on("click", send , function() {
 					   	  	
-					   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
-					   	 	var fname = this.id.substr(6, this.id.length);
-							var pos = 0;
+						   	 	var filename_pos = '#myStar'+this.id.substr(6, this.id.length);
+						   	 	var fname = this.id.substr(6, this.id.length);
+								var pos = 0;
 
-							for(let i in favs ) {
-								f = favs[i].filename;
-							   	f = f.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
-							   	f = f.replace(/_/g, '');
-							    if ( f == fname) {
-							    	pos = i;
-							        break;
-							    }
-							}		
+								for(let i in favs ) {
+									f = favs[i].filename;
+								   	f = f.replace(/[-\/\\^$*+?.()|[\]{}]/g,'');
+								   	f = f.replace(/_/g, '');
+								    if ( f == fname) {
+								    	pos = i;
+								        break;
+								    }
+								}		
 
-					   	  	if($('#favorites').is(':hidden')) {} else {
-					   	  		pos++;
-				   	  			remRow(this, pos)
-				   	  		}
-					   	 	
-					   	  	updateFavs(this, filenames[filename_pos]);
-					    });	
+						   	  	if($('#favorites').is(':hidden')) {} else {
+						   	  		pos++;
+					   	  			remRow(this, pos)
+					   	  		}
+						   	 	
+						   	  	updateFavs(this, filenames[filename_pos]);
+					    	});	
 					   
 					   
-					}
+						}
 
-					//Individual Cards
+						//Individual Cards
 
-              	    var card = document.createElement('div');
-				    card.setAttribute("class", "card");
-				    card.setAttribute("style","margin-bottom: 8px");
-				    
-				    var card_title = document.createElement('div');
-				    card_title.setAttribute("class","card-title");
-				    card_title.setAttribute("target","_blank");
-				    card_title.setAttribute("id","card_title_"+temp);
-				    card_title.setAttribute("href","javascript:void(0)");
-				    card_title.setAttribute("onmouseover","");
-				    card_title.setAttribute("style","cursor: pointer;");
-				    card_title.innerHTML = str;
+	              	    var card = document.createElement('div');
+					    card.setAttribute("class", "card");
+					    card.setAttribute("style","margin-bottom: 8px");
+					    
+					    var card_title = document.createElement('div');
+					    card_title.setAttribute("class","card-title");
+					    card_title.setAttribute("target","_blank");
+					    card_title.setAttribute("id","card_title_"+temp);
+					    card_title.setAttribute("href","javascript:void(0)");
+					    card_title.setAttribute("onmouseover","");
+					    card_title.setAttribute("style","cursor: pointer;");
+					    card_title.innerHTML = str;
 
-				    var card_body = document.createElement('div');
-				    card_body.setAttribute("class","card-body");
-				    card_body.setAttribute("id","card_body_"+temp);
-				    if (total == 1 || total == 2 || total ==3) {
-				    	card_body.setAttribute("style","display: block;");
-					} else {
-						card_body.setAttribute("style","display: none;");
-					}
-				    card_body.innerHTML = inside_text;
-
-				    card.appendChild(card_title);
-				    card.appendChild(card_body);
-
-				    //Adding Card to Brick Layer
-				    bricklayer.append(card);
-
-					document.getElementById("card_title_"+temp).addEventListener('click', function(event){
-						if( document.getElementById("card_body_"+temp).style.display == "none" ) {
-							document.getElementById("card_body_"+temp).style.display = "block";
+					    var card_body = document.createElement('div');
+					    card_body.setAttribute("class","card-body");
+					    card_body.setAttribute("id","card_body_"+temp);
+					    if (total == 1 || total == 2 || total ==3) {
+					    	card_body.setAttribute("style","display: block;");
 						} else {
-							document.getElementById("card_body_"+temp).style.display = "none";
-						} 
-					});				    
+							card_body.setAttribute("style","display: none;");
+						}
+					    card_body.innerHTML = inside_text;
 
+					    card.appendChild(card_title);
+					    card.appendChild(card_body);
+
+					    //Adding Card to Brick Layer
+					    bricklayer.append(card);
+
+						document.getElementById("card_title_"+temp).addEventListener('click', function(event){
+							if( document.getElementById("card_body_"+temp).style.display == "none" ) {
+								document.getElementById("card_body_"+temp).style.display = "block";
+							} else {
+								document.getElementById("card_body_"+temp).style.display = "none";
+							} 
+						});				    
+
+
+					}
+					
 				}
-			
+
 			}
-		}		
-	}
 
-	if(total>1)
-		res="results";
-	else
-		res="result";
-	if(total!=0)
-		$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
-		
-
-	if (found == 0 && found_word!=0)
-	{
-		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
-		happy += '<img id="fact"  src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
-		 $('#error-message').append(happy);
+			if(total>1)
+				res="results";
+			else
+				res="result";
+			$('#no_of_results').append("<ul>"+"<h6>Showing <span style='color: #5D337F'> <b>"+total+" </b></span>"+res+" for   :    <span style='color: #5D337F'><b>'"+query +"'</b></span></h6>"+"</ul>");
+		}
+		else 
+		{
+			var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>We could not find anything interesting for your query. Try something simple like \"sort\".<br>Help us by informing us about your query at <a target='_blank' title='Works offline if email app enabled' href='mailto:team@opengenus.org'>team@opengenus.org</a>. <br>We have something to make you smile:<br></p>";
+			happy += '<img id="fact"  src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
+			$('#error-message').append(happy);
+		}
 	}
-	else if (found_word == 0)
+	else if(found_word == 0)
 	{
 		var happy = "<p style='text-align: center' class=' col-xs-12 col-sm-12 col-md-12 col-lg-12'>Try a simple search term like \"sort\" <br> We have something to make you smile:<br></p>";
 		happy += '<img id="fact" src="image/'+(Math.floor(Math.random() * 11) + 1)+'.jpg" alt="Enjoy our daily code fact" style="width:50vw; height:50vh; position: relative; left: 50%; transform: translate(-50%, 0%);"/>'
 		$('#error-message').append(happy);
-	}
-
+	}	
 }
+
 
 function addtags()
 {
