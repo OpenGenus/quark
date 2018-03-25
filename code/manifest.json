@@ -21,7 +21,7 @@
     },
   "content_scripts": [
   {
-      "matches": ["<all_urls>"],
+      "matches": ["https://*/*"],
       "js": ["js/jquery.js","contentScript.js"]
   },
   {
