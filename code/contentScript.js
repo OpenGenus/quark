@@ -27,7 +27,7 @@ $(document).ready(function(){
       $(function() {
       $(document).on("click", ".link", function(){
         var val=$(this).text();
-        chrome.runtime.sendMessage({clicked: "true", value: val }, function(response) {
+        chrome.runtime.sendMessage({clicked: "true", value: val, lastv : lastVisited }, function(response) {
             console.log(response.mesg);
             
       });

@@ -25,7 +25,7 @@
       "js": ["js/jquery.js","contentScript.js"]
   },
   {
-      "matches": ["https://*/"],
+      "matches": ["<all_urls>"],
       "js": ["js/jquery.js","sitesScript.js"]
   }
   ],
