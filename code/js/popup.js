@@ -474,6 +474,11 @@ function initialize()
 
 document.addEventListener('DOMContentLoaded', function () 
 {
+
+	document.getElementById("sites").onclick = function () {
+		 window.open("/sites.html");
+	};
+
 	var val=localStorage.getItem("openThroughWeb");
 	if(val=="yes")
 	{

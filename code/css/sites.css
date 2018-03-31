@@ -1,0 +1,24 @@
+.navbar
+{
+	background-color: white;
+}
+
+.navbar-brand {
+
+	background: url(../logo/logo.png);
+	background-repeat:no-repeat;
+	margin: 2px;
+	width: 215px;
+	height: 60px;
+	background-size: contain;
+}
+.navbar-text{
+	font-size: 33px;
+}
+th
+{
+	background-color: #ffc107
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+	background-color: #ffc10769;
+}

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "The World's first Offline search engine by OpenGenus Foundation to empower people to continue their work even in no connectivity.",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "background": {
     "scripts": ["background.js"]
@@ -22,6 +23,10 @@
   {
       "matches": ["https://*/*"],
       "js": ["js/jquery.js","contentScript.js"]
+  },
+  {
+      "matches": ["<all_urls>"],
+      "js": ["js/jquery.js","sitesScript.js"]
   }
   ],
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
