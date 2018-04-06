@@ -33,6 +33,11 @@ footer {
     background-color: #E5E8E8;    
 }
 
+input[type=image]:disabled
+{
+   opacity:0.5;
+}
+
 .favListItem {
     text-align: center;
 }
@@ -88,6 +93,18 @@ min-width: 120px;
     color: orange;
 }
 
+.table-hover>tbody>tr .symbols {
+    visibility: hidden
+}
+
+.table-hover>tbody>tr:hover .symbols {
+    color: black;
+    visibility: visible
+}
+
+.symbols{
+    cursor: default; 
+}
 
 .card-title{
     font-size: 20px;
@@ -114,6 +131,12 @@ min-width: 120px;
     .bricklayer-column-sizer {
         /* Each column will be 125px width and there will be 4 columns. */
         width: 33%;
+    }
+}
+
+@media screen and (min-width: 256px) {
+    #logo {
+        width: 100%;
     }
 }
 
@@ -248,3 +271,9 @@ ul.share-buttons .sr-only{
     -webkit-appearance: searchfield-cancel-button; 
     cursor: pointer;    
 }
+
+#back{
+    height: 30px; 
+    width:35px ;
+}
+

@@ -7,6 +7,7 @@ obj = {"bit_manipulation/src/count_set_bits": ["countSetBits.js", "count_set_bit
 obj_keys = Object.keys(obj);
 obj_keys.sort();
 
+var stack=[];
 //Tags for easy search  
 var tags = ['sort','search','math','string','crypto','data structures','graph','greedy','operating systems','artificial intelligence'];
 var favs = [];
@@ -89,8 +90,19 @@ $(function() {
 		$('.bricklayer').empty();
  		$('#error-message').empty();
  		$('#no_of_results').empty();
+ 		$('#activity_log').empty();
 		dumpBookmarks($(this).val());
 	});
+});
+
+$(document).on('click', '#history_btn', function () {
+    $('.bricklayer').empty();
+	$('#error-message').empty();
+	$('#no_of_results').empty();
+	$('#activity_log').empty();
+	var txt = $(this).text();
+	console.log(txt);
+	dumpBookmarks(txt);
 });
 
 function remRow(row, pos) {
@@ -99,12 +111,74 @@ function remRow(row, pos) {
 }
 
 var current_fname;
+
+$(function(){
+	$('#back').click(function(){
+		$('.bricklayer').empty();
+		$('#error-message').empty();
+		$('#no_of_results').empty();
+		$('#activity_log').empty();
+		var curr=stack.pop();
+		var match=0;/*if same page is visited more than once in a row
+				then while going back we will keep popping out untill some different page is found*/
+		while(match==0)
+		{
+			if(stack.length>0)
+			{
+				var prev=stack.pop(); 
+				if(curr!=prev)
+				{
+					match=1;
+					if(prev=="fav")
+					{
+						stack.push("fav");
+					  	$('#favorites').show();
+						$('#front').hide();
+						$('#no_of_results').hide();
+					  	$('.bricklayer').hide();
+				 		addFavorites();
+				 		$('#search').val("");
+					}
+					else if(prev=="history")
+					{
+						stack.push("history");
+						$('#search').val("");
+						show_history();
+					}
+					else
+						dumpBookmarks(prev);
+				}
+			}
+			else
+			{
+				$("#front").show();
+				$('#back').prop('disabled', true);	
+				$('#search').val("");
+				break;
+			}
+		}
+	});
+});
+
 function dumpBookmarks(query) 
 {
 	$('#search').val(query);
+	stack.push(query);
+	var date = new Date();//gets system date
+	var json_date = JSON.stringify(date);//converts system date to string and then to a json object
+	var key_value = "quark/"+query;
+	localStorage.setItem(key_value,json_date);
+	console.log(localStorage);//the history of all pages so far visited in is localStorage now
+
+	if(stack.length>0)
+		$('#back').prop('disabled', false);
+	else
+		$('#back').prop('disabled', true);	
+	
 	$("#front").hide();
 	$("#favorites").hide();
-	$('.bricklayer').show();			
+	$('.bricklayer').show();
+	$('#activity_log').empty();			
  	bricklayer = new Bricklayer(document.querySelector('.bricklayer'));
 
 	var single_query = query.replace(/\s+/g,' ');// all words sep by ' ' 
@@ -472,6 +546,54 @@ function initialize()
 	}	
 }
 
+//view history 
+function show_history()
+{
+	$('#activity_log').append("<h1 style='text-align: center;'>History</h1><hr>");
+	var keys = Object.keys(localStorage);
+	let table_start = '<table id="t2" class="table table-hover table-bordered " style="width:85%;text-align:center;"><thead><tr><th style="text-align: center;width:50%;height:80px;padding-bottom:30px;font-size:20px" ><u>Query Searched</u></th><th style="text-align: center;width:50%;height:80px;padding-bottom:30px;font-size:20px" ><u>Timestamp </u></th></tr></thead><tbody>';
+	let table_body = '';
+	let table_end = "</tbody></table></ul><br><br><br><br><br>";
+	const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+
+    //this function converts date to a suitable format
+	function reviver(key,value) {
+	    if (typeof value === "string" && dateFormat.test(value)) {
+	        return new Date(value);
+	    }
+	    return value;
+	}
+	
+	function sortByValue(jsObj){
+	    var sortedArray = [];
+	    for(var i in jsObj)
+	    {
+	        // Push each JSON Object entry in array by [value, key]
+	        sortedArray.push([jsObj[i],i]);
+	    }
+	    sortedArray.sort();
+	    return sortedArray.reverse();
+	}
+
+	var newStr=sortByValue(localStorage);//sort localStorage by timestamps
+	
+    for(i=0;i<newStr.length;i++)
+    {
+    	if(newStr[i][1].indexOf("quark/")!=-1)
+    	{
+
+	    var value=newStr[i][0];
+		const text = '{"date":' +value+'}';
+		var obj1 = JSON.parse(text, reviver);
+	    var str=String(obj1.date);
+        table_body += '<tr id="row"><td><span class="fa fa-ellipsis-h float-left symbols"></span><a id="history_btn" href="javascript:void(0)" >'+newStr[i][1].substr(6)+'</a></td>';
+        str=str.substr(8,3)+str.substr(4,4)+str.substr(11,5)+'|'+str.substr(15,10);
+        table_body += '<td class="favListItem ">'+str+'</td></tr>';
+		}
+    }
+    $('#activity_log').append(table_start+table_body+table_end);
+}
+
 document.addEventListener('DOMContentLoaded', function () 
 {
 
@@ -498,23 +620,42 @@ document.addEventListener('DOMContentLoaded', function ()
 	  help_hide();
 	});
 
+	document.getElementById('history').addEventListener('click', function(event){
+	    stack.push("history");
+		if(stack.length>0)
+			$('#back').prop('disabled', false);
+	    $('#activity_log').empty();
+		$('#favorites').hide();
+		$('#front').hide();
+		$('#no_of_results').hide();
+		$('.bricklayer').hide();
+		$('#error-message').empty();
+		$('#search').val("");
+	  	show_history();
+	});
 
 	document.getElementById('favButton').addEventListener('click', function(event){
 
 		if (this.getAttribute('data-clicked') == 'true') return;
 		this.setAttribute('data-clicked', true);
 
+		stack.push("fav");
+		if(stack.length>0)
+			$('#back').prop('disabled', false);
 	  	$('#favorites').show();
 		$('#front').hide();
 		$('#no_of_results').hide();
 	  	$('.bricklayer').hide();
 	  	$('#error-message').empty();
+	  	$('#search').val("");
+	  	$('#activity_log').empty();
 	  	
  		var promise = addFavorites();
  		var now = this;	
  		promise.always(function(){
  			now.setAttribute('data-clicked', false);
  		});
+
 	});
 
 	document.getElementById('scrollBtn').addEventListener('click', function(event){
