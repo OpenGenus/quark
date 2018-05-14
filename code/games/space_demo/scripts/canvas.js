@@ -27,6 +27,8 @@ function createCanvas ()
 	//Add canvas element to body
 	canvas_Element.appendTo('body');
 
+	var btn = $('<button target="_blank" id="infobtn" type="button" style="z-index:2; position:absolute; top:90%; left:44%" >Game Information and Rules</button>')
+	btn.appendTo('body');
 
 }
 

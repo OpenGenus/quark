@@ -1,12 +1,21 @@
 
 //On Document ready 
-        $(document).ready(function(){
-          createCanvas();       
-          init_life();
-          window.interval_status =interval();
-          
-        });   
-       
+$(document).ready(function(){
+	createCanvas();       
+	init_life();
+	let c = document.getElementById('infobtn');
+	c.addEventListener('click', function(evt) {
+		window.open(
+			'info.html',
+			'_blank' 
+			);
+		});
+
+	window.interval_status =interval();
+
+
+	});   
+
 
 
 function interval ()
@@ -25,9 +34,9 @@ function interval ()
 		draw_sb();
 		draw_life();
 		draw_se();
-  		update_se();			
+		update_se();			
 		
-	},1000/FPS);
+		},1000/FPS);
 	
 	return ret;
 }
@@ -44,22 +53,22 @@ function clearArray()
 //Game End Screen
 function endGame()
 {
-		clearArray();
-		var audio = new Audio('sounds/gameEnd.mp3');
-		audio.play();
-		clearInterval(window.interval_status);	
-		canvas.clearRect(0,0,width,height);
+	clearArray();
+	var audio = new Audio('sounds/gameEnd.mp3');
+	audio.play();
+	clearInterval(window.interval_status);	
+	canvas.clearRect(0,0,width,height);
 
-		canvas.beginPath();
-		canvas.fillStyle = "#ffffff ";
-		go.draw(canvas,128,150);
-		canvas.fillText("Click Anywhere To Restart",136,270);
-		canvas.closePath();
+	canvas.beginPath();
+	canvas.fillStyle = "#ffffff ";
+	go.draw(canvas,128,150);
+	canvas.fillText("Click Anywhere To Restart",136,270);
+	canvas.closePath();
 
-		console.log(window.interval_status);
-		document.addEventListener('click', function() {
-		 location.reload();       
-	   	 }, false);
+	console.log(window.interval_status);
+	document.addEventListener('click', function() {
+		location.reload();       
+		}, false);
 
 }
 
