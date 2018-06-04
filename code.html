@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<button type="button" onclick="loadDoc()">Get extension data</button>
+<button type="button" onclick="readTextFile()">local file XMLHttpRequest</button>
+<button type="button" onclick="readSingleFile()">local file Reader</button>
+<p id="extension"></p>
+
+<script>
+  function loadDoc() {
+    fetch('code/graph_algorithms/src/breadth_first_search/bfs.rb', {method: 'get'})
+    .then(function(response) {
+          if(response.ok){
+                  return response.text();}
+          })
+    .then(function(text){
+            document.getElementById("extension").innerHTML = text;
+          })
+  }
+</script>
+
+<script>
+  function readTextFile(){
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", "file:///C:/Users/Stas/Desktop/data.txt", false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                console.log(allText);
+            }
+        }
+    }
+    rawFile.send(null);
+  }
+  </script>
+
+<script>
+  function readSingleFile() {
+    var file = "C:/Users/Stas/Desktop/data.txt"
+    var f = new File([""], file);
+    console.log(f)
+    var reader = new FileReader();
+    reader.readAsText(f)
+    console.log(reader.result);
+  }
+  </script>
+</body>
+</html>
