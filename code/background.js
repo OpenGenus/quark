@@ -15,7 +15,39 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		}, function(tab) {
 			localStorage.setItem("openThroughWeb", "no");
 			});
-	});
+});
+
+//notification to indicate that you aren't connected to internet
+window.addEventListener('offline', createNotification);
+window.addEventListener('offline', audioNotification);
+
+//notification to indicate that you are back online
+window.addEventListener('online', createNotification);
+window.addEventListener('online', audioNotification);
+
+//list type notification
+function createNotification(){
+	let status = navigator.onLine;
+	var opt = {type: "list", message: '', iconUrl: "icon/icon.png"};
+	if(status) {
+		opt.title = 'Internet : ONLINE';
+		opt.items = [{ title: "", message: "You\'re back online!"}];
+	}
+	if(!status) {
+		opt.title = 'Internet : OFFLINE';
+		opt.items = [{title:"",message:"Do not close/refresh open tabs."}, 
+					{ title: "Use Quark", message: "to continue learning!"}];
+	}
+    chrome.notifications.create("notification101",opt,function(){});
+}
+
+//alert sound for the above notification
+function audioNotification(){
+    var yourSound = new Audio('audio/kick.wav');
+    yourSound.play();
+}
+
+
 //it listens to messages sent by content scripts
 
 chrome.runtime.onMessage.addListener(
