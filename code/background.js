@@ -27,24 +27,25 @@ window.addEventListener('online', audioNotification);
 
 //list type notification
 function createNotification(){
+	//boolean var status to check if connxn is online/offline
 	let status = navigator.onLine;
-	var opt = {type: "list", message: '', iconUrl: "icon/icon.png"};
+	let notification = {type: "list", message: '', iconUrl: "icon/icon.png"};
 	if(status) {
-		opt.title = 'Internet : ONLINE';
-		opt.items = [{ title: "", message: "You\'re back online!"}];
+		notification.title = 'Internet : ONLINE';
+		notification.items = [{ title: "", message: "You\'re back online!"}];
 	}
 	if(!status) {
-		opt.title = 'Internet : OFFLINE';
-		opt.items = [{title:"",message:"Do not close/refresh open tabs."}, 
+		notification.title = 'Internet : OFFLINE';
+		notification.items = [{title:"",message:"Do not close/refresh open tabs."}, 
 					{ title: "Use Quark", message: "to continue learning!"}];
 	}
-    chrome.notifications.create("notification101",opt,function(){});
+    chrome.notifications.create("connxnNotification",notification,function(){});
 }
 
 //alert sound for the above notification
 function audioNotification(){
-    var yourSound = new Audio('audio/kick.wav');
-    yourSound.play();
+    let alertSound = new Audio('audio/kick.wav');
+    alertSound.play();
 }
 
 
