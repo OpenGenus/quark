@@ -15,22 +15,6 @@ function readFile(path_to_code){
     rawFile.send(null);
 }
 
-function loadScript(url, ) {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    head.appendChild(script);
-}
-function includeCSS(path) {
-    var link = document.createElement("link");
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.href = path;
-    var head = document.getElementsByTagName("head")[0];
-    head.appendChild(link);
-}
-
 function getQueryVariable(variable) {
        var query = window.location.search.substring(1);
        var vars = query.split("&");
@@ -44,16 +28,4 @@ function getQueryVariable(variable) {
 let path = getQueryVariable("loc")
 if (path){
     readFile("/code/" + path);
-    includeCSS("styles/monokai-sublime.css")
-    loadScript('highlight.pack.js');
-    loadScript('load.js');
 }
-document.getElementById('code').addEventListener("click", function(event) {
-    let path = document.getElementById("path").value
-    if (path != ''){
-        (function(event) {
-            path = path.substring(path.indexOf('code')+5)
-            window.location.href = window.location.href.substring(0, window.location.href.indexOf('code.html'))  + "code.html?loc=" + path
-        }).call(document.getElementById('code'), event);
-    }
-});
