@@ -48,3 +48,12 @@ if (path){
     loadScript('highlight.pack.js');
     loadScript('load.js');
 }
+document.getElementById('code').addEventListener("click", function(event) {
+    let path = document.getElementById("path").value
+    if (path != ''){
+        (function(event) {
+            path = path.substring(path.indexOf('code')+5)
+            window.location.href = window.location.href.substring(0, window.location.href.indexOf('code.html'))  + "code.html?loc=" + path
+        }).call(document.getElementById('code'), event);
+    }
+});
