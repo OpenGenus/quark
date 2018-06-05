@@ -4,7 +4,8 @@
   "description": "The World's first Offline search engine by OpenGenus Foundation to empower people to continue their work even in no connectivity.",
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "notifications"
   ],
   "background": {
     "scripts": ["background.js"]

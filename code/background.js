@@ -15,7 +15,40 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		}, function(tab) {
 			localStorage.setItem("openThroughWeb", "no");
 			});
-	});
+});
+
+//notification to indicate that you aren't connected to internet
+window.addEventListener('offline', createNotification);
+window.addEventListener('offline', audioNotification);
+
+//notification to indicate that you are back online
+window.addEventListener('online', createNotification);
+window.addEventListener('online', audioNotification);
+
+//list type notification
+function createNotification(){
+	//boolean var status to check if connxn is online/offline
+	let status = navigator.onLine;
+	let notification = {type: "list", message: '', iconUrl: "icon/icon.png"};
+	if(status) {
+		notification.title = 'Internet : ONLINE';
+		notification.items = [{ title: "", message: "You\'re back online!"}];
+	}
+	if(!status) {
+		notification.title = 'Internet : OFFLINE';
+		notification.items = [{title:"",message:"Do not close/refresh open tabs."}, 
+					{ title: "Use Quark", message: "to continue learning!"}];
+	}
+    chrome.notifications.create("connxnNotification",notification,function(){});
+}
+
+//alert sound for the above notification
+function audioNotification(){
+    let alertSound = new Audio('audio/kick.wav');
+    alertSound.play();
+}
+
+
 //it listens to messages sent by content scripts
 
 chrome.runtime.onMessage.addListener(
