@@ -8,7 +8,14 @@ function readFile(path_to_code){
             if(rawFile.status === 200 || rawFile.status == 0)
             {
                 var allText = rawFile.responseText;
-                document.getElementById("show-code").innerHTML = allText;
+                document.getElementById("show-code").innerText = allText;
+
+                var newCode = document.getElementsByTagName('code');
+                    for (var i=0; i < newCode.length; i++) {
+                        hljs.highlightBlock(newCode[i]);
+                        hljs.lineNumbersBlock(newCode[i]);
+                }
+
             }
         }
     }
