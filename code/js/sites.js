@@ -31,7 +31,7 @@ function searchSites(){
 			if (!chrome.runtime.error) {
 				current_sites = items.sites;                
 				if(current_sites.length>0)
-				{
+				{	const monthNames = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "1", "12"];
 					//$(".form-inline").show();
 					let percentage_spent_on_web = '';
 					let table_start = '<div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th>S.No. </th><th>Site Name</th><th>Days</th><th>Hours</th><th>Minutes</th><th>Seconds</th><th>Percentage of Time</th><th>Last Visited On</th></tr></thead><tbody>';
@@ -53,9 +53,12 @@ function searchSites(){
 					}
 					
 					for(let site in current_sites)
-					{
+					{	
+						var parts = current_sites[site].lastV.split('/');
+						var site_date = new Date(parts[2], parts[1], parts[0]);
+						correct_date = site_date.getDate()+"/"+monthNames[parseInt(parts[1])]+"/"+site_date.getFullYear();
 						let name = current_sites[site].name;
-						let lastV = current_sites[site].lastV;
+						let lastV = correct_date;
 						let days = current_sites[site].days;
 						let hrs = current_sites[site].hrs ;
 						let mins = current_sites[site].mins;
@@ -65,16 +68,24 @@ function searchSites(){
 						let percent_time = ((site_time_secs/overall_time)*100).toFixed(2).toString()+'%';
 						table_body +="<tr><td>"+(+(site)+1)+"</td><td>"+name+"</td><td>"+days+"</td><td>"+hrs+"</td><td>"+mins+"</td><td>"+secs+"</td><td>"+percent_time+"</td><td>"+lastV+"</td></tr>"
 					}
-
+					//calculating time spent on the web
+					time_spent = overall_time
+					days = Math.floor(time_spent / 86400);
+					time_spent %= 86400;
+					hours = Math.floor(time_spent / 3600);
+					time_spent %= 3600;
+					minutes = Math.floor(time_spent / 60);
+					seconds = time_spent % 60;
+					total_time = '[' + days +' days ' + hours + ' hours ' + minutes + ' min ' + seconds + ' sec]' 
+					//calculate days between first visited site and today
 					var today = new Date();
 					var today_day = today.getDate();
-					console.log(today.getMonth())
 					today.setDate(today_day+1)
 					today.setHours(0, 0, 0, 0)
 					var difference = (today-old_date)/1000
-					var percentage_spent = Math.round((overall_time/difference)*100)/100
+					var percentage_spent = Math.round((overall_time/difference)*100)
 					var spent_days = Math.round(difference/60/60/24)
-					percentage_spent_on_web = '<div class="percentage_spent"> You spent <font color="#ffc107"><strong>' + percentage_spent + '% </strong></font> of your time on the web in the last <font color="#ffc107"><strong>' + spent_days + '</strong></font> days</div>';
+					percentage_spent_on_web = '<div align="center" class="percentage_spent"> You spent <font color="#ffc107"><strong>' + percentage_spent + '% </strong></font> <strong><font color="#ffc107" size=2>' + total_time + '</font></strong> of your time on the web in the last <font color="#ffc107"><strong>' + spent_days + '</strong></font> days</div>';
 
 					$('.body').append(percentage_spent_on_web+table_start+table_body+table_end);
 				}
