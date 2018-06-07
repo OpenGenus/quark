@@ -31,7 +31,7 @@ function searchSites(){
 			if (!chrome.runtime.error) {
 				current_sites = items.sites;                
 				if(current_sites.length>0)
-				{	const monthNames = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "1", "12"];
+				{	const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 					//$(".form-inline").show();
 					let percentage_spent_on_web = '';
 					let table_start = '<div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th>S.No. </th><th>Site Name</th><th>Days</th><th>Hours</th><th>Minutes</th><th>Seconds</th><th>Percentage of Time</th><th>Last Visited On</th></tr></thead><tbody>';
@@ -56,7 +56,7 @@ function searchSites(){
 					{	
 						var parts = current_sites[site].lastV.split('/');
 						var site_date = new Date(parts[2], parts[1], parts[0]);
-						correct_date = site_date.getDate()+"/"+monthNames[parseInt(parts[1])]+"/"+site_date.getFullYear();
+						correct_date = site_date.getDate()+" "+monthNames[parseInt(parts[1])]+" "+site_date.getFullYear();
 						let name = current_sites[site].name;
 						let lastV = correct_date;
 						let days = current_sites[site].days;
@@ -85,7 +85,7 @@ function searchSites(){
 					var difference = (today-old_date)/1000
 					var percentage_spent = Math.round((overall_time/difference)*100)
 					var spent_days = Math.round(difference/60/60/24)
-					percentage_spent_on_web = '<div align="center" class="percentage_spent"> You spent <font color="#ffc107"><strong>' + percentage_spent + '% </strong></font> <strong><font color="#ffc107" size=2>' + total_time + '</font></strong> of your time on the web in the last <font color="#ffc107"><strong>' + spent_days + '</strong></font> days</div>';
+					percentage_spent_on_web = '<div align="center" class="percentage_spent"> You spent <font color="#ffc107"><strong>' + percentage_spent + '% </strong></font> <strong><font color="#ffc107" size=2>' + total_time + '</font></strong> of your time on the web in the last <font color="#ffc107"><strong>' + spent_days + '</strong></font> days</div><p> </p>';
 
 					$('.body').append(percentage_spent_on_web+table_start+table_body+table_end);
 				}
