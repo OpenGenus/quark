@@ -204,9 +204,9 @@ function dumpBookmarks(query)
 								}		
 
 							   	if(found_in_Favs==false) {
-							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' href='/code.html?loc="+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star'></i><br>";
 							   	} else {
-							   		inside_text = inside_text + "<a  target='_blank' href='/code/"+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
+							   		inside_text = inside_text + "<a  target='_blank' href='/code.html?loc="+key+"/"+obj[key][dd]+"'>"+sub_result_number+". "+obj[key][dd]+"</a>"+"&nbsp;&nbsp;<a style='color:inherit' href='/code/"+key+"/"+obj[key][dd]+"'download><i id='myDownload"+temp2+"\' style='float:right' class='fa fa-download'></i></a><i id='myStar"+temp2+"\' style='float:right;width:8%' class='fa fa-star checked'></i><br>";
 							   	}
 							   	sub_result_number++;
 							}
@@ -433,7 +433,7 @@ function addFavorites()
 					   	temp = temp.replace(/_/g, '');					   
 						var str = '#myStar'+temp;
 						var filename = favs[fname].filename.replace(/^.*[\\\/]/, '');
-						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' href='/code/"+favs[fname].filename+"'>"+filename+"&nbsp;&nbsp;</a><br></ul></td>";
+						table_body += "<tr><td><ul ><i id='myStar"+temp+"\' class='fa fa-star checked' style='margin-right:20px;'></i></td><td><a class='favListItem' target='_blank' href='/code.html?loc="+favs[fname].filename+"'>"+filename+"&nbsp;&nbsp;</a><br></ul></td>";
 						table_body += '<td class="favListItem ">'+favs[fname].language+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].date+'</td>';
 						table_body += '<td class="favListItem " >'+favs[fname].area+'</td></tr>';
