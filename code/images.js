@@ -5,9 +5,15 @@ var dict = {1: "google.com",
                 4: "google.com",
                 5: "website.com"}
 
-function show_image(src, num) {
+function show_image(num) {
     var img = document.createElement("img");
-    img.src = "images/" + src;
+    img.src = "images/" + num + ".jpg";
+    img.onerror = function() {
+        img.src = "images/" + num + ".png";
+        img.onerror = function() {
+            img.src = "images/" + num + ".gif";
+        };
+    };
     img.style = "text-align:center; vertical-align:middle; max-width:100%;  max-height:100%;"
 
     var outerDiv = document.getElementById("outer");
@@ -31,8 +37,7 @@ function increase(){
         document.getElementById("previous").disabled = false;
     }
 
-    src = id + 1 +".jpg";
-    show_image(src, id + 1);
+    show_image(id + 1);
 
 }
 
@@ -44,9 +49,7 @@ function decrease(){
     if (id < Object.keys(dict).length - 1) {
         document.getElementById("next").disabled = false;
     }
-
-    src = id + 1 +".jpg";
-    show_image(src, id + 1);
+    show_image(id + 1);
 }
 
 function random(){
@@ -61,8 +64,8 @@ function random(){
     } else {
         document.getElementById("next").disabled = false;
     }
-    src = id + 1 +".jpg";
-    show_image(src, id + 1);
+
+    show_image(id + 1);
 }
 
 document.getElementById('previous').addEventListener('click',decrease);
@@ -70,7 +73,16 @@ document.getElementById('next').addEventListener('click',increase);
 document.getElementById('random').addEventListener('click',random);
 
 $( document ).ready(function() {
-    src = 1 +".jpg";
-    show_image(src, id + 1);
+    show_image(id + 1);
     document.getElementById("previous").disabled = true;
 });
+
+function tryImages(img, src) {
+    img.src = "images/" + name + ".jpg";
+    img.onerror = function() {
+        img.src = "img/" + name + ".png";
+        img.onerror = function() {
+            img.src = "img/" + name + ".gif";
+        };
+    };
+}
