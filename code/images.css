@@ -1,0 +1,58 @@
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 10px;
+}
+
+.left, .right {
+  width: 25%;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.logo {
+    max-width: 25%;
+	background: url(logo/logo.png);
+	background-repeat:no-repeat;
+	margin: 2px;
+	width: 215px;
+	height: 60px;
+	background-size: contain;
+}
+
+.btn {
+    height: 15vh;
+    width: 10vw;
+}
+.rand_btn {
+    height: 15vh;
+    width: 20vw;
+}
+
