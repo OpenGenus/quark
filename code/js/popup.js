@@ -478,6 +478,9 @@ document.addEventListener('DOMContentLoaded', function ()
 	document.getElementById("sites").onclick = function () {
 		 window.open("/sites.html");
 	};
+	document.getElementById("images").onclick = function () {
+		window.open("/images.html");
+   };
 
 	var val=localStorage.getItem("openThroughWeb");
 	if(val=="yes")
