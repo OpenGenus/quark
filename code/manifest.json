@@ -5,10 +5,15 @@
   "permissions": [
     "storage",
     "tabs",
-    "notifications"
+    "notifications",
+    "http://*/*", 
+    "https://*/*", 
+    "activeTab", 
+    "webNavigation", 
+    "contextMenus"
   ],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js", "background-save.js"]
   },
   "browser_action": {
       "default_title": "OpenGenus: Offline Search Engine",
@@ -31,5 +36,6 @@
   }
   ],
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
-  "short_name": "World's first offline search engine: Quark"
+  "short_name": "World's first offline search engine: Quark",
+  "web_accessible_resources": [ "pageloader.js" ]
 }
