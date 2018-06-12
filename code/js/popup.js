@@ -478,9 +478,12 @@ document.addEventListener('DOMContentLoaded', function ()
 	document.getElementById("sites").onclick = function () {
 		 window.open("/sites.html");
 	};
-	document.getElementById("images").onclick = function () {
-		window.open("/images.html");
-   };
+	document.getElementById("space").onclick = function () {
+		window.open("/images.html?category=space");
+	   };
+	   document.getElementById("wildlife").onclick = function () {
+		window.open("/images.html?category=wildlife");
+   	};
 
 	var val=localStorage.getItem("openThroughWeb");
 	if(val=="yes")
