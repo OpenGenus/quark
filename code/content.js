@@ -1520,6 +1520,23 @@ function generateHTML()
     link = document.createElement("a");
     link.download = filename;
     link.href = objectURL;
+
+    var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction;
+
+    if (IDBTransaction){
+        IDBTransaction.READ_WRITE = IDBTransaction.READ_WRITE || 'readwrite';
+        IDBTransaction.READ_ONLY = IDBTransaction.READ_ONLY || 'readonly';
+    }
+    var request = indexedDB.open('pages');
+
+    request.onsuccess = function(e){
+        var idb = e.target.result;
+        var trans = idb.transaction('page', IDBTransaction.READ_WRITE);
+        var store = trans.objectStore('page');
+
+        var requestAdd = store.add({url: objectURL, page: filename});
+    };
+
     
     document.body.appendChild(link);
     
