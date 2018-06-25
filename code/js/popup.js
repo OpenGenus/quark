@@ -474,35 +474,6 @@ function initialize()
 
 document.addEventListener('DOMContentLoaded', function () 
 {
-	
-	var indexedDB = window.indexedDB;
-	var IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
-	var openCopy = indexedDB && indexedDB.open;
-
-	var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction;
-
-	if (IDBTransaction){
-		IDBTransaction.READ_WRITE = IDBTransaction.READ_WRITE || 'readwrite';
-		IDBTransaction.READ_ONLY = IDBTransaction.READ_ONLY || 'readonly';
-	}
-
-	var request = indexedDB.open('pages');
-
-	request.onupgradeneeded = function(e) {
-		var idb = e.target.result;
-
-		if (idb.objectStoreNames.contains('page')){
-			idb.deleteObjectStore('page');
-		}
-
-		var store = idb.createObjectStore('page', {keyPath: 'url', autoIncrement: true});
-		
-		store.createIndex('by_page', 'page', {unique: true, multiEntry: false});
-	};
-
-
-
-
 	document.getElementById("sites").onclick = function () {
 		 window.open("/sites.html");
 	};
