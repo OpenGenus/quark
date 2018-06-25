@@ -1,26 +1,57 @@
-$( document ).ready(function() {
+var db = openDatabase('mydb1', '1.0', 'Test DB', 2 * 1024 * 1024); 
+var msg; 
+db.transaction(function (tx) { 
+    console.log("here")
+    tx.executeSql('SELECT * FROM LOGS', [], function (tx, results) { 
+    var len = results.rows.length, i; 
+    console.log(len)
 
-    var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction;
+    for (i = 0; i < len; i++) { 
+        console.log( results.rows.item(i).log)
+    } 
+}, null); 
+}); 
 
-    if (IDBTransaction){
-        IDBTransaction.READ_WRITE = IDBTransaction.READ_WRITE || 'readwrite';
-        IDBTransaction.READ_ONLY = IDBTransaction.READ_ONLY || 'readonly';
+function addDb(){
+    db.transaction(function (tx) { 
+        tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)'); 
+        tx.executeSql('INSERT INTO LOGS (id, log) VALUES (3, "asdf")'); 
+        tx.executeSql('INSERT INTO LOGS (id, log) VALUES (4, "sdf")'); 
+    })
+}
+function getDb(){
+    db.transaction(function (tx) { 
+    tx.executeSql('SELECT * FROM LOGS', [], function (tx, results) { 
+       var len = results.rows.length, i; 
+       for (i = 0; i < len; i++) { 
+          console.log(results.rows.item(i).log)
+       } 
+    }, null); 
+ }); 
+}
+
+function addListeners(){      
+    chrome.runtime.onMessage.addListener(
+    function(message,sender,sendResponse)
+    {
+        var i,panel;
+        
+        switch (message.type)
+        {            
+            case "performAction":
+                sendResponse({ });  
+
+                action = message.action;
+                console.log(action)
+                if(action == "save"){
+                    addDb();
+                }
+        }
     }
+)
+}
 
-    var request = indexedDB.open('pages');
-    request.onsuccess = function(e) {
-        idb = e.target.result;
-        var transaction = idb.transaction('page', IDBTransaction.READ_ONLY);
-        var objectStore = transaction.objectStore('page');
-
-        objectStore.openCursor().onsuccess = function(event){
-            var cursor = event.target.result;
-            if (cursor){
-                console.log('Cursor data', cursor.value);
-                cursor.continue();
-            }else{
-                console.log('Entries all displayed.');
-            }
-        };
-    };
+$( document ).ready(function() {
+    getDb();
+    addListeners();
 });

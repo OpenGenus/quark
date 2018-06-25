@@ -16,6 +16,7 @@ var savedPage;
 var savedPageLoader;  
 
 var menuAction;
+var action;
 var passNumber;
 var iconFound;
 
@@ -129,10 +130,11 @@ function addListeners()
         switch (message.type)
         {            
             case "performAction":
-                
                 sendResponse({ });  
                 
                 menuAction = message.menuaction;
+
+                action = message.action;
                                 
                 panel = document.getElementById("savepage-unsaved-panel-container");
                 
@@ -196,7 +198,6 @@ function addListeners()
 function performAction(srcurl)
 {
     var script;
-
     if (menuAction <= 2)  
     {
         if (!savedPageLoader)
@@ -1516,49 +1517,38 @@ function generateHTML()
         if (i < 0) filename = filename + text;
         else filename = filename.substring(0,i) + text + filename.substring(i);
     }
-    
-    link = document.createElement("a");
-    link.download = filename;
-    link.href = objectURL;
 
-    var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction;
+     
+    if (action == "load"){
+        link = document.createElement("a");
+        link.download = filename;
+        link.href = objectURL;
+        document.body.appendChild(link);
 
-    if (IDBTransaction){
-        IDBTransaction.READ_WRITE = IDBTransaction.READ_WRITE || 'readwrite';
-        IDBTransaction.READ_ONLY = IDBTransaction.READ_ONLY || 'readonly';
-    }
-    var request = indexedDB.open('pages');
-
-    request.onsuccess = function(e){
-        var idb = e.target.result;
-        var trans = idb.transaction('page', IDBTransaction.READ_WRITE);
-        var store = trans.objectStore('page');
-
-        var requestAdd = store.add({url: objectURL, page: filename});
-    };
-
-    
-    document.body.appendChild(link);
-    
-    link.addEventListener("click",handleClick,true);
-    
-    link.click();  
-    
-    link.removeEventListener("click",handleClick,true);
-    
-    document.body.removeChild(link);
-    
-    window.setTimeout(
-    function()
-    {
-        window.URL.revokeObjectURL(objectURL);
+        link.addEventListener("click",handleClick,true);
         
-        chrome.runtime.sendMessage({ type: "setSaveBadge", text: "", color: "#000000" });
-    },100);
-    
-    function handleClick(event)
-    {
-        event.stopPropagation();
+        link.click();  
+        
+        link.removeEventListener("click",handleClick,true);
+        
+        document.body.removeChild(link);
+        
+        window.setTimeout(
+        function()
+        {
+            window.URL.revokeObjectURL(objectURL);
+            
+            chrome.runtime.sendMessage({ type: "setSaveBadge", text: "", color: "#000000" });
+        },100);
+        
+        function handleClick(event)
+        {
+            event.stopPropagation();
+        }
+    }
+
+    if (action == "save"){
+        //saving page in saved.js
     }
 }
 
