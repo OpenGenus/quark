@@ -481,9 +481,12 @@ document.addEventListener('DOMContentLoaded', function ()
 	document.getElementById("space").onclick = function () {
 		window.open("/images.html?category=space");
 	   };
-	   document.getElementById("wildlife").onclick = function () {
+	document.getElementById("wildlife").onclick = function () {
 		window.open("/images.html?category=wildlife");
-   	};
+	};
+	document.getElementById("t-rex").addEventListener('click', function(){
+		window.open("../games/t-rex-runner/t-rex-runner.html");
+	});   
 
 	var val=localStorage.getItem("openThroughWeb");
 	if(val=="yes")
