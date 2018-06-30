@@ -150,6 +150,11 @@ function addListeners()
                 chrome.tabs.sendMessage(sender.tab.id,{ type: "replyCrossFrame", name: message.name, url: message.url, html: message.html },checkError);
                 
                 break;
+            case "addDb":
+                
+                chrome.tabs.sendMessage(sender.tab.id,{ type: "addDb", id: message.id, url: message.url},checkError);
+                
+                break;
                 
             case "loadResource":
                 

@@ -1548,7 +1548,7 @@ function generateHTML()
     }
 
     if (action == "save"){
-        //saving page in saved.js
+        chrome.runtime.sendMessage({ type: "addDb", id: filename, url: objectURL});
     }
 }
 
