@@ -1,4 +1,4 @@
-var db = openDatabase('saved', '1.0', 'saved', 2 * 1024 * 1024); 
+var db = openDatabase('saved11121', '1.0', 'saved', 2 * 1024 * 1024); 
 
 function addDb(filename, url){
     db.transaction(function (tx) { 
@@ -12,32 +12,28 @@ function getDb(){
     tx.executeSql('SELECT * FROM LOGS', [], function (tx, results) { 
         let names = [];
         let links = [];
-        let websites = []
        var len = results.rows.length, i; 
        for (i = 0; i < len; i++) { 
             names.push(results.rows.item(i).filename)
             links.push(results.rows.item(i).url)
-            var url_name = new URL(results.rows.item(i).url.substring(5));
-            websites.push(url_name.hostname)
        } 
 
         // constructing table
         let percentage_spent_on_web = '';
-        let table_start = '<div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="serial">No.</th><th id="name">Saved Page</th><th>Site Name</th></tr></thead><tbody>';
+        let table_start = '<div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="serial">No.</th><th id="name">Page Name</th></tr></thead><tbody>';
         let table_body = '';
         let table_end = "</tbody></table></div>";
             for(let site in names)
             {	
                 let name = names[site]
-                let url = websites[site]
-                table_body +="<tr id="+site +"><td>"+(+(site)+1)+"</td><td>"+name+"</td><td>"+url+"</td></tr>"
+                table_body +="<tr id="+site +"><td>"+(+(site)+1)+"</td><td>"+name+"</td></tr>"
             }
         $('.body').append(table_start+table_body+table_end);
 
         for(let site in names){
             var element = document.getElementById(site);
             element.addEventListener("click", function(){
-                openPage(links[site])
+                convertToBlob(links[site])
             });
         }
 
@@ -50,52 +46,48 @@ function emptyMess(){
     $('.body').append(EmptyMessage);
 }
 
-function openPage(url){
-    console.log(url)
+function convertToBlob(url){
+    fetch(url)
+        .then(res => res.blob())
+        .then(blob => openPage(blob))
+}
+function openPage(blob){
+    objectURL = window.URL.createObjectURL(blob);
     link = document.createElement("a");
     link.target = "_blank";
-    link.href = url;
+    link.href = objectURL;
     document.body.appendChild(link);
     link.addEventListener("click",handleClick,true);
     link.click();  
     link.removeEventListener("click",handleClick,true);
     document.body.removeChild(link);
-    function handleClick(event)
-    {
-        event.stopPropagation();
-    }
+    window.setTimeout(
+        function()
+        {
+            window.URL.revokeObjectURL(url);
+            
+            chrome.runtime.sendMessage({ type: "setSaveBadge", text: "", color: "#000000" });
+        },100);
+        
+        function handleClick(event)
+        {
+            event.stopPropagation();
+        }
 }
 
-function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i=0;i<vars.length;i++) {
-            var pair = vars[i].split("=");
-            if(pair[0] == variable){return pair[1];}
-    }
-    return(false);
-}
+chrome.runtime.onMessage.addListener(
+    function(message,sender,sendResponse)
+    {    
+        switch (message.type)
+        {
+            case "addDb":
+                filename = message.id;
+                url =  message.url; 
+                addDb(filename, url)           
+                break;
+        }
+    });
 
 $( document ).ready(function() {
-    let filename = getQueryVariable('filename');
-    let url = getQueryVariable('url');
-    if (filename != false && filename!= undefined && filename != "") {
-        if (url != false && url != undefined && url != "") {
-            chrome.runtime.onMessage.addListener(
-                function(message,sender,sendResponse)
-                {     
-                    switch (message.type)
-                    {
-                        case "addDb":
-                            filename = message.id;
-                            url =  message.url;
-                            break;
-                    }
-                });
-            filename = decodeURIComponent(filename)
-            addDb(filename, url)
-            window.close();
-        }
-    }
     getDb()
 });

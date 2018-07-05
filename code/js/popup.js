@@ -477,6 +477,9 @@ document.addEventListener('DOMContentLoaded', function ()
 	document.getElementById("sites").onclick = function () {
 		 window.open("/sites.html");
 	};
+	document.getElementById("saved").onclick = function () {
+		window.open("/saved.html");
+   };
 	document.getElementById("space").onclick = function () {
 		window.open("/images.html?category=space");
 	   };

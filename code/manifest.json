@@ -14,7 +14,7 @@
     "contextMenus"
   ],
   "background": {
-    "scripts": ["background.js", "background-save.js"]
+    "scripts": ["background.js", "background-save.js", "saved.js"]
   },
   "browser_action": {
       "default_title": "OpenGenus: Offline Search Engine",

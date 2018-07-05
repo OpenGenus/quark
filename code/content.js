@@ -1469,9 +1469,7 @@ function generateHTML()
     pageLoader = "";
     enteredComments = "";
     
-    
     htmlBlob = new Blob( htmlStrings, { type: "text/html" });
-    
     objectURL = window.URL.createObjectURL(htmlBlob);
     
     htmlStrings.length = 0;
@@ -1517,7 +1515,6 @@ function generateHTML()
         if (i < 0) filename = filename + text;
         else filename = filename.substring(0,i) + text + filename.substring(i);
     }
-
      
     if (action == "load"){
         link = document.createElement("a");
@@ -1548,7 +1545,12 @@ function generateHTML()
     }
 
     if (action == "save"){
-        chrome.runtime.sendMessage({ type: "addDb", id: filename, url: objectURL});
+        var reader = new FileReader();
+                reader.readAsDataURL(htmlBlob); 
+                reader.onloadend = function() {
+                    let base64data = reader.result;    
+                    chrome.runtime.sendMessage({ type: "addDb", id: filename, url: base64data})           
+                }
     }
 }
 
