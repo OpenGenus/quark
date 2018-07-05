@@ -1,4 +1,4 @@
-var db = openDatabase('saved11121', '1.0', 'saved', 2 * 1024 * 1024); 
+var db = openDatabase('PagesSaved', '1.0', 'saved', 2 * 1024 * 1024); 
 
 function addDb(filename, url){
     db.transaction(function (tx) { 
