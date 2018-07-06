@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The World's first Offline search engine by OpenGenus Foundation to empower people to continue their work even in no connectivity.",
   "permissions": [
+    "unlimitedStorage",
     "storage",
     "tabs",
     "notifications",
@@ -13,7 +14,7 @@
     "contextMenus"
   ],
   "background": {
-    "scripts": ["background.js", "background-save.js"]
+    "scripts": ["background.js", "background-save.js", "saved.js"]
   },
   "browser_action": {
       "default_title": "OpenGenus: Offline Search Engine",
@@ -28,7 +29,7 @@
   "content_scripts": [
   {
       "matches": ["https://*/*"],
-      "js": ["js/jquery.js","contentScript.js"]
+      "js": ["js/jquery.js","contentScript.js", "saved.js"]
   },
   {
       "matches": ["<all_urls>"],
@@ -37,5 +38,5 @@
   ],
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
   "short_name": "World's first offline search engine: Quark",
-  "web_accessible_resources": [ "pageloader.js" ]
+  "web_accessible_resources": [ "pageloader.js"]
 }

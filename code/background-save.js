@@ -70,7 +70,8 @@ function initialize()
                 
         context = showSubmenu ? "all" : "browser_action";
         
-        chrome.contextMenus.create({ id: "basicitems", title: "OpenGenus Quark: Save page", contexts: [ context ], enabled: true });
+        chrome.contextMenus.create({ id: "basicitems", title: "OpenGenus Quark: Download page", contexts: [ context ], enabled: true });
+        chrome.contextMenus.create({ id: "saveitems", title: "OpenGenus Quark: Save page in-browser", contexts: [ context ], enabled: true });
                 
         chrome.tabs.query({ lastFocusedWindow: true, active: true },
         function(tabs)
@@ -87,7 +88,13 @@ function addListeners()
     chrome.contextMenus.onClicked.addListener(
     function(info,tab)
     {
-        if (info.menuItemId == "basicitems") initiateAction(tab,0,null);
+
+        if (info.menuItemId == "basicitems"){ 
+            initiateAction(tab,0,null, "load");
+        }
+        if (info.menuItemId == "saveitems"){ 
+          initiateAction(tab,0,null, "save");
+        }
         
     });
         
@@ -142,6 +149,11 @@ function addListeners()
                 
                 chrome.tabs.sendMessage(sender.tab.id,{ type: "replyCrossFrame", name: message.name, url: message.url, html: message.html },checkError);
                 
+                break;
+            case "addDb":
+                //let link = 'saved.html?filename=' +  message.id + '&url=' +  message.url;
+                //chrome.tabs.create({ 'url': chrome.extension.getURL(link)})
+                chrome.runtime.sendMessage({ type: "addDb", id:  message.id, url: message.url})
                 break;
                 
             case "loadResource":
@@ -215,8 +227,8 @@ function addListeners()
     });
 }
 
-function initiateAction(tab,menuaction,srcurl)
-{
+function initiateAction(tab,menuaction,srcurl,action)
+{   
     if (specialPage(tab.url))  
     {
         alertNotify("Cannot be used with these special pages:\n" +
@@ -232,8 +244,7 @@ function initiateAction(tab,menuaction,srcurl)
     else  
     {
         badgeTabId = tab.id;
-        
-        chrome.tabs.sendMessage(tab.id,{ type: "performAction", menuaction: menuaction, srcurl: srcurl },
+        chrome.tabs.sendMessage(tab.id,{ type: "performAction", action: action, menuaction: menuaction, srcurl: srcurl },
         function(response)
         {
             if (chrome.runtime.lastError != null || typeof response == "undefined")  
@@ -241,7 +252,7 @@ function initiateAction(tab,menuaction,srcurl)
                 chrome.tabs.executeScript(tab.id,{ file: "content.js" },
                 function()
                 {
-                    chrome.tabs.sendMessage(tab.id,{ type: "performAction", menuaction: menuaction, srcurl: srcurl },
+                    chrome.tabs.sendMessage(tab.id,{ type: "performAction", action: action, menuaction: menuaction, srcurl: srcurl },
                     function(response)
                     {
                         if (chrome.runtime.lastError != null || typeof response == "undefined")  
@@ -256,6 +267,7 @@ function initiateAction(tab,menuaction,srcurl)
                 });
             }
         });
+
     }
 }
 
@@ -271,16 +283,21 @@ function setButtonAndMenuStates(tabId,url)
     {
                         
         chrome.contextMenus.update("basicitems",{ enabled: false });
+        chrome.contextMenus.update("saveitems",{ enabled: false });
         
     }
     else if (url.substr(0,5) == "file:")  
     {                        
         chrome.contextMenus.update("basicitems",{ enabled: true });
+        chrome.contextMenus.update("saveitems",{ enabled: true });
     }
     else  
     {
         chrome.contextMenus.update("basicitems",{ enabled: true });
+        chrome.contextMenus.update("saveitems",{ enabled: true });
     }
+
+    
 }
 
 function setSaveBadge(text,color)
