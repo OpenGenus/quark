@@ -1548,8 +1548,14 @@ function generateHTML()
         var reader = new FileReader();
                 reader.readAsDataURL(htmlBlob); 
                 reader.onloadend = function() {
+                    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    var date = new Date();
+                    var year = date.getFullYear();
+                    var month = monthNames[date.getMonth()];
+                    var dat = date.getDate();
+                    var time = dat + " " + month + " " + year;
                     let base64data = reader.result;    
-                    chrome.runtime.sendMessage({ type: "addDb", id: filename, url: base64data})           
+                    chrome.runtime.sendMessage({ type: "addDb", id: filename, url: base64data, time: time})           
                 }
     }
 }

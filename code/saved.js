@@ -1,9 +1,10 @@
-var db = openDatabase('PagesSaved', '1.0', 'saved', 2 * 1024 * 1024); 
+var db = openDatabase('OpenGenusSavedPages', '1.0', 'saved', 2 * 1024 * 1024); 
 
-function addDb(filename, url){
+function addDb(filename, url, time){
+    console.log(time)
     db.transaction(function (tx) { 
-        tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (filename unique, url)'); 
-        tx.executeSql('INSERT INTO LOGS (filename, url) VALUES ("' + filename  + '", "'  + url + '")'); 
+        tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (filename unique, url, time)'); 
+        tx.executeSql('INSERT INTO LOGS (filename, url, time) VALUES ("' + filename  + '", "'  + url + '", "'  + time + '")'); 
     })
 }
 
@@ -12,21 +13,25 @@ function getDb(){
     tx.executeSql('SELECT * FROM LOGS', [], function (tx, results) { 
         let names = [];
         let links = [];
-       var len = results.rows.length, i; 
+        let times = []
+       var len = results.rows.length, i;
        for (i = 0; i < len; i++) { 
             names.push(results.rows.item(i).filename)
             links.push(results.rows.item(i).url)
+            times.push(results.rows.item(i).time)
+            console.log(results.rows.item(i))
        } 
 
         // constructing table
-        let percentage_spent_on_web = '';
-        let table_start = '<div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="serial">No.</th><th id="name">Page Name</th></tr></thead><tbody>';
+        let table_start = '<div id="tbl"><div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="open"> </th><th id="serial">No.</th><th id="time"> Time </th><th id="name">Page Name</th><th id="delete"> </th></tr></thead><tbody></div>';
         let table_body = '';
         let table_end = "</tbody></table></div>";
             for(let site in names)
             {	
                 let name = names[site]
-                table_body +="<tr id="+site +"><td>"+(+(site)+1)+"</td><td>"+name+"</td></tr>"
+                let time = times[site]
+                var id = "delete" + site.toString();
+                table_body +="<tr><td><button id=" + site + " type='button' class='btn btn-outline-warning'>Open</button></td><td class='align-middle'>"+(+(site)+1)+"</td><td class='align-middle'>"+time+"</td><td class='align-middle'>"+name+"</td><td><button id=" + id + " type='button' class='btn btn-outline-danger'>Delete</button></td></tr>"
             }
         $('.body').append(table_start+table_body+table_end);
 
@@ -35,15 +40,38 @@ function getDb(){
             element.addEventListener("click", function(){
                 convertToBlob(links[site])
             });
-        }
 
+            var id = "delete" + site.toString(); 
+            var deleteBtn = document.getElementById(id);
+            deleteBtn.addEventListener("click", function(){
+                deleteDB(names[site], links[site])
+            });
+        }
+        if (len == 0){
+            emptyMess();
+        }
         }, emptyMess); 
 
     }); 
 }
+
 function emptyMess(){
-    var EmptyMessage = "<center style='margin:20px;' ><div>No saved pages yet. You can save any page using OpenGenus extension to browse it offline later!</div></center>";
+    var EmptyMessage = "<div id='tbl'> <center style='margin:20px;' ><div>Looks like You have no saved pages yet. You can save any page using OpenGenus extension to browse it offline later!</div></center></div>";
     $('.body').append(EmptyMessage);
+}
+
+function deleteDB(filename, url){
+    db.transaction(function(tx) {
+        tx.executeSql('delete from LOGS where filename=? AND url=?', [filename, url], function(transaction, result) {
+            console.log(result);
+            console.info('Record Deleted Successfully!');
+        }, function(transaction, error) {
+            console.log(error);
+        });
+    });
+    var tbl = document.getElementById("tbl");
+    tbl.parentNode.removeChild(tbl);
+    getDb();
 }
 
 function convertToBlob(url){
@@ -75,6 +103,22 @@ function openPage(blob){
         }
 }
 
+function searchPages(){
+
+	input = document.getElementById("DomainSearch");
+	filter = input.value.toUpperCase();
+	div = document.getElementById("t2");
+	a = div.getElementsByTagName("tr");
+	for (i = 1; i < a.length; i++) {
+		if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+			a[i].style.display = "";
+		} 
+		else {
+				a[i].style.display = "none";
+		}
+	}
+}
+
 chrome.runtime.onMessage.addListener(
     function(message,sender,sendResponse)
     {    
@@ -83,11 +127,18 @@ chrome.runtime.onMessage.addListener(
             case "addDb":
                 filename = message.id;
                 url =  message.url; 
-                addDb(filename, url)           
+                time = message.time;
+                if( filename != undefined && url != undefined && time != undefined){
+                    console.log("here")
+                    addDb(filename, url, time)
+                }           
                 break;
         }
     });
 
 $( document ).ready(function() {
     getDb()
+    $("#DomainSearch").keyup(function(){	
+		searchPages();
+	});
 });
