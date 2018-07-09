@@ -153,7 +153,7 @@ function addListeners()
             case "addDb":
                 //let link = 'saved.html?filename=' +  message.id + '&url=' +  message.url;
                 //chrome.tabs.create({ 'url': chrome.extension.getURL(link)})
-                chrome.runtime.sendMessage({ type: "addDb", id:  message.id, url: message.url})
+                chrome.runtime.sendMessage({ type: "addDb", id:  message.id, url: message.url, time: message.time})
                 break;
                 
             case "loadResource":
