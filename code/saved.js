@@ -19,7 +19,6 @@ function getDb(){
             names.push(results.rows.item(i).filename)
             links.push(results.rows.item(i).url)
             times.push(results.rows.item(i).time)
-            console.log(results.rows.item(i))
        } 
 
         // constructing table
@@ -33,7 +32,8 @@ function getDb(){
                 var id = "delete" + site.toString();
                 table_body +="<tr><td><button id=" + site + " type='button' class='btn btn-outline-warning'>Open</button></td><td class='align-middle'>"+(+(site)+1)+"</td><td class='align-middle'>"+time+"</td><td class='align-middle'>"+name+"</td><td><button id=" + id + " type='button' class='btn btn-outline-danger'>Delete</button></td></tr>"
             }
-        $('.body').append(table_start+table_body+table_end);
+        var element = document.getElementById("OpenGenus-table-saved.html")
+        element.innerHTML = table_start+table_body+table_end;
 
         for(let site in names){
             var element = document.getElementById(site);
@@ -50,14 +50,15 @@ function getDb(){
         if (len == 0){
             emptyMess();
         }
-        }, emptyMess); 
+        }); 
 
     }); 
 }
 
 function emptyMess(){
     var EmptyMessage = "<div id='tbl'> <center style='margin:20px;' ><div>Looks like You have no saved pages yet. You can save any page using OpenGenus extension to browse it offline later!</div></center></div>";
-    $('.body').append(EmptyMessage);
+    var element = document.getElementById("OpenGenus-EmptyMessage-saved.html")
+    element.innerHTML = EmptyMessage;
 }
 
 function deleteDB(filename, url){
@@ -137,6 +138,9 @@ chrome.runtime.onMessage.addListener(
     });
 
 $( document ).ready(function() {
+    db.transaction(function (tx) { 
+        tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (filename unique, url, time)'); 
+    });
     getDb()
     $("#DomainSearch").keyup(function(){	
 		searchPages();
