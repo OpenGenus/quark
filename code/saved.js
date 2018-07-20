@@ -55,6 +55,18 @@ function getDb(){
     }); 
 }
 
+function deleteAll(){
+    result = window.confirm("Delete all saved pages?");
+    if (result){
+        db.transaction(function (tx) { 
+            tx.executeSql('DELETE FROM LOGS');
+        });
+        var tbl = document.getElementById("tbl");
+        tbl.parentNode.removeChild(tbl);
+        getDb();
+    }
+}
+
 function emptyMess(){
     var EmptyMessage = "<div id='tbl'> <center style='margin:20px;' ><div>Looks like You have no saved pages yet. You can save any page using OpenGenus extension to browse it offline later!</div></center></div>";
     var element = document.getElementById("OpenGenus-EmptyMessage-saved.html")
@@ -123,9 +135,11 @@ function searchPages(){
 chrome.runtime.onMessage.addListener(
     function(message,sender,sendResponse)
     {    
+        console.log(message.type)
         switch (message.type)
         {
             case "addDb":
+                console.log("HERE")
                 filename = message.id;
                 url =  message.url; 
                 time = message.time;
@@ -138,11 +152,17 @@ chrome.runtime.onMessage.addListener(
     });
 
 $( document ).ready(function() {
+
     db.transaction(function (tx) { 
         tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (filename unique, url, time)'); 
     });
     getDb()
     $("#DomainSearch").keyup(function(){	
 		searchPages();
-	});
+    });
+    
+    var deleteDB = document.getElementById("deleteAll");
+    deleteDB.addEventListener("click", function(){
+        deleteAll();
+    });
 });

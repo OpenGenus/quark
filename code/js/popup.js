@@ -479,7 +479,10 @@ document.addEventListener('DOMContentLoaded', function ()
 	};
 	document.getElementById("saved").onclick = function () {
 		window.open("/saved.html");
-   };
+    };
+    document.getElementById("settings").onclick = function () {
+		window.open("/settings.html");
+	};
 	document.getElementById("space").onclick = function () {
 		window.open("/images.html?category=space");
 	   };
