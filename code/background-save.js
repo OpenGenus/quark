@@ -158,7 +158,6 @@ function addListeners()
                 break;
 
             case "notSafe":
-            alert("here")
                 chrome.storage.local.get('safeMode', function (result) {
                     //check if we are not in safe mode and save visited page
                     if (!result['safeMode'] && result['safeMode']!= undefined){
