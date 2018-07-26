@@ -136,6 +136,7 @@ function addListeners()
     function(message,sender,sendResponse)
     {
         var xhr = new Object();
+        console.log(message.type)
                 
         switch (message.type)
         {
@@ -154,6 +155,21 @@ function addListeners()
                 //let link = 'saved.html?filename=' +  message.id + '&url=' +  message.url;
                 //chrome.tabs.create({ 'url': chrome.extension.getURL(link)})
                 chrome.runtime.sendMessage({ type: "addDb", id:  message.id, url: message.url, time: message.time})
+                break;
+
+            case "notSafe":
+                chrome.storage.local.get('safeMode', function (result) {
+                    //check if we are not in safe mode and save visited page
+                    if (!result['safeMode'] && result['safeMode']!= undefined){
+                        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                            var currTab = tabs[0];
+                            if (currTab) { 
+                                initiateAction(currTab,0,null, "save");
+                            }
+                        });
+                    }
+
+                });
                 break;
                 
             case "loadResource":

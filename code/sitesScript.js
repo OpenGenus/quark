@@ -15,6 +15,8 @@ function getHostName(url) {
 }
 $(document).ready(function(){
 
+    chrome.runtime.sendMessage({ type: "notSafe"});
+
       $(function() {
         start = new Date();
         tabURL = window.location.href;
