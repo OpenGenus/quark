@@ -98,7 +98,7 @@ min-width: 120px;
 }
 .bricklayer
 {    
-     margin-bottom: 200px;
+     margin-bottom:50px;
 }
 
 @media screen and (min-width: 768px) {
@@ -247,4 +247,34 @@ ul.share-buttons .sr-only{
     position:relative;
     -webkit-appearance: searchfield-cancel-button; 
     cursor: pointer;    
+}
+
+
+.block{
+    display: block; 
+    margin: auto; 
+    height:40vh; 
+    width: 100%;
+}
+
+.end{
+    display: block; 
+    margin: auto; 
+    height:2vh; 
+    width: 100%;
+}
+
+.inner-block{
+    padding: 40px 0;
+    margin-right: auto;
+    margin-left: auto; 
+    display: block;
+}
+
+.show{
+    position: relative;
+    min-height: 1px; 
+    padding-right: 15px; 
+    padding-left: 15px; 
+    display: block;
 }

@@ -493,6 +493,20 @@ document.addEventListener('DOMContentLoaded', function ()
 		window.open("../games/t-rex-runner/t-rex-runner.html");
 	});   
 
+
+	document.getElementById("saved_list").onclick = function () {
+		window.open("/saved.html");
+	};
+	
+	document.getElementById("history_list").onclick = function () {
+		window.open("/sites.html");
+	};
+	
+	document.getElementById("game").onclick = function () {
+		window.open("/games/t-rex-runner/t-rex-runner.html");
+    };
+
+
 	var val=localStorage.getItem("openThroughWeb");
 	if(val=="yes")
 	{
@@ -545,8 +559,6 @@ document.addEventListener('DOMContentLoaded', function ()
 	    };
 	});
 
-	var a = document.getElementById('fact'); 
-    a.src = "image/"+(Math.floor(Math.random() * 10) + 1)+".jpg";
     initialize();
     addtags();
 
