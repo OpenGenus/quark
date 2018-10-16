@@ -492,6 +492,10 @@ document.addEventListener('DOMContentLoaded', function ()
 	document.getElementById("t-rex").addEventListener('click', function(){
 		window.open("../games/t-rex-runner/t-rex-runner.html");
 	});   
+	document.getElementById("2048").addEventListener('click', function(){
+		window.open("../games/2048/index.html");
+	});   
+
 
 
 	document.getElementById("saved_list").onclick = function () {
