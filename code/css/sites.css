@@ -22,3 +22,27 @@ th
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
 	background-color: #ffc10769;
 }
+
+#statement_restore{
+	margin:20px;
+	margin-top: -20px;
+	border-radius: 8px;
+	background-color: #ffcc66;
+	border: 2px solid #ffc107;
+}
+
+#no_sites_deleted{
+	margin:50px;
+	margin-top: -20px;
+}
+
+.restore_class{
+	margin: 10px;
+	margin-top: -20px;
+}
+
+.delete_button{
+	border-radius: 8px;
+	background-color: #ffcc66;
+	border: 2px solid #ffc107;
+}
