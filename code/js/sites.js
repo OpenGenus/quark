@@ -43,7 +43,7 @@ function sortTable(flag,n){
 			td_val = parseFloat(td_val);	
 		}
 		//For values of S.No. column
-		else if(Number(td_val) === td_val && td_val%1 === 0){
+		else if(Number(td_val) == td_val && td_val%1 == 0){
 			td_val = parseInt(td_val);
 		}
 		//For values of Date column
@@ -70,6 +70,37 @@ function clearArrows(){
 	});
 }
 
+//Function of delete button..removes the site from list and adds it to the "deleted_sites" local Storage
+//localStorage.removeItem("deleted_sites");
+function delete_site(id)
+{
+    var dels=[];
+    if (localStorage.getItem("deleted_sites") !== null)
+    {
+    	dels=JSON.parse(localStorage.getItem("deleted_sites"));
+    }
+    var found=false;
+    for(var del_site in dels)
+    {
+    	if(dels[del_site]==id)
+    	{
+    		found=true;
+    		break;
+    	}
+    }
+    if(found==false)
+    {dels.push(id);}
+    localStorage.setItem("deleted_sites", JSON.stringify(dels));
+    location.reload();
+}
+//function to remove website from deleted_sites
+function restore_site(id){
+	var obj=JSON.parse(localStorage.getItem("deleted_sites"));
+	obj.pop(id);
+	localStorage.setItem("deleted_sites", JSON.stringify(obj));
+	location.reload();
+}
+
 //To add up/down arrow next to Table header names
 function addArrows(id, flag){
 	clearArrows();
@@ -80,6 +111,7 @@ function addArrows(id, flag){
 		$("#"+id)[0].innerHTML += '\t&#9662;';
 	}
 }
+
 
 $( document ).ready(function() {
 	$("#DomainSearch").keyup(function(){	
@@ -98,6 +130,7 @@ $( document ).ready(function() {
 	    let n = $(this).prevAll().length;
 	    sortTable(serial_flag,n);
 	});
+
 
 	$(document).on('click','#name',function(){
 		name_flag *= -1;
@@ -119,6 +152,42 @@ $( document ).ready(function() {
 	    let n = $(this).prevAll().length;
 	    sortTable(date_flag,n);
 	});
+	// send id to delete_site function
+	$(document).on('click','.delete_button',function(){
+		delete_site(this.id);
+	});
+
+	//send id to restore_site function
+	$(document).on('click','.restore_sites',function(){
+		restore_site(this.id);
+	});
+
+	//utility to show deleted sites and to restore them
+	let end_restore="<div class=\"restore_class\">";
+	var clicked_flag_show_restore=false;
+	$(document).on('click','#statement_restore',function(){
+		var obj=JSON.parse(localStorage.getItem("deleted_sites"));
+		if(clicked_flag_show_restore==false)
+		{
+			if(obj==null||obj.length==0)
+			{
+				end_restore="<p id=\"no_sites_deleted\">No deleted sites found!</p></div>"
+			}
+			else
+			{
+				end_restore+="<ul>";
+				for(var x in obj)
+				{
+					end_restore+="<li class=\"restore_sites\" id=\""+obj[x]+"\">"+"<a href=\"\">"+obj[x]+" (Click to restore)</a></li>";
+				}
+				end_restore+="</ul></div>";
+			}
+			$('.body').append(end_restore);
+			clicked_flag_show_restore=true;
+  			$("html, body").animate({ scrollTop: $(document).height() }, 1000);
+				
+		}
+	});
 	
 	let current_sites =[];
 	chrome.storage.sync.get({sites: []}, function(items) {
@@ -128,7 +197,7 @@ $( document ).ready(function() {
 			{	const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 				//$(".form-inline").show();
 				let percentage_spent_on_web = '';
-				let table_start = '<div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="serial">S.No.</th><th id="name">Site Name</th><th>Days</th><th>Hours</th><th>Minutes</th><th>Seconds</th><th id="percent">Percentage of Time</th><th id="date">Last Visited On</th></tr></thead><tbody>';
+				let table_start = '<div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="serial">S.No.</th><th id="name">Site Name</th><th>Days</th><th>Hours</th><th>Minutes</th><th>Seconds</th><th id="percent">Percentage of Time</th><th id="date">Last Visited On</th><th id="delete">Delete Site</th></tr></thead><tbody>';
 				let table_body = '';
 				let table_end = "</tbody></table></div>";
 				//combined time taken for all sites
@@ -145,13 +214,25 @@ $( document ).ready(function() {
 						old_date = site_date;
 					}
 				}
-				
+				let obj=JSON.parse(localStorage.getItem('deleted_sites'));
+				let ser_num=0;
 				for(let site in current_sites)
 				{	
+					let name = current_sites[site].name;
+					let isDeleted=false;
+					for(let del in obj)
+					{
+						if(name==obj[del])
+						{
+							isDeleted=true;
+							break;
+						}
+					}
+					if(isDeleted==false){
+						ser_num+=1;
 					var parts = current_sites[site].lastV.split('/');
 					var site_date = new Date(parts[2], parts[1], parts[0]);
 					correct_date = site_date.getDate()+" "+monthNames[parseInt(parts[1])]+" "+site_date.getFullYear();
-					let name = current_sites[site].name;
 					let lastV = correct_date;
 					let days = current_sites[site].days;
 					let hrs = current_sites[site].hrs ;
@@ -160,8 +241,10 @@ $( document ).ready(function() {
 					let site_time_secs = (days*24*60*60) + (hrs*60*60) + (mins*60) + secs;
 					//calculating percentage of time spent in each site
 					let percent_time = ((site_time_secs/overall_time)*100).toFixed(2).toString()+'%';
-					table_body +="<tr><td>"+(+(site)+1)+"</td><td>"+name+"</td><td>"+days+"</td><td>"+hrs+"</td><td>"+mins+"</td><td>"+secs+"</td><td>"+percent_time+"</td><td>"+lastV+"</td></tr>"
+					table_body +="<tr><td>"+ser_num+"</td><td>"+name+"</td><td>"+days+"</td><td>"+hrs+"</td><td>"+mins+"</td><td>"+secs+"</td><td>"+percent_time+"</td><td>"+lastV+"</td><td><button class=\"delete_button\" id=\""+name+"\">Delete</button></td></tr>";
+					}
 				}
+				
 				//calculating time spent on the web
 				time_spent = overall_time
 				days = Math.floor(time_spent / 86400);
@@ -180,7 +263,8 @@ $( document ).ready(function() {
 				var percentage_spent = Math.round((overall_time/difference)*100)
 				var spent_days = Math.round(difference/60/60/24)
 				percentage_spent_on_web = '<div align="center" class="percentage_spent"> You spent <font color="#ffc107"><strong>' + percentage_spent + '% </strong></font> <strong><font color="#ffc107" size=2>' + total_time + '</font></strong> of your time on the web in the last <font color="#ffc107"><strong>' + spent_days + '</strong></font> days</div><p> </p>';
-				$('.body').append(percentage_spent_on_web+table_start+table_body+table_end);
+				let retrieve_sites="<button id=\"statement_restore\">Click to view/restore deleted sites</button>";
+				$('.body').append(percentage_spent_on_web+table_start+table_body+table_end+retrieve_sites);
 			}
 			else
 			{
@@ -190,5 +274,6 @@ $( document ).ready(function() {
 			}
 		}
 	});
+
 	 
 });
