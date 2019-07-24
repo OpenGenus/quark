@@ -83,6 +83,16 @@ $(function() {
 });
 
 $(function() {
+	$('#searchButton').on("click", function() {
+		$('#no_of_results').show();
+		$('.bricklayer').empty();
+		$('#error-message').empty();
+		$('#no_of_results').empty(); 			
+		dumpBookmarks($('#search').val());
+	});
+});
+
+$(function() {
 	$(document).on("click", ".button-pop", function(){
 		$('#front').show();
 		$('#no_of_results').show();
