@@ -1,4 +1,5 @@
 <html>
+
 <head>
 
     <script src="js/jquery.js"></script>
@@ -42,7 +43,8 @@
 
             <div class="col-sm-4">
                 <div class="input-group">
-                    <input id="search" class="form-control text-center" type="search" size="128" placeholder="Search any code; Try: sorting">
+                    <input id="search" class="form-control text-center" type="search" size="128"
+                        placeholder="Search any code; Try: sorting">
                     <div class="input-group-append">
                         <button id="searchButton" class="btn btn-primary">Go</button>
                     </div>
@@ -84,10 +86,11 @@
 
             <div class="col-sm-4">
 
-               
-               
 
-                <a class="btn float-right" target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/quark">GitHub</a>
+
+
+                <a class="btn float-right" target="_blank" title="Works only when you are online"
+                    href="https://github.com/OpenGenus/quark">GitHub</a>
                 <a class="btn float-right" target="_blank" title="" id="sites" href="javascript:void(0)">Activity</a>
                 <a class="btn float-right" target="_blank" title="" id="saved" href="javascript:void(0)">Saved</a>
                 <a class="btn float-right" target="_blank" id="help" href="javascript:void(0)">Help</a>
@@ -95,12 +98,13 @@
                 <a class="btn float-right" target="_blank" id="favButton" href="javascript:void(0)">Favorites</a>
 
                 <div class="dropdown">
-                    <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">Images
+                    <button class="btn dropdown-toggle dropdown_button float-right" type="button"
+                        data-toggle="dropdown">Images
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" id="main_drop_menu">
 
-                        <li class="dropdown_button " title="Space"  id="space">Space
+                        <li class="dropdown_button " title="Space" id="space">Space
                         </li>
                         <div class="dropdown-divider"></div>
 
@@ -113,20 +117,24 @@
 
 
                 <div class="dropdown">
-                    <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">More Apps
+                    <button class="btn dropdown-toggle dropdown_button float-right" type="button"
+                        data-toggle="dropdown">More Apps
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" id="main_drop_menu">
 
-                        <li class="dropdown_button " title="Click to open Calculator" data-toggle="modal" data-target="#myModal">Calculator
+                        <li class="dropdown_button " title="Click to open Calculator" data-toggle="modal"
+                            data-target="#myModal">Calculator
                         </li>
                         <div class="dropdown-divider"></div>
 
-                        <li class="dropdown_button" title="Click to open Stopwatch" data-toggle="modal" data-target="#myModal2">Stopwatch
+                        <li class="dropdown_button" title="Click to open Stopwatch" data-toggle="modal"
+                            data-target="#myModal2">Stopwatch
                         </li>
                         <div class="dropdown-divider"></div>
 
-                        <li class="dropdown_button" title="Click to open Time Zone Converter" data-toggle="modal" data-target="#myModal3">Time Zone Converter
+                        <li class="dropdown_button" title="Click to open Time Zone Converter" data-toggle="modal"
+                            data-target="#myModal3">Time Zone Converter
                         </li>
 
                     </ul>
@@ -134,16 +142,17 @@
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn dropdown-toggle dropdown_button float-right" type="button" data-toggle="dropdown">Games
+                    <button class="btn dropdown-toggle dropdown_button float-right" type="button"
+                        data-toggle="dropdown">Games
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" id="main_drop_menu">
 
                         <li class="dropdown_button " title="Play T-Rex Runner" id="t-rex">T-Rex Runner
                         </li>
-
+                        <li class="dropdown_button " title="Play Quick Math" id="quick-math">Quick Maths
+                        </li>
                     </ul>
-
                 </div>
 
                 <div id="calculator_modal"></div>
@@ -163,83 +172,100 @@
         <div class="block" style="background-color: #FCF3CF;">
             <div class="inner-block">
                 <div class="show" style="width: 75%; float: left; box-sizing: border-box;">
-                    <div style="padding-top: 30px; margin-right: -15px; margin-left: -15px; text-align: right; box-sizing: border-box; display: block;">
-                    <div style="text-align: right; display: block; padding-top: 30px">
-                        <div class="show" style=" width: 100%; text-align: right;"> 
-                            <h1>World's first Offline Search Engine</h1>
+                    <div
+                        style="padding-top: 30px; margin-right: -15px; margin-left: -15px; text-align: right; box-sizing: border-box; display: block;">
+                        <div style="text-align: right; display: block; padding-top: 30px">
+                            <div class="show" style=" width: 100%; text-align: right;">
+                                <h1>World's first Offline Search Engine</h1>
+                            </div>
                         </div>
-                    </div>
-                        <div class="show" style="text-align: right;"> You can, now, search code for any algorithm or data-structure in your favorite language even when you are not connected to the internet. <u>Use search-bar above to get started.</u></div>
+                        <div class="show" style="text-align: right;"> You can, now, search code for any algorithm or
+                            data-structure in your favorite language even when you are not connected to the internet.
+                            <u>Use search-bar above to get started.</u></div>
                     </div>
                 </div>
             </div>
 
             <div class="show" style="width: 25%;; float: left;">
-                <img src="image/glass.png" style=" display: block; max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
+                <img src="image/glass.png"
+                    style=" display: block; max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
             </div>
         </div>
 
 
         <div class="block" style="background-color: white;">
-                <div class="inner-block">
+            <div class="inner-block">
 
-                    <div class="show" style="padding-top: 6vh; width: 20%;; float: left;">
-                            <img src="image/saved.png" style="float:right; display: block;  max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
-                    </div>
+                <div class="show" style="padding-top: 6vh; width: 20%;; float: left;">
+                    <img src="image/saved.png"
+                        style="float:right; display: block;  max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
+                </div>
 
-                    <div class="show" style="width: 75%; float: left; box-sizing: border-box;">
-                        <div style="padding-top: 30px; margin-right: -15px; margin-left: -15px;  box-sizing: border-box; display: block;">
+                <div class="show" style="width: 75%; float: left; box-sizing: border-box;">
+                    <div
+                        style="padding-top: 30px; margin-right: -15px; margin-left: -15px;  box-sizing: border-box; display: block;">
                         <div style="display: block; padding-top: 30px">
-                            <div class="show" style=" width: 100%;"> 
+                            <div class="show" style=" width: 100%;">
                                 <h1> Saved List </h1>
                             </div>
                         </div>
-                            <div class="show"> OpenGenus extension allows you to save any visited webpage to browse it offline later or you can download it to your computer! <u><a target="_blank" title="" id="saved_list" href="javascript:void(0)">Learn more</a></u> </div>
-                        </div>
+                        <div class="show"> OpenGenus extension allows you to save any visited webpage to browse it
+                            offline later or you can download it to your computer! <u><a target="_blank" title=""
+                                    id="saved_list" href="javascript:void(0)">Learn more</a></u> </div>
                     </div>
                 </div>
+            </div>
         </div>
 
 
         <div class="block" style="background-color: #FCF3CF;">
-                <div class="inner-block">
-                    <div class="show" style="width: 75%; float: left; box-sizing: border-box;">
-                        <div style="padding-top: 30px; margin-right: -15px; margin-left: -15px; text-align: right; box-sizing: border-box; display: block;">
+            <div class="inner-block">
+                <div class="show" style="width: 75%; float: left; box-sizing: border-box;">
+                    <div
+                        style="padding-top: 30px; margin-right: -15px; margin-left: -15px; text-align: right; box-sizing: border-box; display: block;">
                         <div style="text-align: right; display: block; padding-top: 30px">
-                            <div class="show" style=" width: 100%; text-align: right;"> 
+                            <div class="show" style=" width: 100%; text-align: right;">
                                 <h1>Analyze History!</h1>
                             </div>
                         </div>
-                            <div class="show" style="text-align: right;"> Our extension analyzes which pages you have visited and how much time did you spend on it. </div>
-                            <div class="show" style="text-align: right;"> No worries - all information is only visible to you!  <u><a target="_blank" title="" id="history_list" href="javascript:void(0)">Check it out!</a></u></div>
-                        </div>
+                        <div class="show" style="text-align: right;"> Our extension analyzes which pages you have
+                            visited and how much time did you spend on it. </div>
+                        <div class="show" style="text-align: right;"> No worries - all information is only visible to
+                            you! <u><a target="_blank" title="" id="history_list" href="javascript:void(0)">Check it
+                                    out!</a></u></div>
                     </div>
                 </div>
-    
-                <div class="show" style="width: 25%;; float: left;">
-                    <img src="image/history.png" style=" max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
-                </div>
+            </div>
+
+            <div class="show" style="width: 25%;; float: left;">
+                <img src="image/history.png"
+                    style=" max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
+            </div>
         </div>
 
 
         <div class="block" style="background-color: white;">
-                <div class="inner-block">
+            <div class="inner-block">
 
-                    <div class="show" style="padding-top: 7vh; width:20%;; float: left;">
-                            <img src="image/games.png" style="float:right; display: block;  max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
-                    </div>
+                <div class="show" style="padding-top: 7vh; width:20%;; float: left;">
+                    <img src="image/games.png"
+                        style="float:right; display: block;  max-height: 20vh; max-width: 20vh; vertical-align: middle; border: 0; box-sizing: border-box;">
+                </div>
 
-                    <div class="show" style="width: 75%; float: left; box-sizing: border-box;">
-                        <div style="padding-top: 30px; margin-right: -15px; margin-left: -15px;  box-sizing: border-box; display: block;">
+                <div class="show" style="width: 75%; float: left; box-sizing: border-box;">
+                    <div
+                        style="padding-top: 30px; margin-right: -15px; margin-left: -15px;  box-sizing: border-box; display: block;">
                         <div style="display: block; padding-top: 30px">
-                            <div class="show" style=" width: 100%;"> 
+                            <div class="show" style=" width: 100%;">
                                 <h1> Fun Activities </h1>
                             </div>
                         </div>
-                            <div class="show"> Have a couple of free minutes? Taking a break from studying? You can search for images or you can play some of our games offline.   <u><a target="_blank" title="" id="game" href="javascript:void(0)">Try out this game!</a></u> </div>
-                        </div>
+                        <div class="show"> Have a couple of free minutes? Taking a break from studying? You can search
+                            for images or you can play some of our games offline. <u><a target="_blank" title=""
+                                    id="game" href="javascript:void(0)">Try out this game!</a></u> </div>
                     </div>
                 </div>
+            </div>
         </div>
 
     </div>
@@ -257,13 +283,15 @@
     <footer class="footer">
         <div class="container">
             <span class="text-muted float-left">Built with ❤ @
-                <a target="_blank" title="Works only when you are online" href="https://github.com/OpenGenus/">OpenGenus</a>
+                <a target="_blank" title="Works only when you are online"
+                    href="https://github.com/OpenGenus/">OpenGenus</a>
                 Email:
-                <a target="_blank" title="Works offline if email app enabled" href="mailto:team@opengenus.org"> 📬 team@opengenus.org</a>
+                <a target="_blank" title="Works offline if email app enabled" href="mailto:team@opengenus.org"> 📬
+                    team@opengenus.org</a>
             </span>
             <span class="text-muted float-right">Maintained by and part of the
                 <a target="_blank" title="Works only when you are online" href="http://www.opengenus.org/">
-                👪 OpenGenus Foundation</a>
+                    👪 OpenGenus Foundation</a>
             </span>
         </div>
 
@@ -280,7 +308,8 @@
                     <a target="_blank" title="Works only when you are online"
                         href="https://github.com/OpenGenus/">OpenGenus</a>.
                     <br>
-                    <br> Now search code for any algorithm or data-structure in your favorite language even when you are not
+                    <br> Now search code for any algorithm or data-structure in your favorite language even when you are
+                    not
                     connected to the internet!
                     <br>
                     <br> Add frequently visited codes easily to your favorites by clicking on the star icon.
@@ -295,16 +324,20 @@
                     <p align="center" style="padding-top: 8px; margin-bottom: 2px">
                         <b> Share Quark </b>
                     </p>
-                    <a class="btn btn-default" target="_blank" href="http://www.facebook.com/sharer.php?u=https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn&quote=%23OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline">
+                    <a class="btn btn-default" target="_blank"
+                        href="http://www.facebook.com/sharer.php?u=https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn&quote=%23OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline">
                         <img id="share-buttons" src="image/Facebook.png" alt="Facebook"></img>
                     </a>
-                    <a class="btn btn-default" target="_blank" href="http://twitter.com/share?text=OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline&url=https:%2F%2Fchrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn">
+                    <a class="btn btn-default" target="_blank"
+                        href="http://twitter.com/share?text=OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline&url=https:%2F%2Fchrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn">
                         <img id="share-buttons" src="image/Twitter.png" alt="Twitter"></img>
                     </a>
-                    <a class="btn btn-default" target="_blank" href="http://plus.google.com/share?url=https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn">
+                    <a class="btn btn-default" target="_blank"
+                        href="http://plus.google.com/share?url=https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn">
                         <img id="share-buttons" src="image/Google+.png" alt="Google+">
                     </a>
-                    <a class="btn btn-default" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn&title=%23OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline&summary=&source=">
+                    <a class="btn btn-default" target="_blank"
+                        href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn&title=%23OpenGenus%20Quark%3A%20World%27s%20first%20offline%20search%20engine%20to%20enable%20you%20to%20learn%20offline&summary=&source=">
                         <img id="share-buttons" src="image/LinkedIn.png" alt="LinkedIn"></img>
                     </a>
                 </div>

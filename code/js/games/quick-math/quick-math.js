@@ -1,3 +1,7 @@
+document.getElementById("logo").addEventListener('click', function () {
+    console.log("asda");
+    window.location.replace("../../popup.html");
+});
 
 function start() {
     let score = {

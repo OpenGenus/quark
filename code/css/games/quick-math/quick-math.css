@@ -1,5 +1,5 @@
 .container-fluid{
-    margin-top: 15%;
+    margin-top: 10%;
 }
  #play {
     display: none;
@@ -9,6 +9,7 @@ body {
     margin: 0%;
     background-color: aquamarine;
     font-family: 'Grenze', serif;
+    
 }
 
 #goButton {
@@ -21,4 +22,14 @@ body {
 }
 .btn{
     min-width:150px;
+    font-size: 50px;
 }
+.logo {
+    max-width: 25%;
+	  background: url(../../../logo/logo.png);
+	  background-repeat:no-repeat;
+	  margin: 2px;
+	  width: 220px;
+	  height: 65px;
+	  background-size: contain;
+  }
