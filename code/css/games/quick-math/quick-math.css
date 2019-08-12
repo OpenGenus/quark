@@ -1,0 +1,24 @@
+.container-fluid{
+    margin-top: 15%;
+}
+ #play {
+    display: none;
+}
+
+body {
+    margin: 0%;
+    background-color: aquamarine;
+    font-family: 'Grenze', serif;
+}
+
+#goButton {
+    margin: auto;
+    display: block;
+}
+
+#play {
+    align-content: center;
+}
+.btn{
+    min-width:150px;
+}
