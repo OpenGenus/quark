@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		window.open("../games/t-rex-runner/t-rex-runner.html");
 	});
 	document.getElementById("quick-math").addEventListener('click', function () {
-		window.open("../code/games/quick_math/quick_math.html");
+		window.open("../games/quick_math/quick_math.html");
 	});
 
 
