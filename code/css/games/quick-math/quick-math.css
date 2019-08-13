@@ -1,15 +1,21 @@
-.container-fluid{
-    margin-top: 10%;
+.container-fluid {
+    margin-top: 7%;
+    width: 500px;
+    height: 500px;
+    background-color: azure
 }
- #play {
+
+#play {
     display: none;
+    margin-top: 10%;
+
 }
 
 body {
     margin: 0%;
-    background-color: aquamarine;
+    background-color: white;
     font-family: 'Grenze', serif;
-    
+
 }
 
 #goButton {
@@ -20,16 +26,18 @@ body {
 #play {
     align-content: center;
 }
-.btn{
-    min-width:150px;
+
+.btn {
+    min-width: 150px;
     font-size: 50px;
 }
+
 .logo {
     max-width: 25%;
-	  background: url(../../../logo/logo.png);
-	  background-repeat:no-repeat;
-	  margin: 2px;
-	  width: 220px;
-	  height: 65px;
-	  background-size: contain;
-  }
+    background: url(../../../logo/logo.png);
+    background-repeat: no-repeat;
+    margin: 2px;
+    width: 220px;
+    height: 65px;
+    background-size: contain;
+}

@@ -59,14 +59,16 @@ function doMath(num1, num2, operator, score) {
     btn1.onclick = () => {
         if (check && btn1.innerHTML == ans) {
             score.points++;
-            check = false;
+            console.log(ans);
         }
+        check = false;
     };
     btn2.onclick = () => {
         if (check && btn2.innerHTML == ans) {
             score.points++;
-            check = false;
+            console.log(ans);
         }
+        check = false;
     };
     // debugger;
 }
