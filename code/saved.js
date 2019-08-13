@@ -22,7 +22,7 @@ function getDb(){
        } 
 
         // constructing table
-        let table_start = '<div id="tbl"><div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="open"> </th><th id="serial">No.</th><th id="time"> Time </th><th id="name">Page Name</th><th id="delete"> </th></tr></thead><tbody></div>';
+        let table_start = '<div id="tbl"><div class="table-responsive"><table id="t2" class="table table-hover"><thead><tr><th id="open"> </th><th id="serial">No.</th><th id="time"> Time </th><th id="name">Page Name</th><th id="delete"> </th><th id="download"> </th></tr></thead><tbody></div>';
         let table_body = '';
         let table_end = "</tbody></table></div>";
             for(let site in names)
@@ -30,7 +30,8 @@ function getDb(){
                 let name = names[site]
                 let time = times[site]
                 var id = "delete" + site.toString();
-                table_body +="<tr><td><button id=" + site + " type='button' class='btn btn-outline-warning'>Open</button></td><td class='align-middle'>"+(+(site)+1)+"</td><td class='align-middle'>"+time+"</td><td class='align-middle'>"+name+"</td><td><button id=" + id + " type='button' class='btn btn-outline-danger'>Delete</button></td></tr>"
+                var id2 = "download" + site.toString();
+                table_body +="<tr><td><button id=" + site + " type='button' class='btn btn-outline-warning'>Open</button></td><td class='align-middle'>"+(+(site)+1)+"</td><td class='align-middle'>"+time+"</td><td class='align-middle'>"+name+"</td><td><button id=" + id + " type='button' class='btn btn-outline-danger'>Delete</button></td><td><button id=" + id2 + " type='button' class='btn btn-outline-warning'>Download</button></td></tr>"
             }
         var element = document.getElementById("OpenGenus-table-saved.html")
         element.innerHTML = table_start+table_body+table_end;
@@ -45,6 +46,12 @@ function getDb(){
             var deleteBtn = document.getElementById(id);
             deleteBtn.addEventListener("click", function(){
                 deleteDB(names[site], links[site])
+            });
+
+            var id2 = "download" + site.toString();
+            var downloadBtn = document.getElementById(id2);
+            downloadBtn.addEventListener("click", function(){
+                downloadAsFile(links[site], names[site])
             });
         }
         if (len == 0){
@@ -114,6 +121,21 @@ function openPage(blob){
         {
             event.stopPropagation();
         }
+}
+
+function downloadAsFile(url, name){
+    fetch(url)
+        .then(res => res.blob())
+        .then(blob => funcDownload(blob, name))
+}
+
+function funcDownload(blob, name){
+    objectURL = window.URL.createObjectURL(blob);
+    link = document.createElement("a");
+    link.download = name + ".html";
+    link.href = objectURL;
+    link.click();
+    URL.revokeObjectURL(link.href);
 }
 
 function searchPages(){
