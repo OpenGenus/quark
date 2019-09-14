@@ -501,7 +501,10 @@ document.addEventListener('DOMContentLoaded', function ()
 	};
 	document.getElementById("t-rex").addEventListener('click', function(){
 		window.open("../games/t-rex-runner/t-rex-runner.html");
-	});   
+	});
+	document.getElementById("pac-man").addEventListener('click', function(){
+		window.open("../games/pac-man/index.html");
+	});
 
 
 	document.getElementById("saved_list").onclick = function () {
@@ -514,6 +517,9 @@ document.addEventListener('DOMContentLoaded', function ()
 	
 	document.getElementById("game").onclick = function () {
 		window.open("/games/t-rex-runner/t-rex-runner.html");
+    };
+	document.getElementById("game").onclick = function () {
+		window.open("/games/pac-man/index.html");
     };
 
 
