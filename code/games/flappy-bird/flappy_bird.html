@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- #5DBCD2 -->
+<head>
+    <meta charset="UTF-8">
+    <title>Flappy Bird</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #logo {
+            max-width: 25%;
+            background: url(../../../code/logo/logo.png);
+            background-repeat: no-repeat;
+            margin: 2px;
+            width: 220px;
+            height: 65px;
+            background-size: contain;
+        }
+
+        #title {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 200px;
+            width: 300px;;
+        }
+    </style>
+</head>
+
+<body bgcolor="#5DBCD2">
+    <div id="logo"></div>
+    <img src="assets/img/flappy-bird.jpg" id="title">
+    <canvas id="myCanvas" width="1120" height="480"></canvas>
+    <script src="../../js/games/flappy-bird/flappy_bird.js"></script>
+</body>
+
+</html>
