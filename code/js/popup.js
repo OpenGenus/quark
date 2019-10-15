@@ -501,7 +501,10 @@ document.addEventListener('DOMContentLoaded', function ()
 	};
 	document.getElementById("t-rex").addEventListener('click', function(){
 		window.open("../games/t-rex-runner/t-rex-runner.html");
-	});   
+	});
+	document.getElementById("flappy-bird").addEventListener('click', function(){
+		window.open("../games/flappy-bird/flappy_bird.html");
+	});  
 
 
 	document.getElementById("saved_list").onclick = function () {
