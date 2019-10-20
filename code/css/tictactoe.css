@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+  font-family: "Raleway", Helvetica;
+}
+
+body {
+  background: #1266f1;
+}
+
+.game-container {
+  margin-top: 50px;
+}
+
+.game-board {
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.15);
+  width: 400px;
+  margin: 0 auto;
+  font-size: 40px;
+  text-align: center;
+  line-height: 133.3333333333px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.game-board-row {
+  display: flex;
+}
+.game-board-row:last-child .game-board-space {
+  border-bottom: 0;
+}
+
+.game-board-space {
+  flex: 1;
+  height: 133.3333333333px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #eeeeee;
+  border-width: 0 1px 1px 0;
+  border-style: solid;
+  border-color: #bbbbbb;
+}
+.game-board-space.selected-space, .game-board-space.selected-space:hover {
+  background-color: #333333;
+  color: white;
+  border-color: #262525;
+}
+.game-board-space:nth-child(3) {
+  border-right: 0;
+}
+.game-board-space:hover {
+  background: #e6e6e6;
+}
+
+.game-message {
+  width: 400px;
+  margin: 0 auto;
+  background: rgba(237, 2, 206, 0.95);
+  color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  transition: all 0.05s;
+  cursor: pointer;
+  border-radius: 3px;
+  transform: scale(1);
+}
+.game-message:hover {
+  background: #ED02CE;
+}
+.game-message a {
+  color: #333333;
+}
+
+.game-message:empty {
+  height: 0;
+  padding: 0;
+  border: 0;
+  transform: scale(0);
+}
