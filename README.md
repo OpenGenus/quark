@@ -34,7 +34,7 @@ Enjoy this tweet by David Heinemeier Hansson:
 
 > How can one search bubble sort if there is no internet? The solution is **OpenGenus Quark**.
 
-# Contribute
+#   Contribute
 
 We love new family members. We encourage you to discuss with us on how can you help us, take up and solve an issue and revolutionize the World irrespective of your experience or knowledge. We keep things simple, so, that everyone on our planet can contribute to this Offline Mission and we are, always, ready to help you out. 
 
