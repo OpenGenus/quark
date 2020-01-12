@@ -3,6 +3,7 @@
 This is the World's first Offline code Search Engine presented by OpenGenus Foundation. You can, now, search code for any algorithm or data-structure in your favorite language even when you are _not connected to the internet_. 
 
 Get your offline code search engine from [**Chrome Web Store**](https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn)
+
 Get your offline code search engine from [**Firefox Add-ons**](https://addons.mozilla.org/en-US/firefox/addon/opengenus-offline-searchengine/)
 
 This wonderful extension empowers you to:
