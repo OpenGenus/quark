@@ -12,3 +12,5 @@ Inspired by the three stooges smashing each other in the head with a wooden plan
 
 ## Further reading
 [Wikipedia - Stoogesort](https://en.wikipedia.org/wiki/Stooge_sort)
+
+A large scale collaboration of [OpenGenus](https://github.com/opengenus)
