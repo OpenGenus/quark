@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/font.css">
+    <link rel="stylesheet" type="text/css" href="/css/fontawesome-all.min.css">
+    <link rel="shortcut icon" type="image/png" href="/icon/icon.png" />
+    <title >2048 the game</title>
+    <meta charset="utf-8">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+</head>
+
+<body id="t" class="offline">
+    <div class="container">
+        <br/>
+        <div class="row">
+            <div class="col-sm-4 logo" id="logo"></div>
+            <div class="col-sm-8"></div>
+        </div>
+    </div>
+    <div id="main-frame-error" class="interstitial-wrapper">
+        <div class="instructions">
+            <div class="inst-header" style="font-weight:bold; font-size:30px;text-align:center;color:#757575;">
+                2048
+            </div>
+            <div class="inst-body" style="margin-top:5px;text-align:center;color:#757575;margin-bottom:80px; font-size:15px;line-height:1.2em;">
+                <span id='firsttimeinfo'>Use the arrow keys to push all the squares on the board to the top/left/right/down. Squares with the same number combine to give a square with a value equal to the sum of the two squares. The game ends once you reach 2048 or all the squares are filled and no more moves are possible</span>
+            </div>
+        </div>
+        <div id="main-content">
+            <div class="icon icon-offline" alt=""></div>
+            <canvas id="myCanvas" width="500" height="600"></canvas>
+        </div>
+    </div>
+    <script src="./2048.js"></script>
+</body>
+
+</html>

@@ -506,6 +506,9 @@ document.addEventListener('DOMContentLoaded', function ()
 		window.open("../games/flappy-bird/flappy_bird.html");
 	});  
 
+	document.getElementById("2048").addEventListener('click', function(){
+		window.open("../games/2048/2048.html");
+	});  
 
 	document.getElementById("saved_list").onclick = function () {
 		window.open("/saved.html");
