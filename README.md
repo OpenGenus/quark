@@ -1,6 +1,6 @@
 # OpenGenus Quark: World's first Offline Search Engine
 
-This is the World's first Offline code Search Engine presented by OpenGenus Foundation. You can, now, search code for any algorithm or data-structure in your favorite language even when you are _not connected to the internet_. 
+This is the <b>World's first Offline code Search Engine</b> presented by OpenGenus Foundation. You can now, search code for any algorithm or data-structure in your favorite language even when you are _not connected to the internet_. 
 
 Get your offline code search engine from [**Chrome Web Store**](https://chrome.google.com/webstore/detail/opengenus-offline-search/lfoloadpfjildomeafpdopahkdaoofbn)
 
@@ -23,7 +23,9 @@ This wonderful extension empowers you to:
 
 We are on a mission to bring the best parts of the Internet Offline, enable people to work offline for a longer period of time and revolutionize the way people interact with the web. 
 
+<blockquote>
 "We made the internet and it made us vulnerable. We fought and we won."
+</blockquote>
 
 The best part is that the massive effort put to build this awesome search engine is open to all. Yes, we are an open-source organization and over 1000 people have become an integral part of our family in our ambitious journey. You can help us too.
 
