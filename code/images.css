@@ -56,3 +56,8 @@ button:focus {
     width: 10vw;
 }
 
+#credits{
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align : center;
+    font-size : 1.2rem;
+}

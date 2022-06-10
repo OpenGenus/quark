@@ -194,6 +194,7 @@ hr {
 ul.share-buttons{
   list-style: none;
   padding: 0;
+  margin : 1.5rem auto 0 auto;
 }
 
 ul.share-buttons li{
