@@ -14,5 +14,8 @@ td.hljs-ln-numbers {
     vertical-align: top;
     padding-right: 5px;
 
-    /* your custom style here */
+}
+
+#show-code{
+    font-size: 1rem;
 }
